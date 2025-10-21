@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SkySport — Inicio</title>
+
+  <!-- CSS externo -->
+  <link rel="stylesheet" href="../src/css/main.css">
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <h1>SKY<span>PORT</span></h1>
+      </div>
+      <div class="search" role="search">
+        <input type="search" placeholder="Buscar noticias, equipos, ligas…" aria-label="Buscar" />
+        <button type="button">Buscar</button>
+      </div>
+    </header>
+
+    <section class="grid">
+      <!-- Columna izquierda: Noticias -->
+      <aside aria-label="Últimas noticias">
+        <div class="aside-title">Noticias</div>
+        <nav class="news">
+          <a href="#"><span class="dot"></span> Mercado de fichajes: resumen del día</a>
+          <a href="#"><span class="dot"></span> Previa: jornada 8 de Liga</a>
+          <a href="#"><span class="dot"></span> Champions: horarios y TV</a>
+          <a href="#"><span class="dot"></span> Entrevista exclusiva con la MVP</a>
+        </nav>
+        <div class="callout">Añade aquí tu feed o mete enlaces estáticos por ahora.</div>
+      </aside>
+
+      <!-- Columna central: Contenido principal -->
+      <main>
+        <div class="hero">
+          <h2>Bienvenido a SkySport</h2>
+          <p class="muted">Texto de portada o un resumen de lo que quieras destacar. Coloca aquí la noticia principal o un carrusel más adelante.</p>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <h3>Crónica destacada</h3>
+            <p>Espacio para texto de ejemplo. Sustitúyelo por tu contenido real.</p>
+          </article>
+          <article class="card">
+            <h3>Estadísticas del día</h3>
+            <p>Marcadores, rankings o un widget que vayas a integrar.</p>
+          </article>
+        </div>
+      </main>
+
+      <!-- Columna derecha: Acceso/registro -->
+      <section class="auth" aria-label="Acceso">
+        <h3>Acceso rápido</h3>
+        <button class="btn primary" id="btn-login">Log In</button>
+        <button class="btn" id="btn-signup">Registro</button>
+        <button class="btn" id="btn-guest">Invitado</button>
+        <div class="callout">Estos botones ahora sólo simulan la navegación. Luego los conectarás con tus rutas reales.</div>
+      </section>
+    </section>
+
+    <footer>
+      ©️ <span id="year"></span> SkySport. Todos los derechos reservados.
+    </footer>
+  </div>
+
+  <!-- JS externo (módulo) -->
+  <script src="../src/js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SkySport — Login</title>
+
+  <!-- Estilos globales + específicos de la página -->
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../../src/css/login.css">
+</head>
+<body>
+  <div class="wrap auth-wrap">
+    <header class="auth-header">
+      <a class="home-link" href="../index.html" aria-label="Volver al inicio">
+        <!-- Icono casa (SVG inline para no depender de imágenes) -->
+        <svg viewBox="0 0 24 24" aria-hidden="true" width="24" height="24">
+          <path d="M3 10.5 12 3l9 7.5v9a1.5 1.5 0 0 1-1.5 1.5H4.5A1.5 1.5 0 0 1 3 19.5v-9Z" fill="none" stroke="currentColor" stroke-width="1.6" />
+          <path d="M9 21v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+        <span>Inicio</span>
+      </a>
+
+      <div class="brand-min">
+        <strong>SKY</strong><span>PORT</span>
+      </div>
+    </header>
+
+    <main class="auth-main" aria-labelledby="login-title">
+      <section class="auth-card" role="form">
+        <div class="avatar" aria-hidden="true">
+          <div class="avatar-circle"></div>
+          <div class="avatar-line"></div>
+        </div>
+
+        <h1 id="login-title" class="auth-title">Acceso</h1>
+
+        <form id="loginForm" novalidate>
+          <label class="field">
+            <span class="field-label">Usuario</span>
+            <input type="text" id="username" name="username" placeholder="tu_usuario"
+                   autocomplete="username" required aria-required="true">
+          </label>
+
+          <label class="field">
+            <span class="field-label">Contraseña</span>
+            <input type="password" id="password" name="password" placeholder="••••••••"
+                   autocomplete="current-password" required aria-required="true">
+          </label>
+
+          <p class="help">
+            <a href="#" id="linkRecover" class="recover">Recuperar contraseña</a>
+          </p>
+
+          <button type="submit" class="btn primary" id="btnSubmit">Aceptar</button>
+
+          <div class="form-message" id="formMsg" role="alert" aria-live="polite"></div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="../../src/js/login.js" defer></script>
+</body>
+</html>
