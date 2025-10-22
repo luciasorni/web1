@@ -1,0 +1,58 @@
+/* Estilos específicos de la pantalla de login. 
+   Reutiliza variables definidas en :root de main.css. */
+
+.auth-wrap { max-width: 720px; }
+
+.auth-header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:4px 2px 16px; border-bottom:1px solid var(--stroke); margin-bottom:18px;
+}
+.home-link{ display:flex; align-items:center; gap:8px; color:var(--text); text-decoration:none; }
+.home-link:hover{ opacity:.9; }
+
+.brand-min{ font-size:20px; letter-spacing:.4px; }
+.brand-min span{ margin-left:4px; color:var(--muted); font-weight:600; }
+
+.auth-main{ display:grid; place-items:center; padding:10px; }
+.auth-card{
+  width:100%; max-width:440px;
+  background:var(--card); border:1px solid var(--stroke); border-radius:var(--radius);
+  padding:22px 18px; box-shadow:var(--shadow);
+}
+
+.avatar{ display:grid; place-items:center; margin:8px 0 14px; position:relative; }
+.avatar-circle{
+  width:140px; height:140px; border-radius:50%;
+  border:2px solid var(--stroke);
+  background: radial-gradient(120% 120% at 30% 30%, rgba(90,176,255,.16), rgba(11,18,32,.6));
+}
+.avatar-line{
+  position:absolute; bottom:32px; width:66px; height:20px; border-radius:50%;
+  border-bottom:2px solid var(--stroke);
+}
+
+.auth-title{ text-align:center; margin:0 0 10px; }
+
+form{ display:flex; flex-direction:column; gap:12px; }
+
+.field{ display:flex; flex-direction:column; gap:6px; }
+.field-label{ font-weight:600; color:var(--muted); }
+input[type="text"], input[type="password"]{
+  padding:12px 14px; border-radius:12px; border:1px solid var(--stroke);
+  background:#0b1426; color:var(--text); outline:none; box-shadow:var(--shadow);
+}
+input:focus{ border-color:#2a446e; }
+
+.help{ margin:2px 0 4px; text-align:right; }
+.recover{ color:var(--brand); text-decoration:none; font-weight:600; }
+.recover:hover{ filter:brightness(1.1); }
+
+.form-message{
+  margin-top:6px; min-height:20px; font-size:.95rem;
+  color:#ffd5d5;
+}
+
+/* Responsivo pequeño */
+@media (max-width: 520px){
+  .auth-card{ padding:18px 14px; }
+}
