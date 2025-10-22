@@ -39,7 +39,7 @@ form{ display:flex; flex-direction:column; gap:12px; }
 .field-label{ font-weight:600; color:var(--muted); }
 input[type="text"], input[type="password"]{
   padding:12px 14px; border-radius:12px; border:1px solid var(--stroke);
-  background:#0b1426; color:var(--text); outline:none; box-shadow:var(--shadow);
+  background:beige; color:var(--text); outline:none; box-shadow:var(--shadow);
 }
 input:focus{ border-color:#2a446e; }
 
