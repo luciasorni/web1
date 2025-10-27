@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SkyPort — Login</title>
+
+  <!-- estilos -->
+  <link rel="stylesheet" href="../../public/css/main.css">
+  <link rel="stylesheet" href="../../public/css/auth.css">
+</head>
+<body>
+  <!-- Header con casita (izq) y logo (derecha) -->
+  <header class="header-auth">
+    <!-- Icono casa (solo SVG) -->
+    <a href="../index.html" aria-label="Volver al inicio" class="home-link">
+      <svg class="home-icon" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+        <path d="M3 10.5 12 3l9 7.5v9a1.5 1.5 0 0 1-1.5 1.5H4.5A1.5 1.5 0 0 1 3 19.5v-9Z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M9 21v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      </svg>
+    </a>
+
+    <!-- Logo (usa logoSkyPort.png en public/img) -->
+    <img src="../../public/img/logoSkyPort.png" alt="SkyPort logo">
+  </header>
+
+  <!-- Main centrado -->
+  <main class="auth-main">
+    <section class="auth-box" role="form" aria-labelledby="login-title">
+
+      <div class="top-center">
+        <div class="avatar" aria-hidden="true">
+          <div class="avatar-circle">
+            <div class="avatar-line"></div>
+          </div>
+        </div>
+        <h1 id="login-title">Acceso</h1>
+      </div>
+
+      <form id="loginForm" class="auth-form" novalidate>
+        <div>
+          <label for="username">Usuario</label>
+          <input id="username" name="username" type="text" placeholder="tu_usuario" autocomplete="username" required>
+        </div>
+
+        <div>
+          <label for="password">Contraseña</label>
+          <input id="password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" required>
+        </div>
+
+        <div class="auth-help">
+          <a href="../auth/recover.html" id="recoverLink">¿Has olvidado tu contraseña?</a>
+        </div>
+
+        <div style="margin-top:1rem;">
+          <button type="submit" class="btn btn-primary" id="btnSubmit" style="width:100%;">Aceptar</button>
+        </div>
+
+        <div id="formMsg" class="form-message" role="alert" aria-live="polite"></div>
+      </form>
+    </section>
+  </main>
+
+  <script src="../../routes/login.js" defer></script>
+</body>
+</html>
