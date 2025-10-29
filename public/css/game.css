@@ -1,0 +1,126 @@
+:root {
+  /* Colores */
+  --blue-900: #083d77;
+  --blue-600: #1e6f9f;
+  --blue-650: #2bb4ea;
+  --red-600:  #d64545;
+  --red-550:  #f8492a;
+  --orange-500: #ff8a3d;
+  --orange-450: #f9871b;
+  --beige-100: #f6eee2;
+  --yellow-500: #FFE4B5;
+  --muted: #6c757d;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--beige-100);
+  color: black;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.game-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* ======== MENU LATERAL ======== */
+.sidebar {
+  width: 160px;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: repeat(7, 1fr);
+  border-right: 2px solid white;
+  background-color: var(--yellow-500);
+}
+
+.menu-item {
+  border-bottom: 1px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.menu-item:hover {
+  background-color: #FFCC33;
+}
+
+/* ======== ZONA DE JUEGO ======== */
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+}
+
+/* ======== AEROPUERTO ======== */
+.airport {
+  position: relative;
+  width: 90%;
+  height: 90%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+/* ======== PISTA HORIZONTAL ======== */
+.horizontal-runway {
+  position: absolute;
+  bottom: 40px;
+  left: 160px;
+  right: 200px; /* deja espacio para la pista vertical */
+  height: 70px;
+  background-color: #555;
+  border: 2px solid #aaa;
+  border-radius: 8px;
+}
+
+/* ======== HANGARES ======== */
+.hangar-area {
+  position: absolute;
+  bottom: 110px;
+  left: 250px;
+  display: flex;
+  gap: 60px;
+}
+
+.hangar-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hangar {
+  width: 80px;
+  height: 60px;
+  background-color: var(--red-550);
+  border: 2px solid var(--red-550);
+  border-radius: 6px;
+}
+
+/* Camino desde el hangar hasta la pista */
+.path {
+  width: 10px;
+  height: 40px;
+  background-color: #999;
+  margin-top: 2px;
+}
+
+/* ======== NUEVA PISTA VERTICAL CONECTADA ======== */
+.vertical-runway {
+  position: absolute;
+  bottom: 110px; /* conecta justo encima de la pista horizontal */
+  right: 170px;  /* alinea con el extremo derecho de la pista horizontal */
+  width: 70px;
+  height: 500px;
+  background-color: #555;
+  border: 2px solid #aaa;
+  border-radius: 8px;
+}

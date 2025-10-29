@@ -9,8 +9,11 @@
   /* Colores */
   --blue-900: #083d77;
   --blue-600: #1e6f9f;
+  --blue-650: #2bb4ea;
   --red-600:  #d64545;
+  --red-550:  #f8492a;
   --orange-500: #ff8a3d;
+  --orange-450: #f9871b;
   --beige-100: #f6eee2;
   --muted: #6c757d;
 
@@ -184,14 +187,14 @@ body {
   height: 90px;
   border-radius: 50%;
   background: rgba(8,61,119,0.05);
-  border: 2px dashed var(--blue-600);
+  border: 2px dashed var(--blue-650);
   object-fit: cover;
   transition: transform .3s ease;
 }
 
 .forgot-password {
   font-size: 0.9rem;
-  color: var(--blue-600);
+  color: var(--blue-650);
   text-decoration: none;
   transition: color .3s ease;
 }
