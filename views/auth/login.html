@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Skyport — Iniciar sesión</title>
-  <link rel="icon" href="/img/logoSkyPort.png" type="image/png">
+  <link rel="icon" href="../../public/img/logoSkyPort.png" type="image/png">
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -13,7 +13,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <!-- Estilos -->
-  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="../../public/css/login.css">
+  <link rel="stylesheet" href="../../public/css/main.css">
 </head>
 <body>
 
@@ -21,8 +22,8 @@
   <header class="site-header">
     <nav class="navbar navbar-expand-lg fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="/">
-          <img src="/img/logoSkyPort.png" alt="Skyport logo" class="logo-img" style="height:75px;">
+        <a class="navbar-brand d-flex align-items-center" href="../views/index.html">
+          <img src="../../public/img/logoSkyPort.png" alt="Skyport logo" class="logo-img" style="height:75px;">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu" aria-controls="mainMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,13 +33,13 @@
         <div class="collapse navbar-collapse justify-content-end" id="mainMenu">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link btn-sky me-2 rounded" href="/">Volver</a>
+              <a class="nav-link btn-sky me-2 rounded" href="../index.html">Volver</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link btn-sky me-2 rounded" href="/register">Registro</a>
+              <a class="nav-link btn-sky me-2 rounded" href="../views/auth/register.html">Registro</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link btn-outline-sky me-2 rounded" href="/guest">Invitado</a>
+              <a class="nav-link btn-outline-sky me-2 rounded" href="../views/auth/guest.html">Invitado</a>
             </li>
           </ul>
         </div>
@@ -52,7 +53,7 @@
       <div class="text-center mb-3">
         <!-- Foto de perfil (vacía por ahora) -->
         <div class="profile-pic mb-3">
-          <img src="/img/fotoPerfilInicial.png" alt="Foto de perfil" class="profile-placeholder">
+          <img src="../../public/img/fotoPerfilInicial.png" alt="Foto de perfil" class="profile-placeholder">
         </div>
         <h2 class="hero-title mb-0">Iniciar sesión</h2>
       </div>
@@ -67,7 +68,7 @@
           <input type="password" id="password" class="form-control" placeholder="Introduce tu contraseña">
         </div>
         <div class="text-end mb-3">
-          <a href="/recover" class="forgot-password">He olvidado mi contraseña</a>
+          <a href="recover.html" class="forgot-password">He olvidado mi contraseña</a>
         </div>
         <div class="d-grid">
           <button type="submit" class="btn btn-sky">Entrar</button>
@@ -76,11 +77,11 @@
     </div>
   </main>
 
-  <footer class="site-footer mt-5">
+  <footer class="site-footer mt-3">
     <div class="container">
       <div class="row">
         <div class="col text-center">
-          <small>© <%= new Date().getFullYear() %> Skyport — Proyecto de videojuego aeronáutico</small>
+          <small>© 2025 Skyport — Proyecto de videojuego aeronáutico</small>
         </div>
       </div>
     </div>

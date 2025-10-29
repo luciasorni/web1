@@ -1,29 +1,30 @@
 const express = require('express');
+const path = require('path');
 const router = express.Router();
 
 // Página principal
 router.get('/', (req, res) => {
-  res.render('index');
+  res.sendFile(path.join(__dirname, '../views/index.html'));
 });
 
 // Página de login
 router.get('/login', (req, res) => {
-  res.render('auth/login');
+  res.sendFile(path.join(__dirname, '../views/auth/login.html'));
 });
 
 // Página de registro
 router.get('/register', (req, res) => {
-  res.render('auth/register');
+  res.sendFile(path.join(__dirname, '../views/auth/register.html'));
 });
 
-// Página para invitados
+// Página de invitado
 router.get('/guest', (req, res) => {
-  res.render('auth/guest');
+  res.sendFile(path.join(__dirname, '../views/auth/guest.html'));
 });
 
-// Página para recuperación de contraseña
+// Página de recuperación de contraseña
 router.get('/recover', (req, res) => {
-  res.render('auth/recover');
+  res.sendFile(path.join(__dirname, '../views/auth/recover.html'));
 });
 
 module.exports = router;
