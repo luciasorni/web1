@@ -1,0 +1,9 @@
+/* Ajustes mínimos para esta pantalla; hereda de login.css y main.css */
+.hero-title { /* Si quieres diferenciar el título, descomenta y ajusta */
+  /* font-size: 1.9rem; */
+}
+
+.form-error, .form-ok {
+  display: block;
+  margin-top: .25rem;
+}
