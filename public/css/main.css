@@ -23,25 +23,48 @@
 
   /* Espaciado */
   --gutter: 1rem;
-  --container-max: 1200px;
+  --container-max: 100%; /* Ajusta automáticamente al ancho del contenido */
+  --navbar-height: 75px; /* altura usada para compensar navbar fixed-top */
+  --content-footer-gap: 2rem; /* espacio genérico entre contenido y footer */
 }
 
 /* ===============================
    RESET / BASE
    =============================== */
-* { box-sizing: border-box; }
-html, body, #app { height: 100%; }
-body {
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
   height: 100%;
   margin: 0;
   font-family: var(--base-font);
   font-weight: 300;
   color: #222;
   background: linear-gradient(180deg, var(--beige-100) 0%, #fff 100%);
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   line-height: 1.45;
-  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  /* Compensar el navbar fixed-top para que no tape el contenido */
+  padding-top: var(--navbar-height);
+}
+
+main {
+  flex: 1; /* ocupa el espacio disponible */
+  display: flex;
+  flex-direction: column;
+  /* Asegura que el área principal tenga el mismo fondo que el body
+     para evitar un bloque de color distinto justo encima del footer
+     cuando el contenido (columna central) es muy largo. */
+  background: linear-gradient(180deg, var(--beige-100) 0%, #fff 100%);
+  /* Espacio mínimo entre el final del contenido y el footer */
+  padding-bottom: var(--content-footer-gap);
+}
+
+footer {
+  flex-shrink: 0;
+  margin-top: 0;
+  padding: 0.5rem 0;
 }
 
 /* Container principal */
@@ -53,33 +76,25 @@ body {
 /* ===============================
    HEADER / NAVBAR
    =============================== */
-.site-header .navbar {
+.navbar.fixed-top {
   background: var(--beige-100);
   border-bottom: 1px solid rgba(8,61,119,0.06);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   padding: .5rem 0;
-  position: relative;
-}
-
-/* Forzar navbar fijo y reserva de espacio */
-.navbar.fixed-top {
-  position: fixed !important;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1030;
+  z-index: 1050;
 }
 
-/* Logo centrado */
-.logo-wrap { display: flex; align-items: center; justify-content: center; }
 .logo-img {
   height: 64px;
   width: auto;
   object-fit: contain;
   transition: transform .35s ease;
 }
-.logo-img:hover { transform: translateY(-3px); }
 
-/* For mobile, make the menu button visible to the right (handled by Bootstrap classes) */
+.logo-img:hover { transform: translateY(-3px); }
 
 /* ===============================
    TIPOGRAFÍA / TITULARES
@@ -89,23 +104,11 @@ body {
   font-size: 2.2rem;
   margin: 0 0 .25rem;
   color: var(--blue-900);
-  display: inline-block;
-}
-@keyframes floatTitle {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
 }
 
 .hero-sub {
   font-size: 1.05rem;
   color: var(--muted);
-  margin-bottom: 0;
-}
-
-/* Cards base */
-.card {
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(16,24,40,0.04);
 }
 
 /* ===============================
@@ -113,9 +116,9 @@ body {
    =============================== */
 .left-col, .center-col, .right-col {
   padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
-/* News card specifics */
 .news-card .card-header, .empty-panel .card-header {
   background: var(--orange-500);
   color: white;
@@ -128,27 +131,21 @@ body {
 
 .news-list { max-height: 44vh; overflow-y: auto; padding-right: .25rem; }
 
-/* Right column placeholder */
-.right-empty {
-  min-height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(8,61,119,0.03);
-}
 
-/* Center hero */
-.hero-section { background: linear-gradient(180deg,#fff,#fffaf2); }
-.more-info { background: #fff; }
 
 /* ===============================
    COMPONENTES
    =============================== */
+.card {
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(16,24,40,0.04);
+}
+
 .news-title { font-size: 1rem; margin-bottom: .2rem; color: var(--blue-900); }
 .news-meta { font-size: .8rem; color: var(--muted); margin-bottom: .5rem; }
 .news-excerpt { font-size: .9rem; color: #333; }
 
-/* Buttons (reutilizables) */
+/* Botones */
 .btn-sky {
   background: var(--blue-600);
   color: white;
@@ -156,9 +153,9 @@ body {
   border-radius: 10px;
   padding: .45rem .9rem;
   font-weight: 600;
-  text-transform: none;
   box-shadow: 0 6px 18px rgba(8,61,119,0.12);
 }
+
 .btn-outline-sky {
   border: 1px solid var(--blue-600);
   color: var(--blue-600);
@@ -204,62 +201,50 @@ body {
   text-decoration: underline;
 }
 
-
-
-/*CAMBIAR ESTO DESPUES*/
 /* ===============================
-   LAYOUT GLOBAL ADAPTATIVO
+   FOOTER
    =============================== */
-
-/* Estructura flexible para que el footer quede al final */
-html, body {
-  height: 100%;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding-top: 0; /* quitamos el padding-top previo */
-}
-
-main {
-  flex: 1 0 auto; /* ocupa el espacio disponible */
-  margin-bottom: 0;
-}
-
-footer {
-  flex-shrink: 0; /* se mantiene al fondo */
-  margin-top: 0;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-
-/* Navbar fijo */
-.navbar.fixed-top {
-  background: var(--beige-100);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  z-index: 1050;
-}
-
-
-/* FOOTER */
 .site-footer {
-  margin-top: 1.5rem;
-  padding: 1.5rem 0;
-  background: transparent;
+  background: var(--beige-100);
   color: var(--muted);
+  text-align: center;
+  padding: 1rem;
+  /* REGLAS ROBUSTAS: quitar cualquier separación, borde o sombra
+     que pueda dibujar una línea fina sobre el footer. */
+  margin-top: 0 !important;
+  border-top: 0 !important;
+  box-shadow: none !important;
 }
+
+/* Asegurarse de que la utilidad mt-3 no deje margen en el footer */
+.site-footer.mt-3 { margin-top: 0 !important; }
+
+/* Quitar borde/sombra/margen en la última tarjeta del centro que
+   podría dibujar una línea encima del footer. */
+.center-col .card:last-of-type,
+.center-col .more-info,
+.center-col .card:last-child {
+  margin-bottom: 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  background-clip: padding-box !important;
+}
+
+/* Si aún hay un gap por el container/row, forzamos que no haya
+   margen inferior en la fila principal. */
+.container-fluid > .row { margin-bottom: 0 !important; }
 
 /* ===============================
    UTILITIES / RESPONSIVE
    =============================== */
 .placeholder-text { color: #8a8a8a; font-style: italic; }
+
 @media (max-width: 991px) {
   .right-col { display: none; }
   .hero-title { font-size: 1.8rem; }
   .logo-img { height: 56px; }
 }
+
 @media (max-width: 575px) {
   .left-col { order: 2; }
   .center-col { order: 1; }
