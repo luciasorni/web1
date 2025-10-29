@@ -29,6 +29,7 @@
 * { box-sizing: border-box; }
 html, body, #app { height: 100%; }
 body {
+  height: 100%;
   margin: 0;
   font-family: var(--base-font);
   font-weight: 300;
@@ -50,10 +51,19 @@ body {
    HEADER / NAVBAR
    =============================== */
 .site-header .navbar {
-  background: transparent;
+  background: var(--beige-100);
   border-bottom: 1px solid rgba(8,61,119,0.06);
   padding: .5rem 0;
   position: relative;
+}
+
+/* Forzar navbar fijo y reserva de espacio */
+.navbar.fixed-top {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
 }
 
 /* Logo centrado */
@@ -104,7 +114,7 @@ body {
 
 /* News card specifics */
 .news-card .card-header, .empty-panel .card-header {
-  background: var(--blue-600);
+  background: var(--orange-500);
   color: white;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
@@ -137,7 +147,7 @@ body {
 
 /* Buttons (reutilizables) */
 .btn-sky {
-  background: linear-gradient(90deg,var(--blue-600),var(--blue-900));
+  background: var(--blue-600);
   color: white;
   border: none;
   border-radius: 10px;
@@ -152,9 +162,87 @@ body {
   background: transparent;
 }
 
+.btn-sky:hover, .btn-outline-sky:hover {
+  background: var(--blue-900) !important;
+  color: white !important;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(8,61,119,0.15);
+}
+
+/* ===============================
+   LOGIN / AUTH SCREENS
+   =============================== */
+.profile-pic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-placeholder {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: rgba(8,61,119,0.05);
+  border: 2px dashed var(--blue-600);
+  object-fit: cover;
+  transition: transform .3s ease;
+}
+
+.forgot-password {
+  font-size: 0.9rem;
+  color: var(--blue-600);
+  text-decoration: none;
+  transition: color .3s ease;
+}
+
+.forgot-password:hover {
+  color: var(--blue-900);
+  text-decoration: underline;
+}
+
+
+
+/*CAMBIAR ESTO DESPUES*/
+/* ===============================
+   LAYOUT GLOBAL ADAPTATIVO
+   =============================== */
+
+/* Estructura flexible para que el footer quede al final */
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding-top: 0; /* quitamos el padding-top previo */
+}
+
+main {
+  flex: 1 0 auto; /* ocupa el espacio disponible */
+  margin-bottom: 0;
+}
+
+footer {
+  flex-shrink: 0; /* se mantiene al fondo */
+  margin-top: 0;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+/* Navbar fijo */
+.navbar.fixed-top {
+  background: var(--beige-100);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  z-index: 1050;
+}
+
+
 /* FOOTER */
 .site-footer {
-  margin-top: 3rem;
+  margin-top: 1.5rem;
   padding: 1.5rem 0;
   background: transparent;
   color: var(--muted);
@@ -174,10 +262,3 @@ body {
   .center-col { order: 1; }
   .news-list { max-height: 28vh; }
 }
-
-/* ===============================
-   TODO / Extras: puntos para ampliar
-   - añadir variables para sombras más complejas
-   - estilos para formularios de login/register
-   - utilidades de spacing extras (.mt-xx .mb-xx)
-   =============================== */

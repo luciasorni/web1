@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Skyport — Iniciar sesión</title>
+  <link rel="icon" href="/img/logoSkyPort.png" type="image/png">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="site-header">
+    <nav class="navbar navbar-expand-lg fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+          <img src="/img/logoSkyPort.png" alt="Skyport logo" class="logo-img" style="height:75px;">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu" aria-controls="mainMenu" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="mainMenu">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link btn-sky me-2 rounded" href="/">Volver</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link btn-sky me-2 rounded" href="/register">Registro</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link btn-outline-sky me-2 rounded" href="/guest">Invitado</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Contenedor principal -->
+  <main class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
+      <div class="text-center mb-3">
+        <!-- Foto de perfil (vacía por ahora) -->
+        <div class="profile-pic mb-3">
+          <img src="/img/fotoPerfilInicial.png" alt="Foto de perfil" class="profile-placeholder">
+        </div>
+        <h2 class="hero-title mb-0">Iniciar sesión</h2>
+      </div>
+
+      <form>
+        <div class="mb-3">
+          <label for="username" class="form-label">Usuario</label>
+          <input type="text" id="username" class="form-control" placeholder="Introduce tu usuario">
+        </div>
+        <div class="mb-2">
+          <label for="password" class="form-label">Contraseña</label>
+          <input type="password" id="password" class="form-control" placeholder="Introduce tu contraseña">
+        </div>
+        <div class="text-end mb-3">
+          <a href="/recover" class="forgot-password">He olvidado mi contraseña</a>
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn btn-sky">Entrar</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col text-center">
+          <small>© <%= new Date().getFullYear() %> Skyport — Proyecto de videojuego aeronáutico</small>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
