@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Skyport - Economy</title>
+
+  <!-- CSS global -->
+  <link rel="stylesheet" href="../../public/css/main.css" />
+  <!-- CSS específico de esta página -->
+  <link rel="stylesheet" href="../../public/css/economy.css" />
+
+  <!-- JS específico de esta página -->
+  <script defer src="../../public/js/economy.js"></script>
+</head>
+<body>
+  <div class="economy-page">
+    <!-- Sidebar -->
+    <aside class="economy-page__sidebar">
+      <div class="economy-page__menu-list">
+        <!-- Logo -->
+        <a class="economy-page__menu-item economy-page__menu-item--logo" href="../index.html">
+          <img src="../../public/img/logoSkyPort.png" alt="SkyPort logo" class="economy-page__logo-img" />
+        </a>
+
+        <!-- Menú -->
+        <a class="economy-page__menu-item" href="../social/social.html">Social</a>
+        <a class="economy-page__menu-item" href="../fleet/fleet.html">Fleet</a>
+        <a class="economy-page__menu-item" href="../chat/chat.html">Chat</a>
+        <a class="economy-page__menu-item" href="../missions/missions.html">Misiones</a>
+        <a class="economy-page__menu-item" href="../market/market.html">Mercado</a>
+
+        <!-- Banco con flecha de retorno -->
+        <a class="economy-page__menu-item economy-page__menu-item--active economy-page__menu-item--back" href="../game/game.html">
+          <span class="economy-page__back-icon" aria-hidden="true">↩</span>
+          <span class="economy-page__back-text">Game</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="economy-page__content">
+      <header class="economy-page__topbar">
+        <h1 class="economy-page__balance" id="balance-display">1.000.000</h1>
+      </header>
+
+      <section class="economy-page__panel">
+        <!-- columna gastos -->
+        <div class="economy-page__column economy-page__column--expenses">
+          <h2 class="economy-page__column-title">
+            <span class="economy-page__arrow economy-page__arrow--down">↓</span>
+            <span class="economy-page__op economy-page__op--minus">−</span>
+            <span class="economy-page__op economy-page__op--close">×</span>
+          </h2>
+          <ul class="economy-page__item-list">
+            <li class="economy-page__item economy-page__item--expense" data-amount="15000">aviones</li>
+            <li class="economy-page__item economy-page__item--expense" data-amount="8000">pistas</li>
+            <li class="economy-page__item economy-page__item--expense" data-amount="5000">mantenimiento</li>
+          </ul>
+        </div>
+
+        <!-- columna ingresos -->
+        <div class="economy-page__column economy-page__column--income">
+          <h2 class="economy-page__column-title">
+            <span class="economy-page__arrow economy-page__arrow--up">↑</span>
+            <span class="economy-page__op economy-page__op--plus">+</span>
+            <span class="economy-page__op economy-page__op--close">×</span>
+          </h2>
+          <ul class="economy-page__item-list">
+            <li class="economy-page__item economy-page__item--income" data-amount="12000">misiones</li>
+            <li class="economy-page__item economy-page__item--income" data-amount="9000">viajes</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
