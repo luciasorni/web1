@@ -1,0 +1,237 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+/* ====== scope ====== */
+.social-page {
+  --soc-blue: #2bb4ea;
+  --soc-orange: #f9871b;
+  --soc-yellow: #FFE4B5;
+  --soc-bg: #f6eee2;
+
+  position: fixed;
+  inset: 0;
+  display: flex;
+  background: var(--soc-bg);
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+}
+
+/* ====== sidebar ====== */
+.social-page__sidebar {
+  width: 10vw;
+  min-width: 120px;
+  height: 100%;
+  background: var(--soc-yellow);
+  border-right: 0.2vw solid var(--soc-orange);
+  display: flex;
+  flex-direction: column;
+}
+
+.social-page__menu-list {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* todos mismo alto (logo incluido) */
+.social-page__menu-item {
+  flex: 1 1 0;
+  min-height: 64px;
+  border-bottom: 0.2vw solid var(--soc-orange);
+  color: var(--soc-blue);
+  font-size: 1.5vw;
+  font-family: 'Fredoka One', cursive;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in;
+  text-align: center;
+}
+
+.social-page__menu-item:hover {
+  background: #ffcc33;
+}
+
+/* logo dentro del bloque */
+.social-page__logo-img {
+  max-height: 60%;
+  max-width: 80%;
+  height: auto;
+  width: auto;
+}
+
+/* 🔥 botón de volver (el que ahora está donde estaba “Social”) */
+.social-page__menu-item--back {
+  gap: 0.5rem;
+  background: rgba(255, 204, 51, 0.6);
+}
+.social-page__menu-item--back:hover {
+  background: rgba(255, 204, 51, 0.85);
+}
+.social-page__back-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+.social-page__back-text {
+  display: inline-block;
+}
+
+/* ====== contenido ====== */
+.social-page__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* topbar */
+.social-page__topbar {
+  height: 70px;
+  background: #fff;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-page__title {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 0.05rem;
+}
+
+/* cuerpo */
+.social-page__body {
+  flex: 1;
+  padding: 1.4rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+/* bloque de búsqueda */
+.social-page__search-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-width: 420px;
+}
+
+.social-page__label {
+  font-weight: 500;
+  color: #555;
+}
+
+.social-page__input {
+  border: 2px solid rgba(0,0,0,0.08);
+  border-radius: 6px;
+  padding: 0.5rem 0.65rem;
+  font-size: 1rem;
+  outline: none;
+}
+.social-page__input:focus {
+  border-color: rgba(43, 180, 234, 0.6);
+  box-shadow: 0 0 0 2px rgba(43, 180, 234, 0.08);
+}
+
+/* resultado de búsqueda */
+.social-page__result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.03);
+  border-left: 4px solid rgba(43, 180, 234, 0.55);
+  border-radius: 8px;
+  padding: 0.4rem 0.65rem 0.4rem 0.75rem;
+  max-width: 460px;
+}
+
+.social-page__result-name {
+  font-weight: 500;
+}
+
+.social-page__result-actions {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.social-page__btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-page__btn--reject {
+  background: rgba(214, 69, 69, 0.15);
+  color: #d64545;
+}
+
+.social-page__btn--accept {
+  background: rgba(34, 181, 115, 0.16);
+  color: #22b573;
+}
+
+/* subtítulo */
+.social-page__subtitle {
+  margin: 1rem 0 0.4rem 0;
+  font-size: 1.2rem;
+}
+
+/* lista de amigos */
+.social-page__friends {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.social-page__friend-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 6px;
+  padding: 0.4rem 0.7rem;
+  max-width: 360px;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+.social-page__friend-name {
+  font-weight: 500;
+}
+
+.social-page__friend-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.social-page__small-btn {
+  background: rgba(43, 180, 234, 0.2);
+  border: 1px solid rgba(43, 180, 234, 0.35);
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+.social-page__small-btn--secondary {
+  background: rgba(249, 135, 27, 0.12);
+  border: 1px solid rgba(249, 135, 27, 0.35);
+}
+
+/* responsive */
+@media (max-width: 900px) {
+  .social-page__menu-item {
+    font-size: 3vw;
+  }
+
+  .social-page__body {
+    padding: 1rem 1.2rem;
+  }
+}
