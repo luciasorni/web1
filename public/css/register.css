@@ -1,7 +1,5 @@
 /* Ajustes específicos de la página de registro */
-.hero-title { /* ya existe en login.css; si quieres diferenciar, descomenta */
-  /* font-size: 1.9rem; */
-}
+/* .hero-title ya existe en login.css; si quieres diferenciar, descomenta y ajusta */
 
 .form-error {
   /* se usa junto con .alert de Bootstrap */

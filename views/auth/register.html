@@ -85,7 +85,13 @@
         <p class="form-error alert alert-danger py-2 px-3" role="alert" hidden></p>
 
         <div class="d-grid">
-          <button type="submit" class="btn btn-sky" id="submitBtn">Crear cuenta</button>
+          <button type="button" class="btn btn-sky" id="btnEntrar">Crear cuenta</button>
+          <script>
+            document.getElementById('btnEntrar')
+              .addEventListener('click', () => {
+                window.location.href = '../game/game.html';
+              });
+          </script>
         </div>
 
         <p class="text-center mt-3">

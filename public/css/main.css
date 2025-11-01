@@ -78,6 +78,7 @@ footer {
    =============================== */
 .navbar.fixed-top {
   background: var(--beige-100);
+  place-content: center;
   border-bottom: 1px solid rgba(8,61,119,0.06);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   padding: .5rem 0;
