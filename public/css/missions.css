@@ -1,0 +1,191 @@
+/* misma fuente que game */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+/* ====== scope de la página ====== */
+.missions-page {
+  --mis-blue: #2bb4ea;
+  --mis-orange: #f9871b;
+  --mis-yellow: #FFE4B5;
+  --mis-bg: #f6eee2;
+  --mis-green: #22b573;
+  --mis-red: #d64545;
+
+  position: fixed;
+  inset: 0;
+  display: flex;
+  background: var(--mis-bg);
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+}
+
+/* ====== SIDEBAR ====== */
+.missions-page__sidebar {
+  width: 10vw;
+  min-width: 120px;
+  height: 100%;
+  background: var(--mis-yellow);
+  border-right: 0.2vw solid var(--mis-orange);
+  display: flex;
+  flex-direction: column;
+}
+
+/* contenedor de botones */
+.missions-page__menu-list {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* todos los ítems (logo incluido) mismo alto */
+.missions-page__menu-item {
+  flex: 1 1 0;
+  min-height: 64px;
+  border-bottom: 0.2vw solid var(--mis-orange);
+  color: var(--mis-blue);
+  font-size: 1.5vw;
+  font-family: 'Fredoka One', cursive;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in;
+  text-align: center;
+}
+
+.missions-page__menu-item:hover {
+  background: #ffcc33;
+}
+
+/* logo dentro del bloque */
+.missions-page__logo-img {
+  max-height: 60%;
+  max-width: 80%;
+  height: auto;
+  width: auto;
+}
+
+.missions-page__menu-item--back {
+  gap: 0.5rem;
+  background: rgba(255, 204, 51, 0.6); /* mismo amarillo que el activo */
+}
+.missions-page__menu-item--back:hover {
+  background: rgba(255, 204, 51, 0.85);
+}
+
+.missions-page__back-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+.missions-page__back-text {
+  display: inline-block;
+}
+
+/* ====== CONTENIDO ====== */
+.missions-page__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* barra superior */
+.missions-page__topbar {
+  height: 70px;
+  background: #fff;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.missions-page__title {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 0.08rem;
+}
+
+/* ====== PANEL PRINCIPAL ====== */
+.missions-page__panel {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* 3 columnas */
+  gap: 1.8vw;
+  padding: 1.8vw 2.5vw;
+  overflow: hidden;
+}
+
+/* columnas */
+.missions-page__column {
+  background: #fff;
+  border-radius: 1.1vw;
+  box-shadow: 0 0.6vw 1.4vw rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1vw;
+  padding: 1.2vw 1.3vw 1.3vw 1.3vw;
+}
+
+.missions-page__column-title {
+  font-size: 1.3rem;
+  margin: 0 0 0.6rem 0;
+  font-weight: 600;
+}
+
+/* tarjetas simples de misión */
+.missions-page__card {
+  background: rgba(43, 180, 234, 0.08);
+  border: 2px solid rgba(43, 180, 234, 0.25);
+  border-radius: 0.7vw;
+  padding: 0.5rem 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.1s ease-out, background 0.1s ease-out;
+}
+
+.missions-page__card:hover {
+  transform: translateY(-2px);
+  background: rgba(43, 180, 234, 0.15);
+}
+
+/* especiales: un pelín más tostado */
+.missions-page__column--special .missions-page__card {
+  background: rgba(249, 135, 27, 0.07);
+  border: 2px solid rgba(249, 135, 27, 0.25);
+}
+
+/* tarjetas de estado */
+.missions-page__status-card {
+  border-radius: 0.7vw;
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.missions-page__status-card--progress {
+  background: rgba(34, 181, 115, 0.09);
+  border: 2px solid rgba(34, 181, 115, 0.2);
+}
+
+.missions-page__status-card--claim {
+  background: rgba(214, 69, 69, 0.09);
+  border: 2px solid rgba(214, 69, 69, 0.2);
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 1100px) {
+  .missions-page__panel {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 750px) {
+  .missions-page__panel {
+    grid-template-columns: 1fr;
+  }
+  .missions-page__menu-item {
+    font-size: 3vw;
+  }
+}
