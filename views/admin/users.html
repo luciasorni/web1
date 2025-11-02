@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Skyport — Admin · Users</title>
+  <link rel="icon" href="../../public/img/logoSkyPort.png" type="image/png">
+  <link rel="stylesheet" href="../../public/css/main.css" />
+  <link rel="stylesheet" href="../../public/css/admin.css" />
+</head>
+<body>
+  <div class="admin-page">
+    <!-- Sidebar -->
+    <aside class="admin-page__sidebar">
+      <div class="admin-page__menu-list">
+        <!-- Home -->
+        <a class="admin-page__menu-item" href="../index.html">
+          <img src="../../public/img/logoSkyPort.png" class="admin-page__logo-img" alt="SkyPort">
+        </a>
+        <!-- Admin nav (rutas relativas) -->
+        <a class="admin-page__menu-item admin-page__menu-item--active" href="./users.html">Users</a>
+        <a class="admin-page__menu-item" href="./events.html">Events</a>
+        <!-- Volver al juego -->
+        <a class="admin-page__menu-item admin-page__menu-item--back" href="../game/game.html">
+          <span class="admin-page__back-icon">↩</span> Game
+        </a>
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <main class="admin-page__content">
+      <header class="admin-page__topbar">
+        <h1 class="admin-page__title">Administración — Usuarios</h1>
+      </header>
+
+      <section class="admin-page__body">
+        <div class="admin-card">
+          <div class="admin-actions" style="margin-bottom:.8rem;">
+            <input class="admin-input" type="text" placeholder="Buscar usuario..." style="max-width:320px;">
+            <button class="admin-btn admin-btn--primary">Buscar</button>
+            <button class="admin-btn admin-btn--warn">Limpiar</button>
+          </div>
+
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Último acceso</th>
+                <th style="text-align:right;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Fila demo -->
+              <tr>
+                <td>lucia</td>
+                <td>admin</td>
+                <td>activo</td>
+                <td>02/11/2025 12:35</td>
+                <td style="text-align:right;">
+                  <button class="admin-btn admin-btn--danger">Suspender</button>
+                  <button class="admin-btn admin-btn--ok">Restaurar</button>
+                </td>
+              </tr>
+              <tr>
+                <td>juan6969</td>
+                <td>player</td>
+                <td>activo</td>
+                <td>02/11/2025 11:10</td>
+                <td style="text-align:right;">
+                  <button class="admin-btn admin-btn--danger">Suspender</button>
+                  <button class="admin-btn admin-btn--ok">Restaurar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="admin-card">
+          <h3 style="margin-bottom:.6rem;">Crear / Editar usuario (placeholder)</h3>
+          <div class="admin-actions">
+            <input class="admin-input" type="text" placeholder="Usuario">
+            <input class="admin-input" type="text" placeholder="Rol (player/admin)">
+            <button class="admin-btn admin-btn--primary">Guardar</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

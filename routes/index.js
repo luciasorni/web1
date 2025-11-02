@@ -26,5 +26,8 @@ router.get('/guest', (req, res) => {
 router.get('/recover', (req, res) => {
   res.sendFile(path.join(__dirname, '../views/auth/recover.html'));
 });
+// Página de administración de usuarios
+router.get('/admin/users',  (req, res) => res.sendFile(v('admin/users.html')));
+router.get('/admin/events', (req, res) => res.sendFile(v('admin/events.html')));
 
 module.exports = router;

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Skyport — Admin · Events</title>
+  <link rel="icon" href="../../public/img/logoSkyPort.png" type="image/png">
+  <link rel="stylesheet" href="../../public/css/main.css" />
+  <link rel="stylesheet" href="../../public/css/admin.css" />
+</head>
+<body>
+  <div class="admin-page">
+    <!-- Sidebar -->
+    <aside class="admin-page__sidebar">
+      <div class="admin-page__menu-list">
+        <!-- Home -->
+        <a class="admin-page__menu-item" href="../index.html">
+          <img src="../../public/img/logoSkyPort.png" class="admin-page__logo-img" alt="SkyPort">
+        </a>
+        <!-- Admin nav -->
+        <a class="admin-page__menu-item" href="./users.html">Users</a>
+        <a class="admin-page__menu-item admin-page__menu-item--active" href="./events.html">Events</a>
+        <!-- Volver al juego -->
+        <a class="admin-page__menu-item admin-page__menu-item--back" href="../game/game.html">
+          <span class="admin-page__back-icon">↩</span> Game
+        </a>
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <main class="admin-page__content">
+      <header class="admin-page__topbar">
+        <h1 class="admin-page__title">Administración — Eventos</h1>
+      </header>
+
+      <section class="admin-page__body">
+        <div class="admin-card">
+          <h3 style="margin-bottom:.8rem;">Crear evento</h3>
+          <div class="admin-actions" style="margin-bottom:.8rem;">
+            <input class="admin-input" type="text" placeholder="Nombre del evento" style="min-width:220px;">
+            <input class="admin-input" type="text" placeholder="Descripción" style="min-width:320px;">
+            <input class="admin-input" type="number" placeholder="Boost % recompensa (ej. 15)">
+            <input class="admin-input" type="datetime-local" placeholder="Inicio">
+            <input class="admin-input" type="datetime-local" placeholder="Fin">
+            <button class="admin-btn admin-btn--primary">Publicar</button>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <h3 style="margin-bottom:.6rem;">Eventos activos</h3>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Ventana</th>
+                <th>Boost</th>
+                <th style="text-align:right;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Halloween</td>
+                <td>25/10/2025 00:00 → 02/11/2025 23:59</td>
+                <td>+20% misiones</td>
+                <td style="text-align:right;">
+                  <button class="admin-btn admin-btn--warn">Pausar</button>
+                  <button class="admin-btn admin-btn--danger">Eliminar</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Navidad</td>
+                <td>15/12/2025 00:00 → 06/01/2026 23:59</td>
+                <td>+15% recompensas</td>
+                <td style="text-align:right;">
+                  <button class="admin-btn admin-btn--warn">Pausar</button>
+                  <button class="admin-btn admin-btn--danger">Eliminar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+    </main>
+  </div>
+</body>
+</html>

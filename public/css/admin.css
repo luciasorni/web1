@@ -1,0 +1,100 @@
+/* Admin common styles (sidebar + topbar) */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+.admin-page {
+  --adm-blue: #2bb4ea;
+  --adm-orange: #f9871b;
+  --adm-yellow: #FFE4B5;
+  --adm-bg: #f6eee2;
+  --adm-green: #22b573;
+  --adm-red: #d64545;
+
+  position: fixed;
+  inset: 0;
+  display: flex;
+  background: var(--adm-bg);
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.admin-page__sidebar {
+  width: 10vw;
+  min-width: 120px;
+  height: 100%;
+  background: var(--adm-yellow);
+  border-right: 0.2vw solid var(--adm-orange);
+  display: flex;
+  flex-direction: column;
+}
+.admin-page__menu-list { flex: 1 1 auto; display: flex; flex-direction: column; }
+.admin-page__menu-item {
+  flex: 1 1 0;
+  min-height: 64px;
+  border-bottom: 0.2vw solid var(--adm-orange);
+  color: var(--adm-blue);
+  font-size: 1.5vw;
+  font-family: 'Fredoka One', cursive;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none; cursor: pointer; text-align: center;
+  transition: background-color .15s ease-in;
+}
+.admin-page__menu-item:hover { background: #ffcc33; }
+.admin-page__menu-item--active { background: rgba(255, 204, 51, 0.6); }
+
+.admin-page__logo-img { max-height: 60%; max-width: 80%; height: auto; width: auto; }
+
+.admin-page__menu-item--back { gap: .5rem; }
+.admin-page__back-icon { font-size: 1.4rem; line-height: 1; }
+
+/* Content */
+.admin-page__content { flex: 1; display: flex; flex-direction: column; height: 100%; }
+.admin-page__topbar {
+  height: 70px; background: #fff; border-bottom: 1px solid rgba(0,0,0,.05);
+  display: flex; align-items: center; justify-content: center;
+}
+.admin-page__title { margin: 0; font-size: 2rem; letter-spacing: .06rem; }
+
+/* Body */
+.admin-page__body { flex: 1; padding: 1.4rem 2.2rem; overflow: auto; }
+
+/* Cards / tables */
+.admin-card {
+  background: #fff; border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.05);
+  padding: 1rem; margin-bottom: 1rem;
+}
+
+.admin-actions { display: flex; gap: .5rem; flex-wrap: wrap; }
+.admin-btn {
+  border: 0; border-radius: 8px; padding: .45rem .7rem; font-weight: 700; cursor: pointer;
+}
+.admin-btn--primary { background: rgba(43,180,234,.15); color: #136391; border: 1px solid rgba(43,180,234,.35); }
+.admin-btn--danger  { background: rgba(214,69,69,.12); color: #b13030; border: 1px solid rgba(214,69,69,.25); }
+.admin-btn--warn    { background: rgba(249,135,27,.12); color: #a2580e; border: 1px solid rgba(249,135,27,.3); }
+.admin-btn--ok      { background: rgba(34,181,115,.12); color: #136c4d; border: 1px solid rgba(34,181,115,.3); }
+
+.admin-input {
+  border: 2px solid rgba(0,0,0,.08);
+  border-radius: 8px;
+  padding: .5rem .6rem;
+  outline: none;
+}
+.admin-input:focus {
+  border-color: rgba(43,180,234,.6);
+  box-shadow: 0 0 0 2px rgba(43,180,234,.08);
+}
+
+.admin-table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+.admin-table thead th { color: #555; font-weight: 700; font-size: .95rem; }
+.admin-table tbody tr { background: #fff; }
+.admin-table td, .admin-table th { padding: .65rem .75rem; }
+.admin-table tbody tr { box-shadow: 0 2px 10px rgba(0,0,0,.04); border-radius: 10px; }
+.admin-table tbody td:first-child { border-left: 4px solid rgba(43,180,234,.4); }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .admin-page__menu-item { font-size: 3vw; }
+  .admin-page__body { padding: 1rem 1.2rem; }
+  .admin-table { font-size: .95rem; }
+}
