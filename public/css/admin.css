@@ -67,7 +67,7 @@
 
 .admin-actions { display: flex; gap: .5rem; flex-wrap: wrap; }
 .admin-btn {
-  border: 0; border-radius: 8px; padding: .45rem .7rem; font-weight: 700; cursor: pointer;
+  border: 0; text-decoration: none; border-radius: 8px; padding: .45rem .7rem; font-weight: 700; cursor: pointer;
 }
 .admin-btn--primary { background: rgba(43,180,234,.15); color: #136391; border: 1px solid rgba(43,180,234,.35); }
 .admin-btn--danger  { background: rgba(214,69,69,.12); color: #b13030; border: 1px solid rgba(214,69,69,.25); }

@@ -6,6 +6,7 @@
   <title>Skyport - Invitado</title>
   <link rel="icon" href="../../public/img/logoSkyPort.png" type="image/png">
   <link rel="stylesheet" href="../../public/css/game.css">
+  <link rel="stylesheet" href="../../public/css/admin.css">
 </head>
 <body>
   <div class="game-container">
@@ -19,12 +20,19 @@
     </div>
 
     <!-- Zona de juego -->
-    <div class="search-bar">
-        <input type="text" id="userSearch" placeholder="Buscar usuarios..." class="search-input">
-        <button type="button" class="search-button">Buscar</button>
-    </div>
+    <div class="social-page__toolbar">
+      <div class="admin-actions" style="margin-bottom:.8rem;">
+        <input class="admin-input" type="text" placeholder="Buscar usuario..." style="max-width:320px;">
+        <button class="admin-btn admin-btn--primary">Buscar</button>
+        <button class="admin-btn admin-btn--warn">Limpiar</button>
+      </div>
 
-    
+      <!-- Recuadro de usuario -->
+      <div class="user-card">
+        <p class="user-card__username">Usuario: Juan1234</p>
+        <a class="admin-btn admin-btn--primary user-card__button" href="./username.html">Visitar</a>
+      </div>
+    </div>
   </div>
 </body>
 </html>
