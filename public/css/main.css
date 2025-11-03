@@ -163,8 +163,32 @@ footer {
   background: transparent;
 }
 
+.btn-red {
+  background: var(--red-550);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: .45rem .9rem;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(8,61,119,0.12);
+}
+
+.btn-outline-red {
+  border: 1px solid var(--red-550);
+  color: var(--red-550);
+  background: transparent;
+}
+
 .btn-sky:hover, .btn-outline-sky:hover {
   background: var(--blue-900) !important;
+  color: white !important;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(8,61,119,0.15);
+}
+
+.btn-red:hover, .btn-outline-red:hover {
+  background: var(--red-600) !important;
   color: white !important;
   transition: all 0.3s ease;
   text-decoration: none;
