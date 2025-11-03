@@ -7,10 +7,10 @@
 
   <!-- CSS global -->
   <link rel="stylesheet" href="../../public/css/main.css" />
-  <!-- CSS específico de esta página -->
+  <!-- CSS específico -->
   <link rel="stylesheet" href="../../public/css/economy.css" />
 
-  <!-- JS específico de esta página -->
+  <!-- JS específico -->
   <script defer src="../../public/js/economy.js"></script>
 </head>
 <body>
@@ -18,19 +18,17 @@
     <!-- Sidebar -->
     <aside class="economy-page__sidebar">
       <div class="economy-page__menu-list">
-        <!-- Logo -->
         <a class="economy-page__menu-item economy-page__menu-item--logo" href="../index.html">
           <img src="../../public/img/logoSkyPort.png" alt="SkyPort logo" class="economy-page__logo-img" />
         </a>
 
-        <!-- Menú -->
         <a class="economy-page__menu-item" href="../game/social.html">Social</a>
         <a class="economy-page__menu-item" href="../fleet/fleet.html">Fleet</a>
         <a class="economy-page__menu-item" href="../chat/chat.html">Chat</a>
         <a class="economy-page__menu-item" href="../game/missions.html">Misiones</a>
         <a class="economy-page__menu-item" href="../market/market.html">Mercado</a>
 
-        <!-- Banco con flecha de retorno -->
+        <!-- Volver a Game (amarillo) -->
         <a class="economy-page__menu-item economy-page__menu-item--active economy-page__menu-item--back" href="../game/game.html">
           <span class="economy-page__back-icon" aria-hidden="true">↩</span>
           <span class="economy-page__back-text">Game</span>
@@ -40,38 +38,68 @@
 
     <!-- Contenido principal -->
     <main class="economy-page__content">
+      <!-- Topbar con saldo + leyenda + rango + botón -->
       <header class="economy-page__topbar">
-        <h1 class="economy-page__balance" id="balance-display">1.000.000</h1>
+        <div class="economy-page__money">
+          <span class="economy-page__money-label">Saldo</span>
+          <span class="economy-page__balance" id="balance-display">1.000.000 €</span>
+          <span class="pill pill--delta" id="balance-delta">+0 €</span>
+        </div>
+
+        <div class="economy-page__legend">
+          <div class="economy-page__range">
+            <label for="eco-range">Periodo</label>
+            <select id="eco-range" class="eco-select">
+              <option>Hoy</option>
+              <option selected>Semana</option>
+              <option>Mes</option>
+            </select>
+          </div>
+          <button class="btn btn--ghost" id="eco-add-movement">Añadir movimiento</button>
+          <span class="legend-item"><span class="legend-dot legend-dot--expenses"></span>Gastos</span>
+          <span class="legend-sep">·</span>
+          <span class="legend-item"><span class="legend-dot legend-dot--income"></span>Ingresos</span>
+        </div>
       </header>
 
       <section class="economy-page__panel">
-        <!-- columna gastos -->
-        <div class="economy-page__column economy-page__column--expenses">
+        <!-- GASTOS -->
+        <div class="economy-page__column economy-page__column--expenses" aria-label="Gastos">
           <h2 class="economy-page__column-title">
             <span class="economy-page__arrow economy-page__arrow--down">↓</span>
-            <span class="economy-page__op economy-page__op--minus">−</span>
-            <span class="economy-page__op economy-page__op--close">×</span>
+            <span>Gastos</span>
+            <span class="pill pill--neg" id="total-expenses">− 0 €</span>
+            <span class="spacer"></span>
+            <button class="icon-btn" title="Añadir gasto" id="add-expense">＋</button>
           </h2>
-          <ul class="economy-page__item-list">
+          <ul class="economy-page__item-list" id="expenses-list">
             <li class="economy-page__item economy-page__item--expense" data-amount="15000">aviones</li>
             <li class="economy-page__item economy-page__item--expense" data-amount="8000">pistas</li>
             <li class="economy-page__item economy-page__item--expense" data-amount="5000">mantenimiento</li>
           </ul>
         </div>
 
-        <!-- columna ingresos -->
-        <div class="economy-page__column economy-page__column--income">
+        <!-- INGRESOS -->
+        <div class="economy-page__column economy-page__column--income" aria-label="Ingresos">
           <h2 class="economy-page__column-title">
             <span class="economy-page__arrow economy-page__arrow--up">↑</span>
-            <span class="economy-page__op economy-page__op--plus">+</span>
-            <span class="economy-page__op economy-page__op--close">×</span>
+            <span>Ingresos</span>
+            <span class="pill pill--pos" id="total-income">+ 0 €</span>
+            <span class="spacer"></span>
+            <button class="icon-btn" title="Añadir ingreso" id="add-income">＋</button>
           </h2>
-          <ul class="economy-page__item-list">
+          <ul class="economy-page__item-list" id="income-list">
             <li class="economy-page__item economy-page__item--income" data-amount="12000">misiones</li>
             <li class="economy-page__item economy-page__item--income" data-amount="9000">viajes</li>
           </ul>
         </div>
       </section>
+
+      <!-- Pie con saldo neto -->
+      <footer class="economy-page__footer">
+        <span>Saldo neto</span>
+        <span class="pill" id="net-balance">+0 €</span>
+      </footer>
     </main>
   </div>
 </body>

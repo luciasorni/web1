@@ -3,12 +3,12 @@
 
 /* ====== scope de la página ====== */
 .missions-page {
-  --mis-blue: #2bb4ea;
+  --mis-blue:   #2bb4ea;
   --mis-orange: #f9871b;
   --mis-yellow: #FFE4B5;
-  --mis-bg: #f6eee2;
-  --mis-green: #22b573;
-  --mis-red: #d64545;
+  --mis-bg:     #f6eee2;
+  --mis-green:  #22b573;
+  --mis-red:    #d64545;
 
   position: fixed;
   inset: 0;
@@ -52,10 +52,7 @@
   transition: background-color 0.15s ease-in;
   text-align: center;
 }
-
-.missions-page__menu-item:hover {
-  background: #ffcc33;
-}
+.missions-page__menu-item:hover { background: #ffcc33; }
 
 /* logo dentro del bloque */
 .missions-page__logo-img {
@@ -65,21 +62,14 @@
   width: auto;
 }
 
+/* retorno (amarillo) */
 .missions-page__menu-item--back {
   gap: 0.5rem;
-  background: rgba(255, 204, 51, 0.6); /* mismo amarillo que el activo */
+  background: rgba(255, 204, 51, 0.6);
 }
-.missions-page__menu-item--back:hover {
-  background: rgba(255, 204, 51, 0.85);
-}
-
-.missions-page__back-icon {
-  font-size: 1.4rem;
-  line-height: 1;
-}
-.missions-page__back-text {
-  display: inline-block;
-}
+.missions-page__menu-item--back:hover { background: rgba(255, 204, 51, 0.85); }
+.missions-page__back-icon { font-size: 1.4rem; line-height: 1; }
+.missions-page__back-text { display: inline-block; }
 
 /* ====== CONTENIDO ====== */
 .missions-page__content {
@@ -98,11 +88,30 @@
   align-items: center;
   justify-content: center;
 }
+.missions-page__title { margin: 0; font-size: 2rem; letter-spacing: 0.08rem; }
 
-.missions-page__title {
-  margin: 0;
-  font-size: 2rem;
-  letter-spacing: 0.08rem;
+/* ====== TOOLBAR ====== */
+.missions-page__toolbar{
+  display:flex;
+  align-items:center;
+  gap:1rem;
+  padding: 0.8rem 2.5rem 0 2.5rem;
+}
+.missions-page__search{
+  border:2px solid rgba(0,0,0,0.08);
+  border-radius:8px;
+  padding:0.5rem .8rem;
+  min-width: 240px;
+  outline:none;
+}
+.missions-page__search:focus{
+  border-color: rgba(43,180,234,.6);
+  box-shadow: 0 0 0 2px rgba(43,180,234,.08);
+}
+/* botón Buscar en la toolbar */
+.missions-page__search-btn {
+  padding: 0.5rem 0.9rem;
+  white-space: nowrap;
 }
 
 /* ====== PANEL PRINCIPAL ====== */
@@ -111,7 +120,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr; /* 3 columnas */
   gap: 1.8vw;
-  padding: 1.8vw 2.5vw;
+  padding: 1.2vw 2.5vw 2vw 2.5vw;
   overflow: hidden;
 }
 
@@ -122,70 +131,91 @@
   box-shadow: 0 0.6vw 1.4vw rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  gap: 1vw;
+  gap: 0.9vw;
   padding: 1.2vw 1.3vw 1.3vw 1.3vw;
 }
 
+/* títulos centrados */
 .missions-page__column-title {
   font-size: 1.3rem;
   margin: 0 0 0.6rem 0;
-  font-weight: 600;
+  font-weight: 700;
+  text-align: center;
 }
 
-/* tarjetas simples de misión */
-.missions-page__card {
+/* tarjetas de catálogo/especiales con acciones */
+.missions-page__card,
+.missions-page__status-card{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: .8rem;
+  border-radius: 0.7vw;
+  padding: 0.55rem 0.8rem;
+}
+
+/* base catálogo */
+.missions-page__card{
   background: rgba(43, 180, 234, 0.08);
   border: 2px solid rgba(43, 180, 234, 0.25);
-  border-radius: 0.7vw;
-  padding: 0.5rem 0.75rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: transform 0.1s ease-out, background 0.1s ease-out;
 }
+.missions-page__card:hover { background: rgba(43, 180, 234, 0.15); }
 
-.missions-page__card:hover {
-  transform: translateY(-2px);
-  background: rgba(43, 180, 234, 0.15);
-}
-
-/* especiales: un pelín más tostado */
+/* especiales */
 .missions-page__column--special .missions-page__card {
   background: rgba(249, 135, 27, 0.07);
   border: 2px solid rgba(249, 135, 27, 0.25);
 }
+.missions-page__card-title{ font-weight:600; }
 
-/* tarjetas de estado */
-.missions-page__status-card {
-  border-radius: 0.7vw;
-  padding: 0.5rem 0.75rem;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  cursor: pointer;
-}
-
-.missions-page__status-card--progress {
+/* tarjetas de estado (activas) */
+.missions-page__status-card--progress{
   background: rgba(34, 181, 115, 0.09);
   border: 2px solid rgba(34, 181, 115, 0.2);
 }
-
-.missions-page__status-card--claim {
+.missions-page__status-card--claim{
   background: rgba(214, 69, 69, 0.09);
   border: 2px solid rgba(214, 69, 69, 0.2);
 }
 
+/* acciones de tarjeta */
+.missions-page__card-actions{ display:flex; gap:.4rem; }
+
+/* botones genéricos */
+.btn{
+  border:1px solid transparent;
+  border-radius:6px;
+  font-size:.85rem;
+  padding:.35rem .6rem;
+  cursor:pointer;
+  line-height:1;
+  white-space:nowrap;
+}
+.btn--ghost{
+  background: #fff;
+  border-color: rgba(0,0,0,.15);
+}
+.btn--primary{
+  background: rgba(43,180,234,.18);
+  border-color: rgba(43,180,234,.4);
+  color:#0b6fa3;
+}
+.btn--danger{
+  background: rgba(214,69,69,.18);
+  border-color: rgba(214,69,69,.45);
+  color:#a32020;
+}
+.btn--success{
+  background: rgba(34,181,115,.18);
+  border-color: rgba(34,181,115,.45);
+  color:#177a53;
+}
+
 /* ====== RESPONSIVE ====== */
 @media (max-width: 1100px) {
-  .missions-page__panel {
-    grid-template-columns: 1fr 1fr;
-  }
+  .missions-page__panel { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 750px) {
-  .missions-page__panel {
-    grid-template-columns: 1fr;
-  }
-  .missions-page__menu-item {
-    font-size: 3vw;
-  }
+  .missions-page__panel { grid-template-columns: 1fr; }
+  .missions-page__menu-item { font-size: 3vw; }
 }

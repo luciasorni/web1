@@ -1,217 +1,125 @@
-/* ====== misma fuente que game ====== */
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
-/* ====== scope de la página ====== */
 .economy-page {
-  --eco-blue-650: #2bb4ea;
-  --eco-orange-450: #f9871b;
-  --eco-yellow-500: #FFE4B5;
-  --eco-beige-100: #f6eee2;
-  --eco-red-600: #d64545;
-  --eco-green-500: #22b573;
-  --eco-red-bg: rgba(246, 64, 64, 0.12);
-  --eco-green-bg: rgba(34, 181, 115, 0.12);
+  --eco-blue-650:#2bb4ea;
+  --eco-orange-450:#f9871b;
+  --eco-yellow-500:#FFE4B5;
+  --eco-beige-100:#f6eee2;
+  --eco-red-600:#d64545;
+  --eco-green-500:#22b573;
+  --eco-red-bg:rgba(246,64,64,.12);
+  --eco-green-bg:rgba(34,181,115,.12);
 
-  position: fixed;       /* ocupa toda la ventana */
-  inset: 0;
-  display: flex;
-  background-color: var(--eco-beige-100);
+  position: fixed; inset: 0; display:flex;
+  background: var(--eco-beige-100);
   font-family: 'Poppins', sans-serif;
   overflow: hidden;
 }
 
-/* ====== SIDEBAR ====== */
-.economy-page__sidebar {
-  width: 10vw;
-  min-width: 120px;
-  height: 100%;
-  background-color: var(--eco-yellow-500);
-  border-right: 0.2vw solid var(--eco-orange-450);
-  display: flex;
-  flex-direction: column;
+/* Sidebar */
+.economy-page__sidebar{ width:10vw; min-width:120px; height:100%;
+  background:var(--eco-yellow-500); border-right:.2vw solid var(--eco-orange-450);
+  display:flex; flex-direction:column; }
+.economy-page__menu-list{ flex:1 1 auto; display:flex; flex-direction:column; }
+.economy-page__menu-item{
+  flex:1 1 0; min-height:64px; border-bottom:.2vw solid var(--eco-orange-450);
+  color:var(--eco-blue-650); font-size:1.5vw; font-family:'Fredoka One',cursive;
+  display:flex; align-items:center; justify-content:center; text-decoration:none;
+  cursor:pointer; transition:background-color .15s; text-align:center;
+}
+.economy-page__menu-item:hover{ background:#FFCC33; }
+.economy-page__menu-item--active{ background:rgba(255,204,51,.6); }
+.economy-page__logo-img{ max-height:60%; max-width:80%; height:auto; width:auto; }
+.economy-page__menu-item--back{ gap:.5rem; }
+.economy-page__back-icon{ font-size:1.4rem; line-height:1; }
+
+/* Contenido */
+.economy-page__content{ flex:1; display:flex; flex-direction:column; height:100%; }
+
+/* Topbar */
+.economy-page__topbar{
+  height:72px; background:#fff; border-bottom:1px solid rgba(0,0,0,.05);
+  display:flex; align-items:center; justify-content:space-between; padding:0 2.2rem; gap:1rem;
+}
+.economy-page__money{ display:flex; align-items:baseline; gap:.75rem; }
+.economy-page__money-label{ font-weight:600; color:#444; letter-spacing:.02rem; }
+.economy-page__balance{ font-size:2rem; letter-spacing:.1rem; margin:0; color:#000; }
+
+/* Pills, botones, selects */
+.pill{ display:inline-flex; align-items:center; gap:.35rem; border-radius:999px;
+  padding:.2rem .6rem; font-weight:700; font-size:.9rem; background:rgba(0,0,0,.06); }
+.pill--pos{ color:var(--eco-green-500); background:rgba(34,181,115,.12); }
+.pill--neg{ color:var(--eco-red-600);   background:rgba(246,64,64,.12); }
+.pill--delta{ background:rgba(43,180,234,.12); color:#0b6fa3; }
+.btn{ border:1px solid rgba(0,0,0,.15); background:#fff; border-radius:8px; padding:.45rem .7rem; cursor:pointer; }
+.btn--ghost{ background:#fff; }
+.icon-btn{ border:none; background:transparent; font-size:1.2rem; cursor:pointer; }
+.spacer{ flex:1 1 auto; }
+
+.economy-page__legend{ display:flex; align-items:center; gap:.6rem; color:#444; font-size:.95rem; }
+.legend-item{ display:inline-flex; align-items:center; gap:.35rem; }
+.legend-sep{ opacity:.35; }
+.legend-dot{ width:10px; height:10px; border-radius:999px; display:inline-block; }
+.legend-dot--expenses{ background:var(--eco-red-600); }
+.legend-dot--income{ background:var(--eco-green-500); }
+
+.economy-page__range{ display:flex; align-items:center; gap:.5rem; margin-right:1rem; }
+.eco-select{ border:1px solid rgba(0,0,0,.15); background:#fff; border-radius:8px; padding:.35rem .5rem; }
+
+/* Panel */
+.economy-page__panel{
+  flex:1; display:grid; grid-template-columns:1fr 1fr;
+  gap:2.5vw; padding:2vw 3vw; overflow:hidden;
+}
+.economy-page__column{
+  background:#fff; border-radius:1.2vw; box-shadow:0 .6vw 1.4vw rgba(0,0,0,.06);
+  display:flex; flex-direction:column;
+}
+.economy-page__column--expenses{ border-top:.5vw solid var(--eco-red-600); background:var(--eco-red-bg); }
+.economy-page__column--income{ border-top:.5vw solid var(--eco-green-500); background:var(--eco-green-bg); }
+
+.economy-page__column-title{
+  display:flex; align-items:center; gap:.6vw; padding:1.2vw 1.4vw .6vw 1.4vw;
+  font-size:1.4rem; margin:0;
+}
+.economy-page__arrow{ font-weight:700; font-size:1.5rem; }
+.economy-page__arrow--down{ color:var(--eco-red-600); }
+.economy-page__arrow--up{ color:var(--eco-green-500); }
+
+.economy-page__item-list{
+  list-style:none; padding:.5vw 1.4vw 1.4vw 1.4vw; margin:0;
+  display:flex; flex-direction:column; gap:.8vw; overflow-y:auto;
+}
+.economy-page__item{
+  background:rgba(255,255,255,.55); border-radius:.7vw; padding:.8vw 1vw;
+  font-size:1.02rem; display:flex; justify-content:space-between; align-items:center;
+  transition:transform .1s ease-out; position:relative; gap:.8rem;
+}
+.economy-page__item:hover{ transform:translateY(-.2vw); }
+.economy-page__amount-badge{
+  background:rgba(0,0,0,.08); padding:.25rem .6rem; border-radius:999px;
+  font-size:.85rem; font-weight:600;
+}
+.economy-page__item--expense .economy-page__amount-badge{ color:var(--eco-red-600); }
+.economy-page__item--income  .economy-page__amount-badge{ color:var(--eco-green-500); }
+.economy-page__item .item-actions{ display:none; gap:.4rem; align-items:center; margin-left:.6rem; }
+.economy-page__item:hover .item-actions{ display:flex; }
+
+/* Footer */
+.economy-page__footer{
+  height:64px; background:#fff; border-top:1px solid rgba(0,0,0,.05);
+  display:flex; align-items:center; justify-content:flex-end; gap:.6rem; padding:0 2.2rem;
 }
 
-/* contenedor de los botones (incluye el logo) */
-.economy-page__menu-list {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
+/* Empty */
+.empty{
+  opacity:.7; font-style:italic; padding:1rem 1.4rem; border:1px dashed rgba(0,0,0,.12);
+  border-radius:10px; margin:.6rem 1.4rem 1.4rem;
 }
 
-/* TODOS los ítems (logo y botones) con el mismo tamaño elástico */
-.economy-page__menu-item {
-  flex: 1 1 0;                  /* se reparten todo el alto por igual */
-  min-height: 64px;             /* por si la ventana es muy baja */
-  border-bottom: 0.2vw solid var(--eco-orange-450);
-  color: var(--eco-blue-650);
-  font-size: 1.5vw;
-  font-family: 'Fredoka One', cursive;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.15s ease-in;
-  text-align: center;
-}
-
-.economy-page__menu-item:hover {
-  background-color: #FFCC33;
-}
-
-.economy-page__menu-item--active {
-  background-color: rgba(255, 204, 51, 0.6);
-}
-
-/* logo dentro del botón elástico */
-.economy-page__logo-img {
-  max-height: 60%;
-  max-width: 80%;
-  height: auto;
-  width: auto;
-}
-
-/* ====== flecha de retorno en Banco ====== */
-.economy-page__menu-item--back {
-  gap: 0.5rem;
-}
-
-.economy-page__back-icon {
-  font-size: 1.4rem;
-  line-height: 1;
-  display: inline-block;
-}
-
-.economy-page__back-text {
-  display: inline-block;
-}
-
-/* ====== CONTENIDO ====== */
-.economy-page__content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-/* barra superior */
-.economy-page__topbar {
-  height: 70px;
-  background: #fff;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.economy-page__balance {
-  font-size: 2.2rem;
-  letter-spacing: 0.15rem;
-  margin: 0;
-  color: #000;
-}
-
-/* panel de columnas */
-.economy-page__panel {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2.5vw;
-  padding: 2vw 3vw;
-  overflow: hidden;
-}
-
-/* columnas base */
-.economy-page__column {
-  background: #fff;
-  border-radius: 1.2vw;
-  box-shadow: 0 0.6vw 1.4vw rgba(0,0,0,0.06);
-  display: flex;
-  flex-direction: column;
-}
-
-/* gastos */
-.economy-page__column--expenses {
-  border-top: 0.5vw solid var(--eco-red-600);
-  background: var(--eco-red-bg);
-}
-
-/* ingresos */
-.economy-page__column--income {
-  border-top: 0.5vw solid var(--eco-green-500);
-  background: var(--eco-green-bg);
-}
-
-.economy-page__column-title {
-  display: flex;
-  align-items: center;
-  gap: 0.6vw;
-  padding: 1.2vw 1.4vw 0.6vw 1.4vw;
-  font-size: 1.4rem;
-  margin: 0;
-}
-
-/* iconos */
-.economy-page__arrow {
-  font-weight: 700;
-  font-size: 1.5rem;
-}
-.economy-page__arrow--down { color: var(--eco-red-600); }
-.economy-page__arrow--up   { color: var(--eco-green-500); }
-
-.economy-page__op {
-  font-size: 1.3rem;
-  font-weight: 700;
-  cursor: pointer;
-  user-select: none;
-}
-.economy-page__op--minus { color: var(--eco-red-600); }
-.economy-page__op--plus  { color: var(--eco-green-500); }
-.economy-page__op--close { color: #555; }
-
-/* lista de items */
-.economy-page__item-list {
-  list-style: none;
-  padding: 0.5vw 1.4vw 1.4vw 1.4vw;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.8vw;
-  overflow-y: auto;
-}
-
-.economy-page__item {
-  background: rgba(255, 255, 255, 0.55);
-  border-radius: 0.7vw;
-  padding: 0.8vw 1vw;
-  font-size: 1.02rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  transition: transform 0.1s ease-out;
-}
-.economy-page__item:hover { transform: translateY(-0.2vw); }
-
-/* badge que mete el JS */
-.economy-page__amount-badge {
-  background: rgba(0, 0, 0, 0.08);
-  padding: 0.3vw 0.8vw;
-  border-radius: 999px;
-  font-size: 0.75rem;
-}
-
-/* ====== RESPONSIVE ====== */
-@media (max-width: 900px) {
-  .economy-page__menu-item {
-    font-size: 3vw;
-  }
-
-  .economy-page__panel {
-    grid-template-columns: 1fr;
-  }
-
-  .economy-page__column {
-    min-height: 35vh;
-  }
+/* Responsive */
+@media (max-width:900px){
+  .economy-page__menu-item{ font-size:3vw; }
+  .economy-page__panel{ grid-template-columns:1fr; }
+  .economy-page__column{ min-height:35vh; }
 }

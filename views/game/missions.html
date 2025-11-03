@@ -10,7 +10,7 @@
   <!-- CSS específico de esta página -->
   <link rel="stylesheet" href="../../public/css/missions.css" />
 
-  <!-- JS específico de esta página (si lo usas luego) -->
+  <!-- JS específico (opcional) -->
   <script defer src="../../public/js/missions.js"></script>
 </head>
 <body>
@@ -28,16 +28,13 @@
         <a class="missions-page__menu-item" href="../fleet/fleet.html">Fleet</a>
         <a class="missions-page__menu-item" href="../chat/chat.html">Chat</a>
 
-        <!-- AQUÍ: en vez de “Misiones”, flecha de retorno a game -->
+        <!-- Retorno a Game (amarillo) -->
         <a class="missions-page__menu-item missions-page__menu-item--back" href="../game/game.html">
           <span class="missions-page__back-icon" aria-hidden="true">↩</span>
           <span class="missions-page__back-text">Game</span>
         </a>
 
-        <!-- Mercado normal -->
         <a class="missions-page__menu-item" href="../market/market.html">Mercado</a>
-
-        <!-- Último: Banco -->
         <a class="missions-page__menu-item" href="../game/economy.html">Banco</a>
       </div>
     </aside>
@@ -49,31 +46,82 @@
         <h1 class="missions-page__title">Misiones</h1>
       </header>
 
+      <!-- toolbar: input + botón Buscar -->
+      <div class="missions-page__toolbar">
+        <input class="missions-page__search" type="text" placeholder="Buscar misión…" />
+        <button class="btn btn--primary missions-page__search-btn" type="button">Buscar</button>
+      </div>
+
       <!-- panel con 3 columnas -->
       <section class="missions-page__panel">
         <!-- columna especiales -->
         <div class="missions-page__column missions-page__column--special">
           <h2 class="missions-page__column-title">Especiales</h2>
-          <div class="missions-page__card">Halloween</div>
-          <div class="missions-page__card">Navidad</div>
+
+          <div class="missions-page__card">
+            <span class="missions-page__card-title">Halloween</span>
+            <div class="missions-page__card-actions">
+              <button class="btn btn--ghost">Info</button>
+              <button class="btn btn--primary">Activar</button>
+            </div>
+          </div>
+
+          <div class="missions-page__card">
+            <span class="missions-page__card-title">Navidad</span>
+            <div class="missions-page__card-actions">
+              <button class="btn btn--ghost">Info</button>
+              <button class="btn btn--primary">Activar</button>
+            </div>
+          </div>
         </div>
 
         <!-- columna catálogo -->
         <div class="missions-page__column missions-page__column--catalog">
           <h2 class="missions-page__column-title">Catálogo</h2>
-          <div class="missions-page__card">Misión 1</div>
-          <div class="missions-page__card">Misión 2</div>
-          <div class="missions-page__card">Misión 3</div>
+
+          <div class="missions-page__card">
+            <span class="missions-page__card-title">Misión 1</span>
+            <div class="missions-page__card-actions">
+              <button class="btn btn--ghost">Info</button>
+              <button class="btn btn--primary">Activar</button>
+            </div>
+          </div>
+
+          <div class="missions-page__card">
+            <span class="missions-page__card-title">Misión 2</span>
+            <div class="missions-page__card-actions">
+              <button class="btn btn--ghost">Info</button>
+              <button class="btn btn--primary">Activar</button>
+            </div>
+          </div>
+
+          <div class="missions-page__card">
+            <span class="missions-page__card-title">Misión 3</span>
+            <div class="missions-page__card-actions">
+              <button class="btn btn--ghost">Info</button>
+              <button class="btn btn--primary">Activar</button>
+            </div>
+          </div>
         </div>
 
         <!-- columna activas -->
         <div class="missions-page__column missions-page__column--active">
           <h2 class="missions-page__column-title">Activas</h2>
+
           <div class="missions-page__status-card missions-page__status-card--progress">
-            En proceso
+            <span class="missions-page__card-title">En proceso</span>
+            <div class="missions-page__card-actions">
+              <button class="btn btn--danger">Cancelar</button>
+              <button class="btn btn--success">Reclamar</button>
+            </div>
           </div>
+
           <div class="missions-page__status-card missions-page__status-card--claim">
-            Reclamar
+            <span class="missions-page__card-title">Listo para reclamar</span>
+            <div class="missions-page__card-actions">
+              <button class="btn btn--danger">Cancelar</button>
+              <button class="btn btn--success">Reclamar</button>
+            </div>
           </div>
         </div>
       </section>
