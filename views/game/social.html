@@ -10,26 +10,24 @@
   <!-- CSS específico -->
   <link rel="stylesheet" href="../../public/css/social.css" />
 
-  <!-- JS específico (opcional) -->
-  <script defer src="../../public/js/social.js"></script>
+  <!-- JS específico -->
+  <script defer src="../../routes/social.js"></script>
 </head>
 <body>
   <div class="social-page">
     <!-- LATERAL -->
     <aside class="social-page__sidebar">
       <div class="social-page__menu-list">
-        <!-- logo -->
         <a class="social-page__menu-item social-page__menu-item--logo" href="../index.html">
           <img src="../../public/img/logoSkyPort.png" alt="SkyPort logo" class="social-page__logo-img" />
         </a>
 
-        <!-- 👇 ahora aquí va el botón de retorno a game (amarillo) -->
+        <!-- Volver a Game -->
         <a class="social-page__menu-item social-page__menu-item--back" href="../game/game.html">
           <span class="social-page__back-icon" aria-hidden="true">↩</span>
           <span class="social-page__back-text">Game</span>
         </a>
 
-        <!-- resto de opciones -->
         <a class="social-page__menu-item" href="../fleet/fleet.html">Fleet</a>
         <a class="social-page__menu-item" href="../chat/chat.html">Chat</a>
         <a class="social-page__menu-item" href="../game/missions.html">Misiones</a>
@@ -40,54 +38,39 @@
 
     <!-- CONTENIDO -->
     <main class="social-page__content">
-      <!-- top bar -->
       <header class="social-page__topbar">
         <h1 class="social-page__title">Social</h1>
       </header>
 
       <section class="social-page__body">
-        <!-- buscador -->
-        <div class="social-page__search-block">
-          <label for="search-user" class="social-page__label">Buscar</label>
-          <input id="search-user" type="text" class="social-page__input" placeholder="Escribe un jugador..." />
+        <div class="social-page__stats">
+          <div class="stat"><span class="stat__label">Amigos</span><span class="stat__value" id="stat-friends">0</span></div>
+          <div class="stat"><span class="stat__label">Conectados</span><span class="stat__value stat__value--green" id="stat-online">0</span></div>
+          <div class="stat"><span class="stat__label">Solicitudes</span><span class="stat__value stat__value--amber" id="stat-requests">0</span></div>
         </div>
 
-        <!-- resultado de búsqueda -->
-        <div class="social-page__result-row">
-          <span class="social-page__result-name">Juan6969</span>
-          <div class="social-page__result-actions">
-            <button class="social-page__btn social-page__btn--reject" aria-label="Rechazar">✖</button>
-            <button class="social-page__btn social-page__btn--accept" aria-label="Aceptar">✔</button>
+        <!-- barra buscar -->
+        <div class="social-page__toolbar">
+          <div class="social-page__search-wrap">
+            <input id="search-user" type="text" class="social-page__input" placeholder="Buscar jugador…" />
+            <button id="btn-search" class="btn btn--primary">Buscar</button>
+          </div>
+          <div class="quick-actions">
+            <button class="btn btn--ghost" id="btn-invite-code">Invitar por código</button>
+            <button class="btn btn--ghost" id="btn-copy-link">Copiar enlace de invitación</button>
           </div>
         </div>
 
+        <!-- RESULTADOS -->
+        <div class="social-page__results" id="search-results" hidden></div>
+
+        <!-- SOLICITUDES -->
+        <h2 class="social-page__subtitle">Solicitudes</h2>
+        <div id="requests-list" class="social-page__requests empty-box">No tienes solicitudes pendientes.</div>
+
+        <!-- AMIGOS -->
         <h2 class="social-page__subtitle">Amigos</h2>
-
-        <div class="social-page__friends">
-          <div class="social-page__friend-card">
-            <span class="social-page__friend-name">Lucía</span>
-            <div class="social-page__friend-actions">
-              <button class="social-page__small-btn">Visitar</button>
-              <button class="social-page__small-btn social-page__small-btn--secondary">Prestar avión</button>
-            </div>
-          </div>
-
-          <div class="social-page__friend-card">
-            <span class="social-page__friend-name">Carlos</span>
-            <div class="social-page__friend-actions">
-              <button class="social-page__small-btn">Visitar</button>
-              <button class="social-page__small-btn social-page__small-btn--secondary">Prestar avión</button>
-            </div>
-          </div>
-
-          <div class="social-page__friend-card">
-            <span class="social-page__friend-name">Marta</span>
-            <div class="social-page__friend-actions">
-              <button class="social-page__small-btn">Visitar</button>
-              <button class="social-page__small-btn social-page__small-btn--secondary">Prestar avión</button>
-            </div>
-          </div>
-        </div>
+        <div id="friends-list" class="social-page__friends-grid"></div>
       </section>
     </main>
   </div>
