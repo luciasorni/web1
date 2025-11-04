@@ -142,7 +142,7 @@ footer {
   box-shadow: 0 6px 18px rgba(16,24,40,0.04);
 }
 
-.news-title { font-size: 1rem; margin-bottom: .2rem; color: var(--blue-900); }
+.news-title { text-decoration: none; font-size: 1rem; margin-bottom: .2rem; color: var(--blue-900); }
 .news-meta { font-size: .8rem; color: var(--muted); margin-bottom: .5rem; }
 .news-excerpt { font-size: .9rem; color: #333; }
 
@@ -245,7 +245,7 @@ footer {
 .site-footer.mt-3 { margin-top: 0 !important; }
 
 /* Quitar borde/sombra/margen en la última tarjeta del centro que
-   podría dibujar una línea encima del footer. */
+   podría dibujar una línea encima del footer. 
 .center-col .card:last-of-type,
 .center-col .more-info,
 .center-col .card:last-child {
@@ -253,7 +253,7 @@ footer {
   border: 0 !important;
   box-shadow: none !important;
   background-clip: padding-box !important;
-}
+}*/
 
 /* Si aún hay un gap por el container/row, forzamos que no haya
    margen inferior en la fila principal. */
