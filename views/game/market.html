@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Skyport – Market</title>
+
+  <!-- Layout/base del juego -->
+  <link rel="stylesheet" href="../../public/css/game.css"/>
+  <!-- Estilos de Market -->
+  <link rel="stylesheet" href="../../public/css/market.css"/>
+</head>
+<body>
+  <div class="game-container">
+    <!-- Sidebar: igual patrón que tus otras páginas -->
+    <div class="sidebar">
+      <a class="menu-item" href="../index.html">
+        <img src="../../public/img/logoSkyPort.png" alt="SkyPort logo" class="logo-img" style="height:75px;">
+      </a>
+      <a class="menu-item" href="./social.html">Social</a>
+      <a class="menu-item" href="./fleet.html">Fleet</a>
+      <a class="menu-item" href="./chat.html">Chat</a>
+      <a class="menu-item" href="./missions.html">Misiones</a>
+      <a class="menu-item" href="./market.html">Mercado</a>
+      <a class="menu-item" href="./economy.html">Banco</a>
+    </div>
+
+    <!-- Contenido -->
+    <div class="main-content">
+      <section class="market-wrap">
+        <header class="market-header">
+          <h1 class="market-title">Mercado</h1>
+
+          <div class="market-switch" id="switchMode">
+            <button data-mode="buy"  class="active">Comprar</button>
+            <button data-mode="sell">Vender</button>
+          </div>
+
+          <button class="filter-btn" id="toggleFilters" aria-expanded="false">☰ Filtro</button>
+        </header>
+
+        <!-- Panel de filtros -->
+        <aside class="filters-panel" id="filtersPanel" aria-hidden="true">
+          <h4>Filtrar</h4>
+
+          <div class="filter-row">
+            <label for="fTipo">Tipo</label>
+            <select id="fTipo">
+              <option value="all">Todos</option>
+              <option value="Personas">Personas</option>
+              <option value="Transporte">Transporte</option>
+              <option value="Servicios">Servicios</option>
+              <option value="Militar">Militar</option>
+            </select>
+          </div>
+
+          <div class="filter-row">
+            <label>Kilómetros</label>
+            <input id="fKmMin" type="number" placeholder="mín." min="0">
+            <input id="fKmMax" type="number" placeholder="máx." min="0">
+          </div>
+
+          <div class="filter-row">
+            <label>Antigüedad</label>
+            <input id="fAgeMax" type="number" placeholder="máx. años" min="0">
+          </div>
+
+          <div class="filter-row">
+            <label>Precio</label>
+            <input id="fPriceMin" type="number" placeholder="mín. €" min="0">
+            <input id="fPriceMax" type="number" placeholder="máx. €" min="0">
+          </div>
+
+          <div class="filters-actions">
+            <button class="btn" id="clearFilters">Limpiar</button>
+            <button class="btn btn--primary" id="applyFilters">Aplicar</button>
+          </div>
+        </aside>
+
+        <!-- Sección COMPRAR -->
+        <section class="market-section active" id="buySection">
+          <div class="market-grid" id="buyGrid"></div>
+        </section>
+
+        <!-- Sección VENDER -->
+        <section class="market-section" id="sellSection">
+          <div class="sell-list" id="sellList"></div>
+        </section>
+      </section>
+    </div>
+  </div>
+
+  <!-- ======= MOCK y lógica sin backend ======= -->
+  <script>
+    // Catálogo a la venta (simulado)
+    const CATALOG = [
+      { id:101, nombre:'A320 Neo', tipo:'Personas', km: 3_200_000, age:3,  price: 72_000_000 },
+      { id:102, nombre:'ATR 72',   tipo:'Personas', km: 5_600_000, age:7,  price: 18_500_000 },
+      { id:103, nombre:'C-295',    tipo:'Transporte', km: 2_200_000, age:5, price: 28_000_000 },
+      { id:104, nombre:'H145',     tipo:'Servicios', km: 800_000,    age:4, price: 9_500_000 },
+      { id:105, nombre:'F-18',     tipo:'Militar',   km: 7_800_000,  age:12, price: 35_000_000 },
+      { id:106, nombre:'B787-8',   tipo:'Personas', km: 6_100_000,   age:6, price: 110_000_000 },
+    ];
+
+    // Tu flota (simulada) para vender
+    const OWNED = [
+      { id:1, nombre:'A319',    tipo:'Personas',   km: 9_200_000, age:14 },
+      { id:2, nombre:'C-212',   tipo:'Transporte', km: 4_900_000, age:18 },
+      { id:3, nombre:'H125',    tipo:'Servicios',  km: 1_200_000, age:9  },
+      { id:4, nombre:'EF-2000', tipo:'Militar',    km: 2_200_000, age:7  },
+    ];
+
+    // === Precio estimado simple ===
+    const BASE_BY_TYPE = { Personas: 60_000_000, Transporte: 24_000_000, Servicios: 10_000_000, Militar: 40_000_000 };
+    function estimatePrice(a){
+      const base = BASE_BY_TYPE[a.tipo] ?? 20_000_000;
+      const ageFactor = Math.max(0.35, 1 - a.age * 0.05);     // -5% por año (mín 35%)
+      const kmFactor  = Math.max(0.5, 1 - (a.km / 10_000_000)); // - hasta -50% a 10M km
+      return Math.round(base * ageFactor * kmFactor / 1000) * 1000; // redondeo miles
+    }
+
+    // ======== DOM ========
+    const switchMode   = document.getElementById('switchMode');
+    const buySection   = document.getElementById('buySection');
+    const sellSection  = document.getElementById('sellSection');
+    const buyGrid      = document.getElementById('buyGrid');
+    const sellList     = document.getElementById('sellList');
+
+    const panel        = document.getElementById('filtersPanel');
+    const toggleBtn    = document.getElementById('toggleFilters');
+    const fTipo        = document.getElementById('fTipo');
+    const fKmMin       = document.getElementById('fKmMin');
+    const fKmMax       = document.getElementById('fKmMax');
+    const fAgeMax      = document.getElementById('fAgeMax');
+    const fPriceMin    = document.getElementById('fPriceMin');
+    const fPriceMax    = document.getElementById('fPriceMax');
+    const btnApply     = document.getElementById('applyFilters');
+    const btnClear     = document.getElementById('clearFilters');
+
+    // ======== Render Comprar ========
+    function renderBuy(list){
+      buyGrid.innerHTML = list.map(a => `
+        <article class="mcard">
+          <div class="mcard__img"><small>Imagen avión</small></div>
+          <div class="mcard__body">
+            <div class="mrow"><span class="mname">${a.nombre}</span> <span class="mprice">${a.price.toLocaleString('es-ES')} €</span></div>
+            <div class="mrow mmeta"><span>${a.tipo}</span> <span>${(a.km/1_000_000).toFixed(1)} M km · ${a.age} años</span></div>
+            <div class="mactions">
+              <button class="btn btn--primary" onclick="alert('Comprado: ${a.nombre}')">Comprar</button>
+              <button class="btn" onclick="alert('Detalles de ${a.nombre}')">Detalles</button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    // ======== Render Vender ========
+    function renderSell(list){
+      sellList.innerHTML = list.map(a => {
+        const est = estimatePrice(a);
+        return `
+          <div class="sellcard">
+            <div class="sellcard__img"><small>Imagen avión</small></div>
+            <div class="sellcard__info">
+              <div class="sellcard__row"><b>${a.nombre}</b> · ${a.tipo}</div>
+              <div class="sellcard__row"><span>${(a.km/1_000_000).toFixed(1)} M km</span> · <span>${a.age} años</span></div>
+              <div class="est">Estimación mercado: <b>${est.toLocaleString('es-ES')} €</b></div>
+            </div>
+            <div class="sellcard__actions">
+              <input class="sellcard__price" type="number" min="0" placeholder="Tu precio (€)" id="price-${a.id}">
+              <button class="btn btn--primary" onclick="sell(${a.id})">Poner a la venta</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Acción vender (simulada)
+    window.sell = function(id){
+      const input = document.getElementById('price-'+id);
+      const price = Number(input?.value || 0);
+      const item  = OWNED.find(x => x.id === id);
+      if(!price || price <= 0) { alert('Introduce un precio válido'); return; }
+      alert(`Listado: ${item.nombre} por ${price.toLocaleString('es-ES')} €`);
+    }
+
+    // ======== Filtros ========
+    function applyFilters(){
+      let res = [...CATALOG];
+      const t  = fTipo.value;
+      const k1 = Number(fKmMin.value || 0);
+      const k2 = Number(fKmMax.value || Number.MAX_SAFE_INTEGER);
+      const a2 = Number(fAgeMax.value || Number.MAX_SAFE_INTEGER);
+      const p1 = Number(fPriceMin.value || 0);
+      const p2 = Number(fPriceMax.value || Number.MAX_SAFE_INTEGER);
+
+      res = res.filter(x =>
+        (t==='all' || x.tipo===t) &&
+        x.km >= k1 && x.km <= k2 &&
+        x.age <= a2 &&
+        x.price >= p1 && x.price <= p2
+      );
+
+      renderBuy(res);
+      closeFilters();
+    }
+
+    function clearFilters(){
+      fTipo.value='all';
+      fKmMin.value=''; fKmMax.value='';
+      fAgeMax.value=''; fPriceMin.value=''; fPriceMax.value='';
+      renderBuy(CATALOG);
+    }
+
+    function openFilters(){ panel.classList.add('open'); panel.setAttribute('aria-hidden','false'); toggleBtn.setAttribute('aria-expanded','true'); }
+    function closeFilters(){ panel.classList.remove('open'); panel.setAttribute('aria-hidden','true'); toggleBtn.setAttribute('aria-expanded','false'); }
+
+    // Toggle panel
+    toggleBtn.addEventListener('click', () => panel.classList.contains('open') ? closeFilters() : openFilters());
+    btnApply.addEventListener('click', applyFilters);
+    btnClear.addEventListener('click', clearFilters);
+
+    // ======== Switch Comprar/Vender ========
+    switchMode.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button'); if(!btn) return;
+      [...switchMode.querySelectorAll('button')].forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const mode = btn.dataset.mode;
+      if(mode === 'buy'){ buySection.classList.add('active'); sellSection.classList.remove('active'); }
+      else{ sellSection.classList.add('active'); buySection.classList.remove('active'); }
+    });
+
+    // Primer render
+    renderBuy(CATALOG);
+    renderSell(OWNED);
+  </script>
+</body>
+</html>
