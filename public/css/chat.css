@@ -90,3 +90,47 @@
   .chat-page__menu-item { font-size: 3vw; }
   .msg__bubble { max-width: 86%; }
 }
+
+
+
+
+
+
+
+/* ====== Modo medieval (solo Chat) ====== */
+
+/* Cuerpo: manuscrita pero legible */
+.chat-page {
+  font-family: 'MedievalSharp', 'Great Vibes', cursive;
+}
+
+/* Título superior: gótica potente */
+.chat-page__title {
+  font-family: 'UnifrakturMaguntia', 'MedievalSharp', cursive;
+  letter-spacing: .02em;
+  font-size: 2rem;
+}
+
+/* Sidebar y botones con la misma estética */
+.chat-page__menu-item,
+.chat-input__send {
+  font-family: 'MedievalSharp', 'Great Vibes', cursive;
+}
+
+/* Burbujas: texto cursivo suave y autores en gótica */
+.msg__text {
+  font-family: 'Great Vibes', 'MedievalSharp', cursive;
+  font-size: 1.15rem;
+  line-height: 1.25;
+}
+
+.msg__author {
+  font-family: 'UnifrakturMaguntia', 'MedievalSharp', cursive;
+  letter-spacing: .02em;
+}
+
+/* Campo de entrada */
+.chat-input__field {
+  font-family: 'MedievalSharp', 'Great Vibes', cursive;
+  font-size: 1.05rem;
+}
