@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Skyport – Chat</title>
+
+  <!-- Reutilizamos estilos globales + chat propio -->
+  <link rel="stylesheet" href="../../public/css/main.css" />
+  <link rel="stylesheet" href="../../public/css/chat.css" />
+</head>
+<body>
+  <div class="chat-page">
+    <!-- Sidebar -->
+    <aside class="chat-page__sidebar">
+      <div class="chat-page__menu-list">
+        <a class="chat-page__menu-item" href="../index.html">
+          <img src="../../public/img/logoSkyPort.png" alt="SkyPort" class="chat-page__logo-img" />
+        </a>
+        <a class="chat-page__menu-item" href="../game/social.html">Social</a>
+        <a class="chat-page__menu-item" href="../game/fleet.html">Fleet</a>
+        <a class="chat-page__menu-item chat-page__menu-item--active" href="../game/chat.html">Chat</a>
+        <a class="chat-page__menu-item" href="../game/missions.html">Misiones</a>
+        <a class="chat-page__menu-item" href="../market/market.html">Mercado</a>
+        <a class="chat-page__menu-item" href="../game/economy.html">Banco</a>
+        <a class="chat-page__menu-item chat-page__menu-item--back" href="../game/game.html">
+          <span class="chat-page__back-icon">↩</span> Game
+        </a>
+      </div>
+    </aside>
+
+    <!-- Contenido -->
+    <main class="chat-page__content">
+      <header class="chat-page__topbar">
+        <h1 class="chat-page__title">Chat global</h1>
+      </header>
+
+      <!-- Zona de mensajes -->
+      <section id="chatStream" class="chat-stream" aria-live="polite">
+        <!-- Mensajes de ejemplo iniciales -->
+        <div class="msg msg--other">
+          <div class="msg__bubble">
+            <div class="msg__author">Lucía</div>
+            <div class="msg__text">Bienvenido a Skyport 👋</div>
+            <div class="msg__time">12:00</div>
+          </div>
+        </div>
+        <div class="msg msg--me">
+          <div class="msg__bubble">
+            <div class="msg__author">Yo</div>
+            <div class="msg__text">¡Hola a todos!</div>
+            <div class="msg__time">12:01</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Input inferior -->
+      <footer class="chat-input">
+        <form id="chatForm" autocomplete="off">
+          <input
+            id="chatText"
+            class="chat-input__field"
+            type="text"
+            placeholder="Escribe un mensaje y pulsa Enter…"
+            required
+          />
+          <button class="chat-input__send" type="submit" aria-label="Enviar">Enviar</button>
+        </form>
+      </footer>
+    </main>
+  </div>
+
+  <!-- JS inline para que funcione al abrir el HTML directamente -->
+  <script>
+    (function () {
+      const stream = document.getElementById('chatStream');
+      const form   = document.getElementById('chatForm');
+      const input  = document.getElementById('chatText');
+
+      function hhmm(d=new Date()){
+        return d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+      }
+
+      function addMsg(text, who='me', author= (who==='me' ? 'Yo' : 'Jugador')) {
+        const wrap = document.createElement('div');
+        wrap.className = 'msg ' + (who === 'me' ? 'msg--me' : 'msg--other');
+        wrap.innerHTML = `
+          <div class="msg__bubble">
+            <div class="msg__author">${author}</div>
+            <div class="msg__text"></div>
+            <div class="msg__time">${hhmm()}</div>
+          </div>`;
+        wrap.querySelector('.msg__text').textContent = text;
+        stream.appendChild(wrap);
+        stream.scrollTop = stream.scrollHeight;
+      }
+
+      // Enviar propio
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = input.value.trim();
+        if (!text) return;
+        addMsg(text, 'me');
+        input.value = '';
+      });
+
+      // Simulación: cada 10 segundos entra un mensaje “de otro”
+      const simulated = [
+        '¿Alguien vende un ATR 72 barato?',
+        'Acabo de completar misión de carga en 12 min 💪',
+        '¿Consejos para optimizar combustible?',
+        'Evento de Navidad pronto 🎄',
+        'Busco alianza para misiones conjuntas.'
+      ];
+      let i = 0;
+      setInterval(() => {
+        const txt = simulated[i % simulated.length];
+        const nick = ['Lucía','Carlos','Marta','Pablo','Ana'][i % 5];
+        addMsg(txt, 'other', nick);
+        i++;
+      }, 10000);
+    })();
+  </script>
+</body>
+</html>
