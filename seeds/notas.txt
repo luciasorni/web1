@@ -1,0 +1,28 @@
+🌱 1. Carpeta seeds/ → Datos iniciales para arrancar la BD
+
+    seeds son scripts que pueblan nuestra base de datos con datos de ejemplo o valores iniciales.
+    Esta carpeta NO define tablas.
+    Solo mete registros en las tablas ya creadas.
+
+    Ejemplos típicos:
+        insertar usuarios de prueba
+        crear roles predefinidos (admin, editor, viewer)
+        meter datos básicos como aeropuertos, ciudades, categorías…
+
+    Ejemplo de un seed:
+        seeds/
+         └── 01_users.js
+         └── 02_roles.js
+         └── 03_airports.js
+
+    Y dentro:
+        exports.seed = async function(knex) {
+            await knex('users').del();       // limpia la tabla
+            await knex('users').insert([     // mete datos nuevos
+                { id: '1', username: 'admin', password_hash:'...' },
+                { id: '2', username: 'julio', password_hash:'...' },
+            ]);
+        };
+
+▶️ 2. ¿Cómo se ejecutan?
+    npx knex seed:run

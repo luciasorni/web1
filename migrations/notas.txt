@@ -1,0 +1,51 @@
+🧱 1. Carpeta migrations/ → La “historia” de nuestra base de datos
+    Pensemos en migrations como: “El historial de cambios de la estructura de esta base de datos”.
+    Cada archivo dentro de migrations/ describe cómo crear o modificar tablas.
+    Ejemplos típicos:
+        crear tabla users
+        añadir columna avatar_url
+        crear tabla cities
+        modificar tipos de columnas
+        borrar una tabla (en rollback)
+    Un archivo de migración se llama algo así:
+        20251120_create_users_table.js
+        20251120_add_is_active_field.js
+        20251121_create_flights_table.js
+    Knex mira estas migraciones en orden de fecha y las aplica.
+    Nosotros simplemente ejecutamos: "npx knex migrate:latest"
+    Y Knex:
+        Mira en la tabla interna knex_migrations cuáles ya se han ejecutado.
+        Ordena las migraciones por nombre (los numeritos del principio).
+        Ejecuta, en orden, todas las que falten:
+        primero 20251120_create_users_table.js
+        luego 20251120_add_is_active_field.js
+        luego 20251121_create_flights_table.js
+    Pero nosotrros siempre llamamos a "npx migrate:latest", no a cada archivo
+
+🤓 2. ¿Qué contiene cada archivo?
+    Siempre dos funciones:
+        exports.up → lo que se aplica hacia “adelante”
+            exports.up = async function(knex) {
+                return knex.schema.createTable('users', t => {
+                t.string('id').primary();
+                t.string('username').notNullable().unique();
+                ...
+                });
+            };
+
+        exports.down → cómo deshacerlo (rollback)
+            exports.down = async function(knex) {
+                return knex.schema.dropTableIfExists('users');
+            };
+
+    🛠 ¿Para qué sirve en la vida real?
+            Para que todo el equipo pueda reconstruir la BD igual.
+            Para pasar tu app a producción sin borrar datos.
+            Para evolucionar la estructura con seguridad.
+            Para poder “volver atrás” si rompes algo.
+
+▶️ 3. ¿Cómo se ejecutan?
+    npx knex migrate:latest     # aplica migraciones
+    npx knex migrate:rollback   # deshace la última
+
+
