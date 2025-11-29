@@ -1,106 +1,117 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Skyport - Recuperar contraseña</title>
-  <link rel="icon" href="../../public/img/logoSkyPort.png" type="image/png">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Skyport - Recuperar contraseña</title>
 
-  <!-- Bootstrap + fuentes (igual que login) -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS (primero) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Estilos (mismas rutas que tu login) -->
-  <link rel="stylesheet" href="../../public/css/login.css">
-  <link rel="stylesheet" href="../../public/css/main.css">
-  <link rel="stylesheet" href="../../public/css/recover.css">
+    <!-- Google Fonts (preconexiones) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Estilos propios (después de Bootstrap) -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/recover.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/img/logoSkyPort.png" type="image/png">
+
+    <!-- Bootstrap JS (defer) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+
+    <!-- JS propio (sin inline, respeta CSP) -->
+    <script src="/js/recover.js" defer></script>
 </head>
+
 <body>
+<!-- NAVBAR -->
+<header class="site-header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="/img/logoSkyPort.png" alt="Skyport logo" class="logo-img" style="height:75px;">
+            </a>
 
-  <!-- Navbar -->
-  <header class="site-header">
-    <nav class="navbar navbar-expand-lg fixed-top">
-      <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="../index.html">
-          <img src="../../public/img/logoSkyPort.png" alt="Skyport logo" class="logo-img" style="height:75px;">
-        </a>
+            <!-- Botón hamburguesa para móvil -->
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#mainMenu"
+                    aria-controls="mainMenu" aria-expanded="false" aria-label="Abrir menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse justify-content-end" id="mainMenu">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link btn-sky me-2 rounded" href="../index.html">Volver</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link btn-sky me-2 rounded" href="./login.html">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link btn-outline-sky me-2 rounded" href="./register.html">Registro</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link btn-outline-red me-2 rounded" href="../admin/events.html">Administrador</a>
-          </ul>
+            <!-- Menú colapsable -->
+            <div class="collapse navbar-collapse justify-content-end" id="mainMenu">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link btn-sky me-2 rounded" href="/">Volver</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-sky me-2 rounded" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-sky me-2 rounded" href="/register">Registro</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-outline-red me-2 rounded" href="/admin/events">Administrador</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </div>
     </nav>
-  </header>
+</header>
 
-  <!-- Contenido principal -->
-  <main class="d-flex justify-content-center align-items-center vh-100">
+<!-- MAIN -->
+<main class="d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 90px);">
     <div class="card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
-      <div class="text-center mb-3">
-        <div class="profile-pic mb-3">
-          <img src="../../public/img/fotoPerfilInicial.png" alt="Foto de perfil" class="profile-placeholder">
-        </div>
-        <h2 class="hero-title mb-0">Recuperar contraseña</h2>
-      </div>
-
-      <form id="recoverForm" action="/api/auth/recover" method="post" novalidate>
-        <div class="mb-3">
-          <label for="dni" class="form-label">DNI</label>
-          <input type="text" id="dni" name="dni" class="form-control" placeholder="12345678Z"
-                 pattern="^[0-9]{8}[A-Za-z]$" required>
+        <div class="text-center mb-3">
+            <div class="profile-pic mb-3">
+                <img src="/img/fotoPerfilInicial.png" alt="Foto de perfil" class="profile-placeholder">
+            </div>
+            <h2 class="hero-title mb-0">Recuperar contraseña</h2>
         </div>
 
-        <div class="mb-3">
-          <label for="password" class="form-label">Contraseña nueva</label>
-          <input type="password" id="password" name="password" class="form-control"
-                 placeholder="Nueva contraseña" minlength="8" required>
-        </div>
+        <form id="recoverForm" novalidate>
+            <div class="mb-3">
+                <label for="dni" class="form-label">DNI</label>
+                <input type="text" id="dni" name="dni" class="form-control" placeholder="12345678Z"
+                       pattern="^[0-9]{8}[A-Za-z]$" required>
+            </div>
 
-        <div class="mb-3">
-          <label for="confirm" class="form-label">Confirma contraseña</label>
-          <input type="password" id="confirm" name="confirm" class="form-control"
-                 placeholder="Repite la contraseña" minlength="8" required>
-        </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña nueva</label>
+                <input type="password" id="password" name="password" class="form-control"
+                       placeholder="Nueva contraseña" minlength="8" required>
+            </div>
 
-        <p class="form-error alert alert-danger py-2 px-3" role="alert" hidden></p>
-        <p class="form-ok alert alert-success py-2 px-3" role="status" hidden></p>
+            <div class="mb-3">
+                <label for="confirm" class="form-label">Confirma contraseña</label>
+                <input type="password" id="confirm" name="confirm" class="form-control"
+                       placeholder="Repite la contraseña" minlength="8" required>
+            </div>
 
-        <div class="d-grid">
-          <button type="submit" class="btn btn-sky" id="submitBtn">Aceptar</button>
-        </div>
+            <p class="form-error alert alert-danger py-2 px-3" role="alert" hidden></p>
+            <p class="form-ok alert alert-success py-2 px-3" role="status" hidden></p>
 
-        <p class="text-center mt-3">
-          ¿La recordaste? <a href="./login.html">Inicia sesión</a>
-        </p>
-      </form>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-sky" id="submitBtn">Aceptar</button>
+            </div>
+
+            <p class="text-center mt-3">
+                ¿La recordaste? <a href="/login">Inicia sesión</a>
+            </p>
+        </form>
     </div>
-  </main>
+</main>
 
-  <footer class="site-footer mt-3">
-    <div class="container">
-      <div class="row">
-        <div class="col text-center">
-          <small>© 2025 Skyport — Proyecto de videojuego aeronáutico</small>
-        </div>
-      </div>
+<!-- FOOTER -->
+<footer class="site-footer mt-3">
+    <div class="container text-center">
+        <small>© 2025 Skyport — Proyecto de videojuego aeronáutico</small>
     </div>
-  </footer>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- JS propio -->
-  <script src="../../public/js/recover.js"></script>
+</footer>
 </body>
 </html>

@@ -1,120 +1,130 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Skyport - Registro</title>
-  <link rel="icon" href="../../public/img/logoSkyPort.png" type="image/png">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Skyport - Registro</title>
 
-  <!-- Bootstrap (igual que login) -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Google Fonts (igual que login) -->
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Google Fonts (preconnect) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-  <!-- Estilos (mismas rutas relativas que tu login) -->
-  <link rel="stylesheet" href="../../public/css/login.css">   <!-- reutiliza estilos comunes -->
-  <link rel="stylesheet" href="../../public/css/main.css">
-  <link rel="stylesheet" href="../../public/css/register.css"> <!-- overrides para register -->
+    <!-- Estilos (después de Bootstrap) -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/register.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/img/logoSkyPort.png" type="image/png">
+
+    <!-- JS (defer para respetar CSP) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="/js/register.js" defer></script>
 </head>
 <body>
+<header class="site-header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="/img/logoSkyPort.png" alt="Skyport logo" class="logo-img" style="height:75px;">
+            </a>
 
-  <!-- Navbar (calcada) -->
-  <header class="site-header">
-    <nav class="navbar navbar-expand-lg fixed-top">
-      <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="../index.html">
-          <img src="../../public/img/logoSkyPort.png" alt="Skyport logo" class="logo-img" style="height:75px;">
-        </a>
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#mainMenu"
+                    aria-controls="mainMenu" aria-expanded="false" aria-label="Abrir menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse justify-content-end" id="mainMenu">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link btn-sky me-2 rounded" href="./login.html">Iniciar sesión</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link btn-sky me-2 rounded" href="../index.html">Volver</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link btn-outline-sky me-2 rounded" href="../explore/explore.html">Invitado</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link btn-outline-red me-2 rounded" href="../admin/events.html">Administrador</a>
-            </li> 
-          </ul>
+            <div class="collapse navbar-collapse justify-content-end" id="mainMenu">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link btn-sky me-2 rounded" href="/login">Iniciar sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-sky me-2 rounded" href="/">Volver</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-outline-sky me-2 rounded" href="/explore">Invitado</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-outline-red me-2 rounded" href="/admin/events">Administrador</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </div>
     </nav>
-  </header>
+</header>
 
-  <!-- Contenedor principal -->
-  <main class="d-flex justify-content-center align-items-center vh-100"> 
+<main class="d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 90px);">
     <div class="card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
-      <div class="text-center mb-3">
-        <div class="profile-pic mb-3">
-          <img src="../../public/img/fotoPerfilInicial.png" alt="Foto de perfil" class="profile-placeholder">
-        </div>
-        <h2 class="hero-title mb-0">Crear cuenta</h2>
-      </div>
-
-      <form id="registerForm" action="/api/auth/register" method="post" novalidate>
-        <div class="mb-3">
-          <label for="username" class="form-label">Usuario</label>
-          <input type="text" id="username" name="username" class="form-control" autocomplete="username" placeholder="Elige tu usuario" required>
+        <div class="text-center mb-3">
+            <div class="profile-pic mb-3">
+                <img src="/img/fotoPerfillinicial.png" alt="Foto de perfil" class="profile-placeholder">
+            </div>
+            <h2 class="hero-title mb-0">Crear cuenta</h2>
         </div>
 
-        <div class="mb-3">
-          <label for="nombre" class="form-label">Nombre</label>
-          <input type="text" id="nombre" name="nombre" class="form-control" autocomplete="name" placeholder="Tu nombre y apellidos" required>
-        </div>
+        <form id="registerForm" novalidate>
+            <div class="mb-3">
+                <label for="username" class="form-label">Usuario</label>
+                <input type="text" id="username" name="username" class="form-control"
+                       autocomplete="username" placeholder="Elige tu usuario" required minlength="3" maxlength="20" pattern="^[A-Za-z0-9_]+$">
+            </div>
 
-        <div class="mb-3">
-          <label for="password" class="form-label">Contraseña</label>
-          <input type="password" id="password" name="password" class="form-control" autocomplete="new-password" placeholder="Crea una contraseña" minlength="8" required>
-        </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-control"
+                       autocomplete="email" placeholder="tu@correo.com" required>
+            </div>
 
-        <div class="mb-3">
-          <label for="dni" class="form-label">DNI</label>
-          <input type="text" id="dni" name="dni" class="form-control" placeholder="12345678Z" pattern="^[0-9]{8}[A-Za-z]$" required>
-        </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" id="password" name="password" class="form-control"
+                       autocomplete="new-password" placeholder="Crea una contraseña" minlength="8" required>
+            </div>
 
-        <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" id="acepto" name="acepto" required>
-          <label class="form-check-label" for="acepto">
-            Acepto los <a href="/legal/terminos" target="_blank" rel="noopener">términos</a> y la <a href="/legal/privacidad" target="_blank" rel="noopener">privacidad</a>.
-          </label>
-        </div>
+            <!-- Campos extra (hoy el backend los ignora; puedes mantenerlos para futuro) -->
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" id="nombre" name="nombre" class="form-control"
+                       autocomplete="name" placeholder="Tu nombre y apellidos">
+            </div>
 
-        <p class="form-error alert alert-danger py-2 px-3" role="alert" hidden></p>
+            <div class="mb-3">
+                <label for="dni" class="form-label">DNI</label>
+                <input type="text" id="dni" name="dni" class="form-control"
+                       placeholder="12345678Z" pattern="^[0-9]{8}[A-Za-z]$">
+            </div>
 
-        <div class="d-grid">
-          <button type="button" class="btn btn-sky" id="btnEntrar">Crear cuenta</button>
-          <script>
-            document.getElementById('btnEntrar')
-              .addEventListener('click', () => {
-                window.location.href = '../game/game.html';
-              });
-          </script>
-        </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="acepto" name="acepto" required>
+                <label class="form-check-label" for="acepto">
+                    Acepto los <a href="/legal/terminos" target="_blank" rel="noopener">términos</a> y la
+                    <a href="/legal/privacidad" target="_blank" rel="noopener">privacidad</a>.
+                </label>
+            </div>
 
-        <p class="text-center mt-3">
-          ¿Ya tienes cuenta? <a href="./login.html">Inicia sesión</a>
-        </p>
-      </form>
+            <p class="form-error alert alert-danger py-2 px-3" role="alert" hidden></p>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-sky" id="btnEntrar">Crear cuenta</button>
+            </div>
+
+            <p class="text-center mt-3">
+                ¿Ya tienes cuenta? <a href="/login">Inicia sesión</a>
+            </p>
+        </form>
     </div>
-  </main>
+</main>
 
-<!-- FOOTER -->
-  <footer class="site-footer mt-3">
+<footer class="site-footer mt-3">
     <div class="container text-center">
-      <small>© 2025 Skyport — Proyecto de videojuego aeronáutico</small>
+        <small>© 2025 Skyport — Proyecto de videojuego aeronáutico</small>
     </div>
-  </footer>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- JS propio -->
-  <script src="../../public/js/register.js"></script>
+</footer>
 </body>
 </html>

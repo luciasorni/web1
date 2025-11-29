@@ -1,17 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Skyport - Chat</title>
-  <link rel="icon" href="../../public/img/logoSkyPort.png" type="image/png">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Skyport - Chat</title>
 
+    <!-- (Opcional) Bootstrap CSS para coherencia general -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Reutilizamos estilos globales + chat propio -->
-   <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=MedievalSharp&family=Great+Vibes&display=swap" rel="stylesheet">
+    <!-- Google Fonts (preconnect) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=MedievalSharp&family=Great+Vibes&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../../public/css/main.css" />
-  <link rel="stylesheet" href="../../public/css/chat.css" />
+    <!-- Estilos globales + específicos -->
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/chat.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/img/logoSkyPort.png" type="image/png">
+
+    <!-- Scripts (defer para respetar CSP) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+
+    <!-- Lógica específica del chat -->
+    <script src="/js/chat.js" defer></script>
 </head>
 <body>
   <div class="chat-page">

@@ -1,99 +1,103 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Skyport - Iniciar sesión</title>
-  <link rel="icon" href="../../public/img/logoSkyPort.png" type="image/png">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Skyport - Iniciar sesión</title>
 
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS (primero, para base de estilos) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;400;600&display=swap"
-    rel="stylesheet">
+    <!-- Google Fonts (preconexiones para reducir latencia) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-  <!-- Estilos -->
-  <link rel="stylesheet" href="../../public/css/login.css">
-  <link rel="stylesheet" href="../../public/css/main.css">
+    <!-- Tus estilos (después de Bootstrap para sobrescribir) -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/login.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/img/logoSkyPort.png" type="image/png">
+
+    <!-- Bootstrap JS (defer para no bloquear render) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+
+    <!-- Script propio para la página de login (sin inline, respeta CSP) -->
+    <script src="/js/login.js" defer></script>
 </head>
 
 <body>
+<!-- NAVBAR -->
+<header class="site-header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="/img/logoSkyPort.png" alt="Skyport logo" class="logo-img" style="height:75px;">
+            </a>
 
-  <!-- Navbar -->
-  <header class="site-header">
-    <nav class="navbar navbar-expand-lg fixed-top">
-      <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="../index.html">
-          <img src="../../public/img/logoSkyPort.png" alt="Skyport logo" class="logo-img" style="height:75px;">
-        </a>
+            <!-- Botón hamburguesa para móvil -->
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#mainMenu"
+                    aria-controls="mainMenu" aria-expanded="false" aria-label="Abrir menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse justify-content-end" id="mainMenu">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link btn-sky me-2 rounded" href="../index.html">Volver</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link btn-sky me-2 rounded" href="./register.html">Registro</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link btn-outline-sky me-2 rounded" href="../explore/explore.html">Invitado</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link btn-outline-red me-2 rounded" href="../admin/events.html">Administrador</a>
-            </li>           
-          </ul>
+            <!-- Menú colapsable -->
+            <div class="collapse navbar-collapse justify-content-end" id="mainMenu">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link btn-sky me-2 rounded" href="/">Volver</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-sky me-2 rounded" href="/register">Registro</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-outline-sky me-2 rounded" href="/explore">Invitado</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-outline-red me-2 rounded" href="/admin/events">Administrar</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </div>
     </nav>
-  </header>
+</header>
 
-  <!-- Contenedor principal -->
-  <main class="d-flex justify-content-center align-items-center vh-100">
+<!-- MAIN -->
+<main class="d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 90px);">
     <div class="card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
-      <div class="text-center mb-3">
-        <!-- Foto de perfil (vacía por ahora) -->
-        <div class="profile-pic mb-3">
-          <img src="../../public/img/fotoPerfilInicial.png" alt="Foto de perfil" class="profile-placeholder">
+        <div class="text-center mb-3">
+            <div class="profile-pic mb-3">
+                <img src="/img/fotoPerfilInicial.png" alt="Foto de perfil" class="profile-placeholder">
+            </div>
+            <h2 class="hero-title mb-0">Iniciar sesión</h2>
         </div>
-        <h2 class="hero-title mb-0">Iniciar sesión</h2>
-      </div>
 
-      <form>
-        <div class="mb-3">
-          <label for="username" class="form-label">Usuario</label>
-          <input type="text" id="username" class="form-control" placeholder="Introduce tu usuario">
-        </div>
-        <div class="mb-2">
-          <label for="password" class="form-label">Contraseña</label>
-          <input type="password" id="password" class="form-control" placeholder="Introduce tu contraseña">
-        </div>
-        <div class="text-end mb-3 ">
-          <a href="./recover.html" class="forgot-password">He olvidado mi contraseña</a>
-        </div>
-        <div class="d-grid">
-          <button type="button" class="btn btn-sky" id="btnEntrar">Entrar</button>
-          <script>
-            document.getElementById('btnEntrar')
-              .addEventListener('click', () => {
-                window.location.href = '../game/game.html';
-              });
-          </script>
-
-        </div>
-      </form>
+        <form id="loginForm" novalidate>
+            <div class="mb-3">
+                <label for="username" class="form-label">Usuario</label>
+                <input type="text" id="username" class="form-control" placeholder="Introduce tu usuario" required>
+            </div>
+            <div class="mb-2">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" id="password" class="form-control" placeholder="Introduce tu contraseña" required>
+            </div>
+            <div class="text-end mb-3">
+                <a href="/recover" class="forgot-password">He olvidado mi contraseña</a>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-sky" id="btnEntrar">Entrar</button>
+            </div>
+        </form>
     </div>
-  </main>
+</main>
 
-  <footer class="site-footer mt-3">
+<!-- FOOTER -->
+<footer class="site-footer mt-3">
     <div class="container text-center">
-      <small>© 2025 Skyport — Proyecto de videojuego aeronáutico</small>
+        <small>© 2025 Skyport — Proyecto de videojuego aeronáutico</small>
     </div>
-  </footer>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</footer>
 </body>
-
 </html>

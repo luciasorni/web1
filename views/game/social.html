@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Skyport - Social</title>
-  <link rel="icon" href="../../public/img/logoSkyPort.png" type="image/png">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skyport - Social</title>
 
-  <!-- CSS global -->
-  <link rel="stylesheet" href="../../public/css/main.css" />
-  <!-- CSS específico -->
-  <link rel="stylesheet" href="../../public/css/social.css" />
+    <!-- CSS global + específico -->
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/social.css" />
 
-  <!-- JS específico -->
-  <script defer src="../../routes/api/social.js"></script>
+    <!-- Favicon -->
+    <link rel="icon" href="/img/logoSkyPort.png" type="image/png" />
+
+    <!-- Cliente Socket.IO (lo sirve el propio servidor de Node) -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- Socket global de juego -->
+    <script src="/js/game-realtime.js" defer></script>
+
+    <!-- JS de página (sin inline) -->
+    <script src="/js/social.js" defer></script>
 </head>
 <body>
   <div class="social-page">
