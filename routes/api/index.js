@@ -2,6 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
+// const { requireAuth, requireRole } = require('../../middleware/auth');
 
 /*
     Este primero es un middleware que se aplica a todas las rutas de este router. Hace dos cosas:
@@ -17,16 +18,16 @@ router.use((req, res, next) => {
 
 // MONTAMOS SUBROUTERS POR DOMINIO FUNCIONAL: /api/auth, api/game, ....
 // Admin (requiere el role de admin para poder entrar
-router.use('/admin', require('./admin'));
+// router.use('/admin', requireRole('admin'), require('./admin'));
 
 // Auth (incluye login, register, recover, logout, etc...
 router.use('/auth', require('./auth'));
 
 // Explore (incluye ...
-router.use('/explore', require('./explore'));
+// router.use('/explore', requireAuth, require('./explore'));
 
 // Game (incluye chat, economy, fleet, game, market, missions, social
-router.use('/game', require('./game'));
+// router.use('/game', requireAuth, require('./game'));
 
 
-module.exports = router;
+module.exports = router;

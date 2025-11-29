@@ -17,6 +17,26 @@ const morgan = require('morgan');
 // Se crea una instancia de Express -> instancia del servidor web
 const app = express();
 
+// BLOQUE DE PARSERS
+/*
+    Parsea el cuerpo de peticiones con Content-Type: application/json.
+        Qué te da: req.body como objeto JS.
+        Si el JSON es inválido: responde 400 Bad Request
+        Tamaño por defecto: ~100 KB (puedes cambiarlo: express.json({ limit: '1mb' })).
+ */
+app.use(express.json());
+
+/*
+    Parsea cuerpos con Content-Type: application/x-www-form-urlencoded (lo que envían los formularios HTML por defecto).
+        Qué te da: req.body con los campos del formulario.
+        extended:
+            false → usa querystring (básico, sin anidamiento real).
+            true → usa qs (permite objetos/arrays anidados tipo user[name]=Julio o tags[]=a&tags[]=b).
+        Tamaño por defecto: ~100 KB (se cambia igual: express.urlencoded({ extended: true, limit: '1mb' })).
+ */
+app.use(express.urlencoded({ extended: true }));
+
+
 // BLOQUE DE SESIÓN <- Imprescindible este bloque antes de montar rutas
 /*
     Para todas las peticiones, antes de llegar a mis rutas, pasa por este middleware de sesión.
@@ -69,7 +89,7 @@ app.use('/', require('./routes/index'));
         - Solo entra si la URL empieza por /api
         - Aquí definimos los endpoints JSON: GET /api/auth/me, POST /api/auth/login, POST /api/auth/register, etc
  */
-//app.use('/api', require('./routes/api/index'));
+app.use('/api', require('./routes/api/index'));
 
 
 // Healthcheck
