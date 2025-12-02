@@ -1,6 +1,7 @@
 // routes/index.js
 const express = require('express');
 const path = require('path');
+const { requireAuthPage, requireRolePage } = require('../middleware/auth');
 
 // Creamos un router
 const router = express.Router();
@@ -27,20 +28,19 @@ router.get('/guest', (req, res) => res.redirect('/explore'));
 router.get('/explore',            (req, res) => res.sendFile(v('explore', 'explore.html')));
 router.get('/explore/username',   (req, res) => res.sendFile(v('explore', 'username.html')));
 
-// PLANTILLAS PRIVADAS o SOLO ACCESIBLES UNA VEZ AUTENTICADOPERFIL CONCRETO ---------------------------------------------------------------------
+// PLANTILLAS PRIVADAS o SOLO ACCESIBLES UNA VEZ AUTENTICADO PERFIL CONCRETO ---------------------------------------------------------------------
 
 // PLANTILLAS DEL GRUPO GAME
-router.get('/game',(req, res) => res.sendFile(v('game', 'game.html')));
-router.get('/game/chat',(req, res) => res.sendFile(v('game', 'chat.html')));
-router.get('/game/economy', (req, res) => res.sendFile(v('game', 'economy.html')));
-router.get('/game/fleet', (req, res) => res.sendFile(v('game', 'fleet.html')));
-router.get('/game/market', (req, res) => res.sendFile(v('game', 'market.html')));
-router.get('/game/missions', (req, res) => res.sendFile(v('game', 'missions.html')));
-router.get('/game/social', (req, res) => res.sendFile(v('game', 'social.html')));
+router.get('/game',          requireAuthPage, (req, res) => res.sendFile(v('game', 'game.html')));
+router.get('/game/chat',     requireAuthPage, (req, res) => res.sendFile(v('game', 'chat.html')));
+router.get('/game/economy',  requireAuthPage, (req, res) => res.sendFile(v('game', 'economy.html')));
+router.get('/game/fleet',    requireAuthPage, (req, res) => res.sendFile(v('game', 'fleet.html')));
+router.get('/game/market',   requireAuthPage, (req, res) => res.sendFile(v('game', 'market.html')));
+router.get('/game/missions', requireAuthPage, (req, res) => res.sendFile(v('game', 'missions.html')));
+router.get('/game/social',   requireAuthPage, (req, res) => res.sendFile(v('game', 'social.html')));
 
 // PLANTILLAS DEL GRUPO ADMIN - REQUIEREN UN ROLE DE ADMIN
-router.get('/admin/users', (req, res) => res.sendFile(v('admin', 'users.html')));
-router.get('/admin/events', (req, res) => res.sendFile(v('admin', 'events.html')));
+router.get('/admin/users',  requireRolePage('admin'), (req, res) => res.sendFile(v('admin', 'users.html')));
+router.get('/admin/events', requireRolePage('admin'), (req, res) => res.sendFile(v('admin', 'events.html')));
 
 module.exports = router;
-

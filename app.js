@@ -49,8 +49,12 @@ app.use(express.urlencoded({ extended: true }));
         - y renovarla si corresponde
 */
 
+// Middleware de sesión centralizado (Express)
+const sessionMiddleware = require('./middleware/session');
+
 // Aplica el middleware de sesión a todas las peticiones HTTP normales
-app.use(require('./middleware/session'));
+app.use(sessionMiddleware);
+
 
 /*
     app.use(express.static(...)) -> Middleware de express que vamos a configurar
