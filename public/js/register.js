@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         username: userIpt.value.trim(),
         email:    emailIpt.value.trim(),
         password: passIpt.value,
-        autoLogin: false,                     // Le indicamos al backend que realize autologin
+        autoLogin: true,                     // Le indicamos al backend que realize autologin
         // Otros campos de formulario de registro
         nombre: (nameIpt?.value || '').trim(),
         dni:    (dniIpt?.value  || '').trim()

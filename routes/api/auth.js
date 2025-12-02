@@ -58,4 +58,45 @@ router.post('/register', async (req, res) => {
     }
 });
 
+// --- /api/auth/login ---
+router.post('/login', async (req, res) => {
+    try {
+        if (process.env.NODE_ENV === 'production') await sleep(120);
+        const { user, pass } = req.body || {};
+        const key = (user || '').trim();
+        if (!key || typeof pass !== 'string') {
+            return res.status(400).json({ error: 'bad_request' });
+        }
+
+        console.log('[LOGIN] attempt for', key.includes('@') ? 'email' : 'username', key);
+
+        const candidate = key.includes('@')
+            ? await findUserByEmail(key.toLowerCase())
+            : await findUserByUsername(key);
+
+        if (!candidate || !candidate.isActive) {
+            return res.status(401).json({ error: 'credenciales' });
+        }
+
+        const ok = await bcrypt.compare(pass, candidate.passwordHash);
+        if (!ok) return res.status(401).json({ error: 'credenciales' });
+
+        await new Promise(resolve => req.session.regenerate(resolve));  // Genera nuevo SID (sesion vacía)
+        req.session.userId = candidate.id;      // la sesión queda marcada como modificada.
+        req.session.userName = candidate.username;  // la sesión queda marcada como modificada.
+        req.session.roles  = candidate.roles || []; // la sesión queda marcada como modificada.
+        req.session.iat    = Date.now();    // la sesión queda marcada como modificada.
+
+        // Guarda en Redis y Express envía Set-Cookie con el nuevo SID y las opciones (httpOnly, sameSite, secure, maxAge).
+        req.session.save(err => {
+            if (err) return res.status(500).json({ error: 'session_save' });
+            res.json({ ok: true, userId: candidate.id, roles: candidate.roles || [] });
+        });
+    } catch (e) {
+        console.error('LOGIN ERROR', e);
+        res.status(500).json({ error: 'login_failed' });
+    }
+});
+
+
 module.exports = router;
