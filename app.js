@@ -17,6 +17,11 @@ const morgan = require('morgan');
 // Se crea una instancia de Express -> instancia del servidor web
 const app = express();
 
+// Logs - Se configuran los logs que muestra la aplicación (fundamental para depuración)
+if (process.env.NODE_ENV !== 'production') {
+    app.use(morgan('dev'));
+}
+
 // BLOQUE DE PARSERS
 /*
     Parsea el cuerpo de peticiones con Content-Type: application/json.

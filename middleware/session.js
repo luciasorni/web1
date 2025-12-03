@@ -1,27 +1,13 @@
 // middleware/session.js
-// --------------------------------------------------------------
-// Middleware de sesión de Express centralizado.
-// Crea req.session y gestiona la cookie asociada, utilizando Redis
-// como almacén persistente de sesiones. Se importa en app.js
-// mediante: app.use(require('./middleware/session'));
-//
-// Mantiene toda la lógica fuera de app.js para dejarlo más limpio,
-// --------------------------------------------------------------
-
-// middleware/session.js
-// --------------------------------------------------------------
-// Middleware de sesión de Express centralizado.
-// --------------------------------------------------------------
 require('dotenv').config();
 
 const session = require('express-session');
 const { createClient } = require('redis');
-const { RedisStore } = require('connect-redis');  // 👈 v9: named export
+const connectRedis = require('connect-redis');   // 👈 import genérico
 
-// Import de config/sessions.js: La política central (nombre de cookie, timeouts, URL de Redis, etc.)
+// Import de config/sessions.js
 const { DEV, timeouts, cookieOptions, redisConfig } = require('../config/sessions');
 
-// En modo desarrollo, muestra la política de sesión completa (útil para depurar)
 if (DEV) {
     console.log('[SessionPolicy]', {
         idleMs: timeouts.idleMs,
@@ -31,14 +17,29 @@ if (DEV) {
     });
 }
 
-// 1) Cliente Redis apuntando a redis://localhost:6379 (o lo que diga REDIS_URL)
+// 1) Cliente Redis
 const redisClient = createClient({ url: redisConfig.url });
 
 redisClient.on('error', (err) => console.error('[Redis] Error', err));
-
 redisClient.connect().catch(err => console.error('[Redis] No conecta:', err));
 
-// 2) Exporta el middleware listo para usar en app.js
+// 2) Resolver la forma correcta de obtener RedisStore según versión
+let RedisStore;
+
+if (connectRedis.RedisStore) {
+    // ✅ v9 (API nueva)
+    RedisStore = connectRedis.RedisStore;
+} else if (typeof connectRedis === 'function') {
+    // ✅ versiones antiguas: require('connect-redis')(session)
+    RedisStore = connectRedis(session);
+} else if (connectRedis.default) {
+    // ✅ algunos bundles usan .default
+    RedisStore = connectRedis.default;
+} else {
+    throw new Error('No se ha podido resolver RedisStore desde connect-redis');
+}
+
+// 3) Exportar el middleware de sesión
 module.exports = session({
     name: cookieOptions().name,
     secret: process.env.SESSION_SECRET,
@@ -49,6 +50,6 @@ module.exports = session({
     store: new RedisStore({
         client: redisClient,
         prefix: redisConfig.prefix,
-        ttl: Math.floor(timeouts.idleMs / 1000)   // segundos de vida por inactividad
+        ttl: Math.floor(timeouts.idleMs / 1000)
     })
 });
