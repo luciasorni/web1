@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-// const { requireAuth, requireRole } = require('../../middleware/auth');
+const { requireAuth, requireRole } = require('../../middleware/auth');
 
 /*
     Este primero es un middleware que se aplica a todas las rutas de este router. Hace dos cosas:
@@ -27,7 +27,7 @@ router.use('/auth', require('./auth'));
 // router.use('/explore', requireAuth, require('./explore'));
 
 // Game (incluye chat, economy, fleet, game, market, missions, social
-// router.use('/game', requireAuth, require('./game'));
+router.use('/game', requireAuth, require('./game'));
 
 
 module.exports = router;

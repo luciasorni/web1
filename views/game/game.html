@@ -1,60 +1,80 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Configuración básica de la página HTML -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Skyport - Juego</title>
 
-    <!-- Estilos -->
+    <!-- Título que se verá en la pestaña del navegador -->
+    <title>SkyPort - Juego</title>
+
+    <!-- Estilos específicos de la ventana de juego -->
     <link rel="stylesheet" href="/css/game.css" />
 
-    <!-- Favicon -->
-    <link rel="icon" href="/img/logoSkyPort.png" type="image/png" />
+    <!-- Lógica específica del juego -->
+    <script src="/js/game.js"></script>
 </head>
 <body>
-  <div class="game-container">
-    <!-- Menú lateral -->
-    <div class="sidebar">
-      <a class="menu-item" href="../index.html">
-        <img src="../../public/img/logoSkyPort.png" alt="SkyPort logo" class="logo-img" style="height:75px;">
-      </a>
-      <a class="menu-item" href="./social.html">Social</a>
-      <a class="menu-item" href="./fleet.html">Flota</a>
-      <a class="menu-item" href="./chat.html">Chat</a>
-      <a class="menu-item" href="./missions.html">Misiones</a>
-      <a class="menu-item" href="./market.html">Mercado</a>
-      <a class="menu-item" href="./economy.html">Banco</a>
-    </div>
+<div class="game-container">
 
-    <!-- Zona de juego -->
-    <div class="main-content">
-      <div class="airport">
-        <div class="hangar-area">
-          <div class="hangar-block">
-            <div class="hangar"></div>
-            <div class="path"></div>
-          </div>
-          <div class="hangar-block">
-            <div class="hangar"></div>
-            <div class="path"></div>
-          </div>
-          <div class="hangar-block">
-            <div class="hangar"></div>
-            <div class="path"></div>
-          </div>
-          <div class="hangar-block">
-            <div class="hangar"></div>
-            <div class="path"></div>
-          </div>
-        </div>
+    <!-- ======================
+         MENÚ LATERAL / SIDEBAR
+         ====================== -->
+    <aside class="sidebar">
+        <!-- Logo de SkyPort -->
+        <a class="menu-item" href="/">
+            <img src="/img/logoSkyPort.png" alt="SkyPort logo" class="logo-img">
+        </a>
 
-        <!-- Pista horizontal -->
-        <div class="horizontal-runway"></div>
+        <!-- Enlaces a las secciones del juego -->
+        <a class="menu-item" href="/game/social">Social</a>
+        <a class="menu-item" href="/game/fleet">Flota</a>
+        <a class="menu-item" href="/game/chat">Chat</a>
+        <a class="menu-item" href="/game/missions">Misiones</a>
+        <a class="menu-item" href="/game/market">Mercado</a>
+        <a class="menu-item" href="/game/economy">Banco</a>
+    </aside>
 
-        <!-- Pista vertical conectada al final de la horizontal -->
-        <div class="vertical-runway"></div>
-      </div>
-    </div>
-  </div>
+    <!-- =======================
+         ZONA DE JUEGO / MAIN
+         ======================= -->
+    <main class="main-content">
+
+        <!-- HUD con info de aviones y misiones -->
+        <section class="game-hud">
+            <!-- Panel de aviones libres en hangar -->
+            <article class="game-hud__panel">
+                <h2 class="game-hud__title">Aviones en hangar</h2>
+                <ul id="hud-free-aircraft" class="game-hud__list">
+                    <!-- Rellenado dinámicamente por game.js -->
+                </ul>
+            </article>
+
+            <!-- Panel de aviones en misión -->
+            <article class="game-hud__panel">
+                <h2 class="game-hud__title">Aviones en misión</h2>
+                <ul id="hud-active-missions" class="game-hud__list">
+                    <!-- Rellenado dinámicamente por game.js -->
+                </ul>
+            </article>
+        </section>
+
+        <!-- Mapa del aeropuerto -->
+        <section class="airport">
+            <!-- Zona de hangares; se rellena según los aviones del usuario -->
+            <div class="hangar-area" id="hangar-area">
+                <!-- JS inyecta aquí un .hangar-block por avión -->
+            </div>
+
+            <!-- Capa de aviones animados sobre la pista -->
+            <div id="airport-planes-layer"></div>
+
+            <!-- Pista dibujada por CSS (la ocultaremos con CSS para
+                 quedarnos solo con la del dibujo de fondo) -->
+            <div class="horizontal-runway"></div>
+        </section>
+
+    </main>
+</div>
 </body>
 </html>

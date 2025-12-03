@@ -16,108 +16,57 @@
     <script src="/js/fleet.js" defer></script>
 </head>
 <body>
-  <div class="game-container">
-    <!-- Menú lateral (idéntico patrón a game.html) -->
+<div class="game-container">
+    <!-- Menú lateral -->
     <div class="sidebar">
-      <a class="menu-item" href="../index.html">
-        <img src="../../public/img/logoSkyPort.png" alt="SkyPort logo" class="logo-img" style="height:75px;">
-      </a>
-      <a class="menu-item" href="./social.html">Social</a>
-      <a class="menu-item" href="./fleet.html">Flota</a>
-      <a class="menu-item" href="./chat.html">Chat</a>
-      <a class="menu-item" href="./missions.html">Misiones</a>
-      <a class="menu-item" href="./market.html">Mercado</a>
-      <a class="menu-item" href="./economy.html">Banco</a>
+        <a class="menu-item" href="/">
+            <img src="/img/logoSkyPort.png" alt="SkyPort logo" class="logo-img" style="height:75px;">
+        </a>
+        <a class="menu-item" href="/game/social">Social</a>
+        <a class="menu-item" href="/game">Juego</a>
+        <a class="menu-item" href="/game/chat">Chat</a>
+        <a class="menu-item" href="/game/missions">Misiones</a>
+        <a class="menu-item" href="/game/market">Mercado</a>
+        <a class="menu-item" href="/game/economy">Banco</a>
     </div>
 
     <!-- Contenido -->
     <div class="main-content">
-      <section class="fleet-wrap">
-        <header class="fleet-header">
-          <h1 class="fleet-title">Flota</h1>
-          <nav class="fleet-filters" id="filters">
-            <button class="fleet-chip fleet-chip--active" data-type="all">Todos</button>
-            <button class="fleet-chip" data-type="Personas">Personas</button>
-            <button class="fleet-chip" data-type="Transporte">Transporte</button>
-            <button class="fleet-chip" data-type="Servicios">Servicios</button>
-            <button class="fleet-chip" data-type="Militar">Militar</button>
-          </nav>
-        </header>
+        <section class="fleet-wrap">
+            <header class="fleet-header">
+                <h1 class="fleet-title">Flota</h1>
 
-        <div class="fleet-grid" id="fleetGrid">
-          <!-- Las tarjetas se generan con el script -->
-        </div>
-      </section>
+                <!-- Filtros reales: data-type = roles REALES de la BD -->
+                <nav class="fleet-filters" id="filters">
+                    <button class="fleet-chip fleet-chip--active" data-type="all">Todos</button>
+                    <button class="fleet-chip" data-type="commercial_passenger">Pasajeros</button>
+                    <button class="fleet-chip" data-type="commercial_cargo">Carga</button>
+                    <button class="fleet-chip" data-type="military_transport">Transporte militar</button>
+                    <button class="fleet-chip" data-type="military_recon">Reconocimiento</button>
+                    <button class="fleet-chip" data-type="military_attack">Ataque</button>
+                </nav>
+            </header>
+
+            <!-- DISEÑO: GRID de dos columnas -->
+            <div class="fleet-columns">
+
+                <!-- COLUMNA 1 — Tu flota -->
+                <div class="fleet-column">
+                    <h2 class="fleet-subtitle">Tus aviones</h2>
+                    <div class="fleet-grid" id="fleetOwnedGrid"></div>
+                </div>
+
+                <!-- COLUMNA 2 — Catálogo -->
+                <div class="fleet-column">
+                    <h2 class="fleet-subtitle">Catálogo disponible</h2>
+                    <div class="fleet-grid" id="fleetCatalogGrid"></div>
+                </div>
+
+            </div>
+        </section>
+
     </div>
-  </div>
-
-  <!-- Mock “BBDD” inline para funcionar sin servidor -->
-  <script>
-    // Datos de ejemplo (sin imágenes: dejamos hueco/placeholder)
-    const MOCK_AIRCRAFT = [
-      { id: 1, tipo: 'Personas',     matricula: 'EC-ABC', pax: 180, status: 'aparcado'     },
-      { id: 2, tipo: 'Transporte',   matricula: 'EC-CAR', pax: 2,   status: 'mision'       },
-      { id: 3, tipo: 'Servicios',    matricula: 'EC-SRV', pax: 6,   status: 'mantenimiento'},
-      { id: 4, tipo: 'Militar',      matricula: 'EA-001', pax: 12,  status: 'aparcado'     },
-      { id: 5, tipo: 'Personas',     matricula: 'EC-XYZ', pax: 220, status: 'mision'       },
-      { id: 6, tipo: 'Transporte',   matricula: 'EC-TRK', pax: 4,   status: 'aparcado'     },
-      { id: 7, tipo: 'Servicios',    matricula: 'EC-HEL', pax: 3,   status: 'mantenimiento'},
-      { id: 8, tipo: 'Militar',      matricula: 'EA-777', pax: 8,   status: 'mision'       },
-    ];
-
-    const grid = document.getElementById('fleetGrid');
-    const filters = document.getElementById('filters');
-
-    function statusClass(s) {
-      if (s === 'mision') return 'status--mision';
-      if (s === 'mantenimiento') return 'status--mantenimiento';
-      return 'status--aparcado';
-    }
-
-    function render(list) {
-      grid.innerHTML = list.map(a => `
-        <article class="fleet-card">
-          <!-- HUECO de imagen (sin PNG aún) -->
-          <div class="fleet-card__img">
-            <small>Imagen del avión</small>
-          </div>
-
-          <div class="fleet-card__body">
-            <div class="fleet-card__top">
-              <span class="badge badge--type">${a.tipo}</span>
-              <span class="badge badge--status ${statusClass(a.status)}">
-                ${a.status === 'mision' ? 'En misión'
-                : a.status === 'mantenimiento' ? 'En mantenimiento'
-                : 'Aparcado'}
-              </span>
-            </div>
-
-            <div class="fleet-card__meta">
-              <span class="fleet-card__mat">${a.matricula}</span>
-              <span class="fleet-card__pax">${a.pax} pax</span>
-            </div>
-          </div>
-        </article>
-      `).join('');
-    }
-
-    // Filtro por tipo
-    filters.addEventListener('click', (e) => {
-      if (!(e.target instanceof HTMLElement)) return;
-      const btn = e.target.closest('[data-type]');
-      if (!btn) return;
-
-      // activar visual
-      [...filters.querySelectorAll('.fleet-chip')].forEach(b => b.classList.remove('fleet-chip--active'));
-      btn.classList.add('fleet-chip--active');
-
-      const type = btn.dataset.type;
-      if (type === 'all') render(MOCK_AIRCRAFT);
-      else render(MOCK_AIRCRAFT.filter(a => a.tipo === type));
-    });
-
-    // Primer pintado
-    render(MOCK_AIRCRAFT);
-  </script>
+</div>
 </body>
 </html>
+
