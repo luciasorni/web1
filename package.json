@@ -7,22 +7,32 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "cross-env NODE_ENV=development nodemon app.js",
+    "start": "cross-env NODE_ENV=production node app.js",
+    "db:migrate": "knex migrate:latest --env development",
+    "db:rollback": "knex migrate:rollback --env development",
+    "db:seed": "knex seed:run --env development"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^3.0.3",
-    "connect-redis": "^9.0.0",
-    "crypto": "^1.0.1",
+    "compression": "^1.8.1",
+    "connect-redis": "^7.1.1",
     "dotenv": "^17.2.3",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "express-session": "^1.18.2",
+    "helmet": "^8.1.0",
     "knex": "^3.1.0",
     "morgan": "^1.10.1",
-    "redis": "^5.10.0",
+    "redis": "^4.7.1",
+    "socket.io": "^4.8.1",
     "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0",
+    "nodemon": "^3.1.10"
   }
 }
