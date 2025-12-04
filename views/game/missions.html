@@ -16,118 +16,72 @@
     <script src="/js/missions.js" defer></script>
 </head>
 <body>
-  <div class="missions-page">
+<div class="missions-page">
     <!-- Sidebar -->
     <aside class="missions-page__sidebar">
-      <div class="missions-page__menu-list">
-        <!-- Logo -->
-        <a class="missions-page__menu-item missions-page__menu-item--logo" href="../index.html">
-          <img src="../../public/img/logoSkyPort.png" alt="SkyPort logo" class="missions-page__logo-img" />
-        </a>
+        <div class="missions-page__menu-list">
+            <a class="missions-page__menu-item missions-page__menu-item--logo" href="/">
+                <img src="/img/logoSkyPort.png" alt="SkyPort logo" class="missions-page__logo-img"/>
+            </a>
 
-        <!-- Menú -->
-        <a class="missions-page__menu-item" href="./social.html">Social</a>
-        <a class="missions-page__menu-item" href="./fleet.html">Flota</a>
-        <a class="missions-page__menu-item" href="./chat.html">Chat</a>
+            <a class="missions-page__menu-item" href="/game/social">Social</a>
+            <a class="missions-page__menu-item" href="/game/fleet">Flota</a>
+            <a class="missions-page__menu-item" href="/game/chat">Chat</a>
 
-        <!-- Retorno a Game (amarillo) -->
-        <a class="missions-page__menu-item missions-page__menu-item--back" href="./game.html">
-          <span class="missions-page__back-icon" aria-hidden="true">↩</span>
-          <span class="missions-page__back-text">Juego</span>
-        </a>
+            <a class="missions-page__menu-item missions-page__menu-item--back" href="/game">
+                <span class="missions-page__back-icon" aria-hidden="true">↩</span>
+                <span class="missions-page__back-text">Juego</span>
+            </a>
 
-        <a class="missions-page__menu-item" href="./market.html">Mercado</a>
-        <a class="missions-page__menu-item" href="./economy.html">Banco</a>
-      </div>
+            <a class="missions-page__menu-item" href="/game/market">Mercado</a>
+            <a class="missions-page__menu-item" href="/game/economy">Banco</a>
+        </div>
     </aside>
 
     <!-- Contenido principal -->
     <main class="missions-page__content">
-      <!-- barra superior -->
-      <header class="missions-page__topbar">
-        <h1 class="missions-page__title">Misiones</h1>
-      </header>
+        <header class="missions-page__topbar">
+            <h1 class="missions-page__title">Misiones</h1>
+        </header>
 
-      <!-- toolbar: input + botón Buscar -->
-      <div class="missions-page__toolbar">
-        <input class="missions-page__search" type="text" placeholder="Buscar misión…" />
-        <button class="btn btn--primary missions-page__search-btn" type="button">Buscar</button>
-      </div>
-
-      <!-- panel con 3 columnas -->
-      <section class="missions-page__panel">
-        <!-- columna especiales -->
-        <div class="missions-page__column missions-page__column--special">
-          <h2 class="missions-page__column-title">Especiales</h2>
-
-          <div class="missions-page__card">
-            <span class="missions-page__card-title">Halloween</span>
-            <div class="missions-page__card-actions">
-              <button class="btn btn--ghost">Info</button>
-              <button class="btn btn--primary">Activar</button>
-            </div>
-          </div>
-
-          <div class="missions-page__card">
-            <span class="missions-page__card-title">Navidad</span>
-            <div class="missions-page__card-actions">
-              <button class="btn btn--ghost">Info</button>
-              <button class="btn btn--primary">Activar</button>
-            </div>
-          </div>
+        <!-- toolbar -->
+        <div class="missions-page__toolbar">
+            <input id="missionSearch" class="missions-page__search" type="text" placeholder="Buscar misión…"/>
+            <button id="missionSearchBtn" class="btn btn--primary missions-page__search-btn" type="button">
+                Buscar
+            </button>
         </div>
 
-        <!-- columna catálogo -->
-        <div class="missions-page__column missions-page__column--catalog">
-          <h2 class="missions-page__column-title">Catálogo</h2>
+        <section class="missions-page__panel">
 
-          <div class="missions-page__card">
-            <span class="missions-page__card-title">Misión 1</span>
-            <div class="missions-page__card-actions">
-              <button class="btn btn--ghost">Info</button>
-              <button class="btn btn--primary">Activar</button>
+            <!-- Catálogo (todas las misiones posibles) -->
+            <div class="missions-page__column missions-page__column--catalog">
+                <h2 class="missions-page__column-title">Catálogo</h2>
+                <!-- Aquí pintaremos el catálogo desde missions.js -->
+                <div id="missionsCatalog" class="missions-page__cards"></div>
             </div>
-          </div>
 
-          <div class="missions-page__card">
-            <span class="missions-page__card-title">Misión 2</span>
-            <div class="missions-page__card-actions">
-              <button class="btn btn--ghost">Info</button>
-              <button class="btn btn--primary">Activar</button>
+            <!-- Activas (misiones del usuario) -->
+            <div class="missions-page__column missions-page__column--active">
+                <h2 class="missions-page__column-title">Activas</h2>
+                <!-- Aquí pintaremos las misiones del usuario desde missions.js -->
+                <div id="missionsActive" class="missions-page__cards"></div>
             </div>
-          </div>
 
-          <div class="missions-page__card">
-            <span class="missions-page__card-title">Misión 3</span>
-            <div class="missions-page__card-actions">
-              <button class="btn btn--ghost">Info</button>
-              <button class="btn btn--primary">Activar</button>
-            </div>
-          </div>
-        </div>
+        </section>
 
-        <!-- columna activas -->
-        <div class="missions-page__column missions-page__column--active">
-          <h2 class="missions-page__column-title">Activas</h2>
-
-          <div class="missions-page__status-card missions-page__status-card--progress">
-            <span class="missions-page__card-title">En proceso</span>
-            <div class="missions-page__card-actions">
-              <button class="btn btn--danger">Cancelar</button>
-              <button class="btn btn--success">Reclamar</button>
-            </div>
-          </div>
-
-          <div class="missions-page__status-card missions-page__status-card--claim">
-            <span class="missions-page__card-title">Listo para reclamar</span>
-            <div class="missions-page__card-actions">
-              <button class="btn btn--danger">Cancelar</button>
-              <button class="btn btn--success">Reclamar</button>
-            </div>
-          </div>
-        </div>
-      </section>
     </main>
-  </div>
+</div>
+
+<!-- Modal sencillo para información de misión -->
+<div id="mission-info-modal" class="mission-modal">
+    <div class="mission-modal__dialog">
+        <h2 class="mission-modal__title"></h2>
+        <div class="mission-modal__body"></div>
+        <button type="button" class="btn btn--primary mission-modal__close">Cerrar</button>
+    </div>
+</div>
+
 </body>
 </html>
+

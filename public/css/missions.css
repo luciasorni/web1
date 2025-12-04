@@ -3,69 +3,69 @@
 
 /* ====== scope de la página ====== */
 .missions-page {
-  --mis-blue:   #2bb4ea;
-  --mis-orange: #f9871b;
-  --mis-yellow: #FFE4B5;
-  --mis-bg:     #f6eee2;
-  --mis-green:  #22b573;
-  --mis-red:    #d64545;
+    --mis-blue:   #2bb4ea;
+    --mis-orange: #f9871b;
+    --mis-yellow: #FFE4B5;
+    --mis-bg:     #f6eee2;
+    --mis-green:  #22b573;
+    --mis-red:    #d64545;
 
-  position: fixed;
-  inset: 0;
-  display: flex;
-  background: var(--mis-bg);
-  font-family: 'Poppins', sans-serif;
-  overflow: hidden;
+    position: fixed;
+    inset: 0;
+    display: flex;
+    background: var(--mis-bg);
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
 }
 
 /* ====== SIDEBAR ====== */
 .missions-page__sidebar {
-  width: 10vw;
-  min-width: 120px;
-  height: 100%;
-  background: var(--mis-yellow);
-  border-right: 0.2vw solid var(--mis-orange);
-  display: flex;
-  flex-direction: column;
+    width: 10vw;
+    min-width: 120px;
+    height: 100%;
+    background: var(--mis-yellow);
+    border-right: 0.2vw solid var(--mis-orange);
+    display: flex;
+    flex-direction: column;
 }
 
 /* contenedor de botones */
 .missions-page__menu-list {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
 }
 
 /* todos los ítems (logo incluido) mismo alto */
 .missions-page__menu-item {
-  flex: 1 1 0;
-  min-height: 64px;
-  border-bottom: 0.2vw solid var(--mis-orange);
-  color: var(--mis-blue);
-  font-size: 1.5vw;
-  font-family: 'Fredoka One', cursive;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.15s ease-in;
-  text-align: center;
+    flex: 1 1 0;
+    min-height: 64px;
+    border-bottom: 0.2vw solid var(--mis-orange);
+    color: var(--mis-blue);
+    font-size: 1.5vw;
+    font-family: 'Fredoka One', cursive;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in;
+    text-align: center;
 }
 .missions-page__menu-item:hover { background: #ffcc33; }
 
 /* logo dentro del bloque */
 .missions-page__logo-img {
-  max-height: 60%;
-  max-width: 80%;
-  height: auto;
-  width: auto;
+    max-height: 60%;
+    max-width: 80%;
+    height: auto;
+    width: auto;
 }
 
 /* retorno (amarillo) */
 .missions-page__menu-item--back {
-  gap: 0.5rem;
-  background: rgba(255, 204, 51, 0.6);
+    gap: 0.5rem;
+    background: rgba(255, 204, 51, 0.6);
 }
 .missions-page__menu-item--back:hover { background: rgba(255, 204, 51, 0.85); }
 .missions-page__back-icon { font-size: 1.4rem; line-height: 1; }
@@ -73,149 +73,339 @@
 
 /* ====== CONTENIDO ====== */
 .missions-page__content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 /* barra superior */
 .missions-page__topbar {
-  height: 70px;
-  background: #fff;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    height: 70px;
+    background: #fff;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .missions-page__title { margin: 0; font-size: 2rem; letter-spacing: 0.08rem; }
 
 /* ====== TOOLBAR ====== */
 .missions-page__toolbar{
-  display:flex;
-  align-items:center;
-  gap:1rem;
-  padding: 0.8rem 2.5rem 0 2.5rem;
+    display:flex;
+    align-items:center;
+    gap:1rem;
+    padding: 0.8rem 2.5rem 0 2.5rem;
 }
 .missions-page__search{
-  border:2px solid rgba(0,0,0,0.08);
-  border-radius:8px;
-  padding:0.5rem .8rem;
-  min-width: 240px;
-  outline:none;
+    border:2px solid rgba(0,0,0,0.08);
+    border-radius:8px;
+    padding:0.5rem .8rem;
+    min-width: 240px;
+    outline:none;
 }
 .missions-page__search:focus{
-  border-color: rgba(43,180,234,.6);
-  box-shadow: 0 0 0 2px rgba(43,180,234,.08);
+    border-color: rgba(43,180,234,.6);
+    box-shadow: 0 0 0 2px rgba(43,180,234,.08);
 }
 /* botón Buscar en la toolbar */
 .missions-page__search-btn {
-  padding: 0.5rem 0.9rem;
-  white-space: nowrap;
+    padding: 0.5rem 0.9rem;
+    white-space: nowrap;
 }
 
 /* ====== PANEL PRINCIPAL ====== */
 .missions-page__panel {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr; /* 3 columnas */
-  gap: 1.8vw;
-  padding: 1.2vw 2.5vw 2vw 2.5vw;
-  overflow: hidden;
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* 3 columnas */
+    gap: 1.8vw;
+    padding: 1.2vw 2.5vw 2vw 2.5vw;
+    overflow: hidden;
 }
 
 /* columnas */
 .missions-page__column {
-  background: #fff;
-  border-radius: 1.1vw;
-  box-shadow: 0 0.6vw 1.4vw rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  gap: 0.9vw;
-  padding: 1.2vw 1.3vw 1.3vw 1.3vw;
+    background: #fff;
+    border-radius: 1.1vw;
+    box-shadow: 0 0.6vw 1.4vw rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 0.9vw;
+    padding: 1.2vw 1.3vw 1.3vw 1.3vw;
 }
 
 /* títulos centrados */
 .missions-page__column-title {
-  font-size: 1.3rem;
-  margin: 0 0 0.6rem 0;
-  font-weight: 700;
-  text-align: center;
+    font-size: 1.3rem;
+    margin: 0 0 0.6rem 0;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* contenedor de tarjetas */
+.missions-page__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    overflow-y: auto;
+    padding-right: 0.2rem;
+}
+
+/* mensaje vacío */
+.missions-page__empty {
+    font-size: 0.9rem;
+    color: #666;
 }
 
 /* tarjetas de catálogo/especiales con acciones */
 .missions-page__card,
 .missions-page__status-card{
-  display:flex;
-  align-items:center;
-  justify-content: space-between;
-  gap: .8rem;
-  border-radius: 0.7vw;
-  padding: 0.55rem 0.8rem;
+    display:flex;
+    align-items:flex-start;
+    justify-content: space-between;
+    gap: .8rem;
+    border-radius: 0.7vw;
+    padding: 0.55rem 0.8rem;
 }
 
 /* base catálogo */
 .missions-page__card{
-  background: rgba(43, 180, 234, 0.08);
-  border: 2px solid rgba(43, 180, 234, 0.25);
+    background: rgba(43, 180, 234, 0.08);
+    border: 2px solid rgba(43, 180, 234, 0.25);
 }
 .missions-page__card:hover { background: rgba(43, 180, 234, 0.15); }
 
 /* especiales */
 .missions-page__column--special .missions-page__card {
-  background: rgba(249, 135, 27, 0.07);
-  border: 2px solid rgba(249, 135, 27, 0.25);
+    background: rgba(249, 135, 27, 0.07);
+    border: 2px solid rgba(249, 135, 27, 0.25);
 }
-.missions-page__card-title{ font-weight:600; }
+.missions-page__card-title{
+    font-weight:600;
+    display:block;
+    margin-bottom: 0.2rem;
+}
+
+.missions-page__card-desc{
+    font-size: 0.85rem;
+    margin: 0.15rem 0 0.25rem 0;
+}
+
+.missions-page__card-status,
+.missions-page__card-type,
+.missions-page__card-duration,
+.missions-page__card-economy,
+.missions-page__card-level {
+    font-size: 0.8rem;
+    margin: 0.1rem 0;
+}
 
 /* tarjetas de estado (activas) */
 .missions-page__status-card--progress{
-  background: rgba(34, 181, 115, 0.09);
-  border: 2px solid rgba(34, 181, 115, 0.2);
+    background: rgba(34, 181, 115, 0.09);
+    border: 2px solid rgba(34, 181, 115, 0.2);
 }
+
 .missions-page__status-card--claim{
-  background: rgba(214, 69, 69, 0.09);
-  border: 2px solid rgba(214, 69, 69, 0.2);
+    background: rgba(214, 69, 69, 0.09);
+    border: 2px solid rgba(214, 69, 69, 0.2);
+}
+
+/* nuevos estados para misiones (para que encajen con el JS) */
+.missions-page__status-card--failed {
+    background: rgba(214, 69, 69, 0.09);
+    border: 2px solid rgba(214, 69, 69, 0.35);
+}
+
+.missions-page__status-card--done {
+    background: rgba(34, 181, 115, 0.12);
+    border: 2px solid rgba(34, 181, 115, 0.35);
+}
+
+.missions-page__status-card--pending {
+    background: rgba(0, 0, 0, 0.03);
+    border: 2px solid rgba(0, 0, 0, 0.08);
 }
 
 /* acciones de tarjeta */
-.missions-page__card-actions{ display:flex; gap:.4rem; }
+.missions-page__card-actions{
+    display:flex;
+    gap:.4rem;
+    margin-top: 0.3rem;
+}
 
 /* botones genéricos */
 .btn{
-  border:1px solid transparent;
-  border-radius:6px;
-  font-size:.85rem;
-  padding:.35rem .6rem;
-  cursor:pointer;
-  line-height:1;
-  white-space:nowrap;
+    border:1px solid transparent;
+    border-radius:6px;
+    font-size:.85rem;
+    padding:.35rem .6rem;
+    cursor:pointer;
+    line-height:1;
+    white-space:nowrap;
 }
 .btn--ghost{
-  background: #fff;
-  border-color: rgba(0,0,0,.15);
+    background: #fff;
+    border-color: rgba(0,0,0,.15);
 }
 .btn--primary{
-  background: rgba(43,180,234,.18);
-  border-color: rgba(43,180,234,.4);
-  color:#0b6fa3;
+    background: rgba(43,180,234,.18);
+    border-color: rgba(43,180,234,.4);
+    color:#0b6fa3;
 }
 .btn--danger{
-  background: rgba(214,69,69,.18);
-  border-color: rgba(214,69,69,.45);
-  color:#a32020;
+    background: rgba(214,69,69,.18);
+    border-color: rgba(214,69,69,.45);
+    color:#a32020;
 }
 .btn--success{
-  background: rgba(34,181,115,.18);
-  border-color: rgba(34,181,115,.45);
-  color:#177a53;
+    background: rgba(34,181,115,.18);
+    border-color: rgba(34,181,115,.45);
+    color:#177a53;
+}
+
+/* ====== MODAL DE INFORMACIÓN DE MISIÓN ====== */
+
+.mission-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.45);
+    z-index: 1000;
+}
+
+.mission-modal--open {
+    display: flex;
+}
+
+.mission-modal__dialog {
+    background: #ffffff;
+    padding: 1.5rem 1.8rem;
+    border-radius: 0.85rem;
+    max-width: 480px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.mission-modal__title {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-size: 1.2rem;
+}
+
+.mission-modal__body {
+    margin-bottom: 1.25rem;
+    font-size: 0.9rem;
+}
+
+.mission-modal__close {
+    display: inline-block;
 }
 
 /* ====== RESPONSIVE ====== */
 @media (max-width: 1100px) {
-  .missions-page__panel { grid-template-columns: 1fr 1fr; }
+    .missions-page__panel { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 750px) {
-  .missions-page__panel { grid-template-columns: 1fr; }
-  .missions-page__menu-item { font-size: 3vw; }
+    .missions-page__panel { grid-template-columns: 1fr; }
+    .missions-page__menu-item { font-size: 3vw; }
+}
+
+/* Panel principal: columnas una al lado de la otra */
+.missions-page__panel {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+/* Cada columna (catálogo / activas) */
+.missions-page__column {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* importante para que el scroll interno funcione bien */
+}
+
+/* Contenedor de tarjetas dentro de cada columna */
+.missions-page__cards {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    /* altura máxima visible: ajusta si quieres más o menos */
+    max-height: calc(100vh - 260px);
+    padding-right: 0.5rem; /* hueco para que no tape la barra de scroll */
+    box-sizing: border-box;
+}
+
+/* ====== RELOJ DE ARENA EN MISIONES EN CURSO ====== */
+
+.missions-page__status-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.8rem;
+}
+
+.missions-page__status-main {
+    flex: 1 1 auto;
+}
+
+/* Bloque del temporizador */
+.missions-page__timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+    color: #555;
+}
+
+/* Icono "reloj de arena" muy sencillo */
+.missions-page__timer-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 2px solid var(--mis-orange);
+    position: relative;
+    box-sizing: border-box;
+    animation: missions-hourglass-spin 1.4s infinite ease-in-out;
+}
+
+.missions-page__timer-icon::before,
+.missions-page__timer-icon::after {
+    content: "";
+    position: absolute;
+    left: 3px;
+    right: 3px;
+    height: 6px;
+    background: var(--mis-orange);
+    border-radius: 3px;
+}
+
+.missions-page__timer-icon::before {
+    top: 3px;
+}
+
+.missions-page__timer-icon::after {
+    bottom: 3px;
+    opacity: 0.6;
+}
+
+/* Pequeña animación de giro */
+@keyframes missions-hourglass-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.missions-page__timer-label {
+    font-variant-numeric: tabular-nums;
 }
