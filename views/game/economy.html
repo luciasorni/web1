@@ -19,93 +19,88 @@
     <script src="/js/economy.js" defer></script>
 </head>
 <body>
-  <div class="economy-page">
+<div class="economy-page">
     <!-- Sidebar -->
     <aside class="economy-page__sidebar">
-      <div class="economy-page__menu-list">
-        <a class="economy-page__menu-item economy-page__menu-item--logo" href="../index.html">
-          <img src="../../public/img/logoSkyPort.png" alt="SkyPort logo" class="economy-page__logo-img" />
-        </a>
+        <div class="economy-page__menu-list">
+            <a class="economy-page__menu-item economy-page__menu-item--logo" href="/">
+                <img src="/img/logoSkyPort.png" alt="SkyPort logo" class="economy-page__logo-img" />
+            </a>
 
-        <a class="economy-page__menu-item" href="../game/social.html">Social</a>
-        <a class="economy-page__menu-item" href="../game/fleet.html">Flota</a>
-        <a class="economy-page__menu-item" href="../game/chat.html">Chat</a>
-        <a class="economy-page__menu-item" href="../game/missions.html">Misiones</a>
-        <a class="economy-page__menu-item" href="../game/market.html">Mercado</a>
+            <a class="economy-page__menu-item" href="/game/social">Social</a>
+            <a class="economy-page__menu-item" href="/game/fleet">Flota</a>
+            <a class="economy-page__menu-item" href="/game/chat">Chat</a>
+            <a class="economy-page__menu-item" href="/game/missions">Misiones</a>
+            <a class="economy-page__menu-item" href="/game/market">Mercado</a>
 
-        <!-- Volver a Game (amarillo) -->
-        <a class="economy-page__menu-item economy-page__menu-item--active economy-page__menu-item--back" href="../game/game.html">
-          <span class="economy-page__back-icon" aria-hidden="true">↩</span>
-          <span class="economy-page__back-text">Juego</span>
-        </a>
-      </div>
+            <!-- Volver a Game (amarillo) -->
+            <a class="economy-page__menu-item economy-page__menu-item--active economy-page__menu-item--back" href="/game">
+                <span class="economy-page__back-icon" aria-hidden="true">↩</span>
+                <span class="economy-page__back-text">Juego</span>
+            </a>
+        </div>
     </aside>
 
     <!-- Contenido principal -->
     <main class="economy-page__content">
-      <!-- Topbar con saldo + leyenda + rango + botón -->
-      <header class="economy-page__topbar">
-        <div class="economy-page__money">
-          <span class="economy-page__money-label">Saldo</span>
-          <span class="economy-page__balance" id="balance-display">1.000.000 €</span>
-          <span class="pill pill--delta" id="balance-delta">+0 €</span>
-        </div>
+        <!-- Topbar con saldo + leyenda + rango + botón -->
+        <header class="economy-page__topbar">
+            <div class="economy-page__money">
+                <span class="economy-page__money-label">Saldo</span>
+                <span class="economy-page__balance" id="balance-display">0 €</span>
+            </div>
 
-        <div class="economy-page__legend">
-          <div class="economy-page__range">
-            <label for="eco-range">Periodo</label>
-            <select id="eco-range" class="eco-select">
-              <option>Hoy</option>
-              <option selected>Semana</option>
-              <option>Mes</option>
-            </select>
-          </div>
-          <button class="btn btn--ghost" id="eco-add-movement">Añadir movimiento</button>
-          <span class="legend-item"><span class="legend-dot legend-dot--expenses"></span>Gastos</span>
-          <span class="legend-sep">·</span>
-          <span class="legend-item"><span class="legend-dot legend-dot--income"></span>Ingresos</span>
-        </div>
-      </header>
+            <div class="economy-page__legend">
+                <div class="economy-page__range">
+                    <label for="eco-range">Periodo</label>
+                    <select id="eco-range" class="eco-select">
+                        <option>Hoy</option>
+                        <option selected>Semana</option>
+                        <option>Mes</option>
+                    </select>
+                </div>
+                <button class="btn btn--ghost" id="eco-add-movement">Añadir movimiento</button>
+                <span class="legend-item"><span class="legend-dot legend-dot--expenses"></span>Gastos</span>
+                <span class="legend-sep">·</span>
+                <span class="legend-item"><span class="legend-dot legend-dot--income"></span>Ingresos</span>
+            </div>
+        </header>
 
-      <section class="economy-page__panel">
-        <!-- GASTOS -->
-        <div class="economy-page__column economy-page__column--expenses" aria-label="Gastos">
-          <h2 class="economy-page__column-title">
-            <span class="economy-page__arrow economy-page__arrow--down">↓</span>
-            <span>Gastos</span>
-            <span class="pill pill--neg" id="total-expenses">− 0 €</span>
-            <span class="spacer"></span>
-            <button class="icon-btn" title="Añadir gasto" id="add-expense">＋</button>
-          </h2>
-          <ul class="economy-page__item-list" id="expenses-list">
-            <li class="economy-page__item economy-page__item--expense" data-amount="15000">aviones</li>
-            <li class="economy-page__item economy-page__item--expense" data-amount="8000">pistas</li>
-            <li class="economy-page__item economy-page__item--expense" data-amount="5000">mantenimiento</li>
-          </ul>
-        </div>
+        <section class="economy-page__panel">
+            <!-- GASTOS -->
+            <div class="economy-page__column economy-page__column--expenses" aria-label="Gastos">
+                <h2 class="economy-page__column-title">
+                    <span class="economy-page__arrow economy-page__arrow--down">↓</span>
+                    <span>Gastos</span>
+                    <span class="pill pill--neg" id="total-expenses">− 0 €</span>
+                    <span class="spacer"></span>
+                    <button class="icon-btn" title="Añadir gasto" id="add-expense">＋</button>
+                </h2>
+                <ul class="economy-page__item-list" id="expenses-list">
+                    <!-- Items de gastos se rellenan desde economy.js -->
+                </ul>
+            </div>
 
-        <!-- INGRESOS -->
-        <div class="economy-page__column economy-page__column--income" aria-label="Ingresos">
-          <h2 class="economy-page__column-title">
-            <span class="economy-page__arrow economy-page__arrow--up">↑</span>
-            <span>Ingresos</span>
-            <span class="pill pill--pos" id="total-income">+ 0 €</span>
-            <span class="spacer"></span>
-            <button class="icon-btn" title="Añadir ingreso" id="add-income">＋</button>
-          </h2>
-          <ul class="economy-page__item-list" id="income-list">
-            <li class="economy-page__item economy-page__item--income" data-amount="12000">misiones</li>
-            <li class="economy-page__item economy-page__item--income" data-amount="9000">viajes</li>
-          </ul>
-        </div>
-      </section>
+            <!-- INGRESOS -->
+            <div class="economy-page__column economy-page__column--income" aria-label="Ingresos">
+                <h2 class="economy-page__column-title">
+                    <span class="economy-page__arrow economy-page__arrow--up">↑</span>
+                    <span>Ingresos</span>
+                    <span class="pill pill--pos" id="total-income">+ 0 €</span>
+                    <span class="spacer"></span>
+                    <button class="icon-btn" title="Añadir ingreso" id="add-income">＋</button>
+                </h2>
+                <ul class="economy-page__item-list" id="income-list">
+                    <!-- Items de ingresos se rellenan desde economy.js -->
+                </ul>
+            </div>
+        </section>
 
-      <!-- Pie con saldo neto -->
-      <footer class="economy-page__footer">
-        <span>Saldo neto</span>
-        <span class="pill" id="net-balance">+0 €</span>
-      </footer>
+        <!-- Pie con saldo neto -->
+        <footer class="economy-page__footer">
+            <!-- Puedes poner cualquier texto o dejarlo vacío -->
+        </footer>
     </main>
-  </div>
+</div>
 </body>
 </html>
