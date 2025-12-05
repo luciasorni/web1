@@ -15,6 +15,7 @@ function mapRow(row) {
         passwordHash: row.password_hash,          // <- viene como password_hash en BD
         roles: JSON.parse(row.roles || '[]'),    // <- en BD es texto JSON
         isActive: row.is_active,
+        lastLoginAt: row.last_login_at,
         createdAt: row.created_at,
         updatedAt: row.updated_at,
     };
@@ -40,14 +41,38 @@ async function findUserByEmail(email) {
     return mapRow(row);
 }
 
+async function listUsers() {
+    const rows = await knex('users')
+        .select('id', 'username', 'email', 'roles', 'is_active', 'last_login_at', 'created_at', 'updated_at')
+        .orderBy('created_at', 'desc');
+    return rows.map(mapRow);
+}
+
+async function updateUser({ id, roles, isActive }) {
+    const payload = {};
+    if (roles) payload.roles = JSON.stringify(roles);
+    if (typeof isActive === 'boolean') payload.is_active = isActive;
+    if (Object.keys(payload).length === 0) return null;
+
+    payload.updated_at = new Date().toISOString();
+
+    const updated = await knex('users')
+        .where({ id })
+        .update(payload)
+        .returning('*');
+
+    const row = Array.isArray(updated) ? updated[0] : null;
+    return mapRow(row);
+}
+
 // Crea usuario + datos mínimos SkyPort (saldo, aeropuerto, avión, movimiento inicial)
-async function createUser({ username, email, password }) {
+async function createUser({ username, email, password, roles: rolesArg }) {
     const INITIAL_BALANCE = process.env.INITIAL_BALANCE || 100000;
     const START_AIRCRAFT_TYPE_ID = process.env.START_AIRCRAFT_TYPE_ID ||'A320_PASSENGER';
     const id = randomUUID();
     const passwordHash = await bcrypt.hash(password, 10);
     const now = new Date().toISOString();
-    const roles = ['user']; // Cualquier jugador tendrá el role de "user"
+    const roles = Array.isArray(rolesArg) && rolesArg.length ? rolesArg : ['player']; // Roles por defecto
 
     /*
         ID de los recursos que se generan para el nuevo
@@ -139,4 +164,6 @@ module.exports = {
     findUserByEmail,
     createUser,
     findUsersByIds,   // 🆕
+    listUsers,
+    updateUser
 };

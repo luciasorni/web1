@@ -6,9 +6,12 @@ let catalogContainer;
 let activeContainer;
 let searchInput;
 let searchBtn;
+let eventsBox;
+let eventsList;
 
 let catalog = [];
 let missions = [];
+let activeEvents = [];
 
 // Intervalo global para actualizar los temporizadores
 let missionTimerInterval = null;
@@ -24,6 +27,8 @@ async function initMissionsPage() {
     activeContainer  = document.getElementById('missionsActive');
     searchInput      = document.getElementById('missionSearch');
     searchBtn        = document.getElementById('missionSearchBtn');
+    eventsBox        = document.getElementById('missionsEvents');
+    eventsList       = document.getElementById('missionsEventsList');
 
     if (!catalogContainer || !activeContainer) {
         console.warn('No se han encontrado los contenedores de misiones en el DOM');
@@ -39,6 +44,7 @@ async function initMissionsPage() {
 
     // 2) Cargar datos de catálogo + misiones del usuario
     await loadMissionsData();
+    await loadActiveEvents();
 
     // 3) Listeners de búsqueda
     setupSearchHandlers();
@@ -181,9 +187,45 @@ async function loadMissionsData() {
     }
 }
 
+async function loadActiveEvents() {
+    if (!eventsBox || !eventsList) return;
+    try {
+        const res = await fetch('/api/game/events', {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: { 'Accept': 'application/json' }
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || 'api error');
+        activeEvents = data.events || [];
+        renderActiveEvents(activeEvents);
+    } catch (err) {
+        console.warn('No se pudieron cargar eventos activos', err);
+        eventsBox.hidden = true;
+    }
+}
+
 /* ===========================
  *  Render de catálogo y activas
  * =========================== */
+
+function renderActiveEvents(list) {
+    if (!eventsBox || !eventsList) return;
+    if (!list.length) {
+        eventsBox.hidden = true;
+        eventsList.innerHTML = '';
+        return;
+    }
+    eventsBox.hidden = false;
+    eventsList.innerHTML = list.map(ev => `
+        <li class="missions-page__event-item">
+            <strong>${ev.name}</strong> — ${ev.description || 'Sin descripción'}<br>
+            Ventana: ${new Date(ev.startAt).toLocaleString('es-ES')} → ${new Date(ev.endAt).toLocaleString('es-ES')}<br>
+            Boost: +${ev.boostPercent}% recompensas
+        </li>
+    `).join('');
+}
 
 const renderCatalog = (list) => {
     if (!list.length) {

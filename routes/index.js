@@ -13,6 +13,9 @@ const v = (...segs) => path.join(__dirname, '..', 'views', ...segs);
 
 // ---------- Sirve la página principal ----------
 router.get('/', (req, res) => {
+    if (req.session?.destroy) {
+        req.session.destroy(() => {});
+    }
     res.sendFile(v('index.html'));
 });
 

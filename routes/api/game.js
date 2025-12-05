@@ -24,6 +24,7 @@ const {
 const {
     getEconomyForUser
 } = require('../../data/economyStore/db');
+const { getActiveEvents } = require('../../data/eventsStore/db');
 
 const { optionalAuth, requireAuth } = require('../../middleware/auth');
 
@@ -208,6 +209,18 @@ router.post('/missions/resolve-due', requireAuth, async (req, res) => {
             ok: false,
             error: 'internal_error'
         });
+    }
+});
+
+// --- GET /api/game/events ---
+// Devuelve eventos activos para los jugadores (ventana de fechas + status active)
+router.get('/events', requireAuth, async (req, res) => {
+    try {
+        const events = await getActiveEvents();
+        res.json({ ok: true, events });
+    } catch (err) {
+        console.error('GET /api/game/events error', err);
+        res.status(500).json({ ok: false, error: 'internal_error' });
     }
 });
 

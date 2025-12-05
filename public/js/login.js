@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const passEl = document.getElementById('password');
     if (!form || !userEl || !passEl) return;
 
+    const params = new URLSearchParams(window.location.search);
+    const nextUrl = params.get('next');
+
     async function handleSubmit() {
         // Validación nativa HTML5
         if (!form.checkValidity()) {
@@ -26,9 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (r.ok) {
-                // Login correcto → me lleva a la zona privada que he establecido (criterio mio)
-                // La cookie de sesión viaja automáticamente en la nueva petición.
-                return window.location.assign('/game');
+                // Login correcto → si venía de una ruta protegida con ?next, vuelve ahí. Si no, al game.
+                const target = nextUrl || '/game';
+                return window.location.assign(target);
             }
 
             // Placeholders mientras no implemente el backend real:
@@ -41,6 +44,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await r.json().catch(() => ({}));
                 alert('Credenciales incorrectas' + (data.error ? ` (${data.error})` : ''));
                 return;
+            }
+
+            if (r.status === 403) {
+                const data = await r.json().catch(() => ({}));
+                if (data.error === 'user_suspended') {
+                    return alert('Tu cuenta está suspendida. Contacta con un administrador.');
+                }
+                return alert('Acceso denegado.');
             }
 
             if (r.status === 429) {

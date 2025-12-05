@@ -29,13 +29,19 @@ function requireRole(...roles) {
 
 // --- Vistas HTML: redirigir a /login si no hay sesión/rol ---
 function requireAuthPage(req, res, next) {
-    if (!req.session?.userId) return res.redirect('/login');
+    if (!req.session?.userId) {
+        const nextUrl = encodeURIComponent(req.originalUrl || '/');
+        return res.redirect(`/login?next=${nextUrl}`);
+    }
     next();
 }
 
 function requireRolePage(...roles) {
     return (req, res, next) => {
-        if (!req.session?.userId) return res.redirect('/login');
+        if (!req.session?.userId) {
+            const nextUrl = encodeURIComponent(req.originalUrl || '/');
+            return res.redirect(`/login?next=${nextUrl}`);
+        }
         const userRoles = req.session.roles || [];
         const ok = roles.some(r => userRoles.includes(r));
         if (!ok) return res.status(403).type('html').send('<h1>403 – Forbidden</h1>');
@@ -50,5 +56,4 @@ module.exports = {
     requireAuthPage,
     requireRolePage
 };
-
 

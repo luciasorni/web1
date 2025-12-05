@@ -77,9 +77,8 @@ router.post('/login', async (req, res) => {
             ? await findUserByEmail(key.toLowerCase())
             : await findUserByUsername(key);
 
-        if (!candidate || !candidate.isActive) {
-            return res.status(401).json({ error: 'credenciales' });
-        }
+        if (!candidate) return res.status(401).json({ error: 'credenciales' });
+        if (!candidate.isActive) return res.status(403).json({ error: 'user_suspended' });
 
         const ok = await bcrypt.compare(pass, candidate.passwordHash);
         if (!ok) return res.status(401).json({ error: 'credenciales' });

@@ -17,8 +17,8 @@ router.use((req, res, next) => {
 });
 
 // MONTAMOS SUBROUTERS POR DOMINIO FUNCIONAL: /api/auth, api/game, ....
-// Admin (requiere el role de admin para poder entrar
-// router.use('/admin', requireRole('admin'), require('./admin'));
+// Admin (requiere el role de admin para poder entrar)
+router.use('/admin', requireRole('admin'), require('./admin'));
 
 // Auth (incluye login, register, recover, logout, etc...
 router.use('/auth', require('./auth'));

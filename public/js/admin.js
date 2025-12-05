@@ -22,14 +22,80 @@
   };
 
   const seeds = {
-    users: [
-      { username: 'lucia',    role: 'admin', status: 'activo', lastAccess: '2025-11-02T12:35:00Z' },
-      { username: 'juan6969', role: 'player', status: 'activo', lastAccess: '2025-11-02T11:10:00Z' },
-    ],
     events: [
       { name: 'Halloween', description: 'misiones', boost: 20, start: '2025-10-25T00:00', end: '2025-11-02T23:59', status: 'active' },
       { name: 'Navidad',   description: 'recompensas', boost: 15, start: '2025-12-15T00:00', end: '2026-01-06T23:59', status: 'active' },
     ]
+  };
+
+  const api = {
+    async getUsers() {
+      const res = await fetch('/api/admin/users', { credentials: 'include' });
+      if (!res.ok) throw new Error('No se pudieron cargar usuarios');
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || 'Error usuarios');
+      return data.users || [];
+    },
+    async createUser(payload) {
+      const res = await fetch('/api/admin/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
+      return data.user;
+    },
+    async updateUser(id, payload) {
+      const res = await fetch(`/api/admin/users/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
+      return data.user;
+    },
+    async getEvents() {
+      const res = await fetch('/api/admin/events', { credentials: 'include' });
+      if (!res.ok) throw new Error('No se pudieron cargar eventos');
+      const data = await res.json().catch(() => ({}));
+      if (!data.ok) throw new Error(data.error || `HTTP ${res.status}`);
+      return data.events || [];
+    },
+    async createEvent(payload) {
+      const res = await fetch('/api/admin/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
+      return data.event;
+    },
+    async updateEvent(id, payload) {
+      const res = await fetch(`/api/admin/events/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
+      return data.event;
+    },
+    async deleteEvent(id) {
+      const res = await fetch(`/api/admin/events/${id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
+      return true;
+    }
   };
 
   const fmtDate = (v) => {
@@ -66,46 +132,80 @@
 
     if (!tableBody) return;
 
-    let users = STORAGE.read('admin_users', null) || seeds.users.slice();
-
-    const saveUsers = () => STORAGE.write('admin_users', users);
+    let users = [];
 
     function render(filterText = '') {
       const q = filterText.trim().toLowerCase();
       tableBody.innerHTML = '';
       users
-        .filter(u => !q || u.username.toLowerCase().includes(q))
+        .filter(u => {
+          if (!q) return true;
+          return (
+            u.username.toLowerCase().includes(q) ||
+            (u.email || '').toLowerCase().includes(q)
+          );
+        })
         .forEach(u => {
+          const status = u.isActive ? 'activo' : 'suspendido';
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td>${u.username}</td>
-            <td>${u.role}</td>
-            <td>${u.status}</td>
-            <td>${fmtDate(u.lastAccess)}</td>
+            <td>${(u.roles || []).join(', ')}</td>
+            <td>${status}</td>
+            <td>${fmtDate(u.lastLoginAt)}</td>
             <td style="text-align:right;">
-              <button class="admin-btn admin-btn--danger" data-action="suspend" data-user="${u.username}" ${u.status !== 'activo' ? 'disabled' : ''}>Suspender</button>
-              <button class="admin-btn admin-btn--ok" data-action="restore" data-user="${u.username}" ${u.status === 'activo' ? 'disabled' : ''}>Restaurar</button>
+              <button class="admin-btn admin-btn--danger" data-action="suspend" data-id="${u.id}" ${!u.isActive ? 'disabled' : ''}>Suspender</button>
+              <button class="admin-btn admin-btn--ok" data-action="restore" data-id="${u.id}" ${u.isActive ? 'disabled' : ''}>Restaurar</button>
             </td>
           `;
           tableBody.appendChild(tr);
         });
     }
 
-    function upsertUser(username, role) {
-      const existing = users.find(u => u.username.toLowerCase() === username.toLowerCase());
-      if (existing) {
-        existing.role = role;
-        existing.status = 'activo';
-      } else {
-        users.push({
-          username,
-          role,
-          status: 'activo',
-          lastAccess: new Date().toISOString()
-        });
+    async function loadUsers() {
+      try {
+        users = await api.getUsers();
+        render(searchInput?.value || '');
+      } catch (err) {
+        console.error(err);
+        alert('No se pudieron cargar los usuarios.');
       }
-      saveUsers();
-      render(searchInput?.value || '');
+    }
+
+    function parseRoles(str) {
+      const roles = (str || '').split(',').map(r => r.trim()).filter(Boolean);
+      return roles.length ? roles : ['player'];
+    }
+
+    async function handleCreateOrUpdate() {
+      const username = (userInput?.value || '').trim();
+      const roles = parseRoles(roleInput?.value || 'player');
+      if (!username) {
+        alert('Introduce un usuario.');
+        return;
+      }
+
+      const existing = users.find(u => u.username.toLowerCase() === username.toLowerCase());
+      try {
+        if (existing) {
+          await api.updateUser(existing.id, { roles, isActive: true });
+        } else {
+          const suggestedEmail = `${username}@skyport.local`;
+          const email = prompt('Email para el nuevo usuario', suggestedEmail);
+          const password = prompt('Contraseña para el nuevo usuario (mín. 8 caracteres)', 'demo1234');
+          if (!email || !password) {
+            alert('Email y contraseña son obligatorios.');
+            return;
+          }
+          await api.createUser({ username, email, password, roles });
+        }
+        if (userInput) userInput.value = '';
+        if (roleInput) roleInput.value = '';
+        await loadUsers();
+      } catch (err) {
+        console.error(err);
+        alert('No se pudo guardar el usuario.');
+      }
     }
 
     searchBtn?.addEventListener('click', () => render(searchInput?.value || ''));
@@ -120,35 +220,28 @@
       render();
     });
 
-    tableBody.addEventListener('click', (e) => {
+    tableBody.addEventListener('click', async (e) => {
       const btn = e.target.closest('button[data-action]');
       if (!btn) return;
-      const user = users.find(u => u.username === btn.dataset.user);
+      const user = users.find(u => u.id === btn.dataset.id);
       if (!user) return;
 
-      if (btn.dataset.action === 'suspend' && user.status === 'activo') {
-        user.status = 'suspendido';
-      } else if (btn.dataset.action === 'restore') {
-        user.status = 'activo';
-        user.lastAccess = new Date().toISOString();
+      try {
+        if (btn.dataset.action === 'suspend' && user.isActive) {
+          await api.updateUser(user.id, { isActive: false });
+        } else if (btn.dataset.action === 'restore' && !user.isActive) {
+          await api.updateUser(user.id, { isActive: true });
+        }
+        await loadUsers();
+      } catch (err) {
+        console.error(err);
+        alert('No se pudo actualizar el usuario.');
       }
-      saveUsers();
-      render(searchInput?.value || '');
     });
 
-    saveBtn?.addEventListener('click', () => {
-      const username = (userInput?.value || '').trim();
-      const role = (roleInput?.value || '').trim() || 'player';
-      if (!username) {
-        alert('Introduce un usuario.');
-        return;
-      }
-      upsertUser(username, role);
-      if (userInput) userInput.value = '';
-      if (roleInput) roleInput.value = '';
-    });
+    saveBtn?.addEventListener('click', handleCreateOrUpdate);
 
-    render();
+    loadUsers();
   }
 
   // ---- EVENTS PAGE ----
@@ -164,8 +257,7 @@
 
     if (!tableBody) return;
 
-    let events = STORAGE.read('admin_events', null) || seeds.events.slice();
-    const saveEvents = () => STORAGE.write('admin_events', events);
+    let events = [];
 
     function renderEvents() {
       tableBody.innerHTML = '';
@@ -173,18 +265,28 @@
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${ev.name}</td>
-          <td>${fmtRange(ev.start, ev.end)}</td>
-          <td>+${ev.boost}% ${ev.description || ''}</td>
+          <td>${fmtRange(ev.startAt, ev.endAt)}</td>
+          <td>+${ev.boostPercent}% ${ev.description || ''}</td>
           <td style="text-align:right;">
-            <button class="admin-btn admin-btn--warn" data-action="toggle" data-name="${ev.name}">${ev.status === 'paused' ? 'Reanudar' : 'Pausar'}</button>
-            <button class="admin-btn admin-btn--danger" data-action="delete" data-name="${ev.name}">Eliminar</button>
+            <button class="admin-btn admin-btn--warn" data-action="toggle" data-id="${ev.id}">${ev.status === 'paused' ? 'Reanudar' : 'Pausar'}</button>
+            <button class="admin-btn admin-btn--danger" data-action="delete" data-id="${ev.id}">Eliminar</button>
           </td>
         `; 
         tableBody.appendChild(tr);
       });
     }
 
-    function addEvent() {
+    async function loadEvents() {
+      try {
+        events = await api.getEvents();
+        renderEvents();
+      } catch (err) {
+        console.error(err);
+        alert('No se pudieron cargar los eventos.');
+      }
+    }
+
+    async function addEvent() {
       const name = (nameInput?.value || '').trim();
       const description = (descInput?.value || '').trim();
       const boost = Number(boostInput?.value || 0);
@@ -200,35 +302,43 @@
         return;
       }
 
-      const existing = events.find(e => e.name.toLowerCase() === name.toLowerCase());
-      const payload = { name, description, boost, start, end, status: 'active' };
-      if (existing) {
-        Object.assign(existing, payload);
-      } else {
-        events.push(payload);
+      try {
+        const existing = events.find(e => e.name.toLowerCase() === name.toLowerCase());
+        if (existing) {
+          await api.updateEvent(existing.id, { name, description, boostPercent: boost, startAt: start, endAt: end, status: 'active' });
+        } else {
+          await api.createEvent({ name, description, boostPercent: boost, startAt: start, endAt: end, status: 'active' });
+        }
+        [nameInput, descInput, boostInput, startInput, endInput].forEach(i => { if (i) i.value = ''; });
+        await loadEvents();
+      } catch (err) {
+        console.error(err);
+        alert('No se pudo guardar el evento.');
       }
-      saveEvents();
-      renderEvents();
-      [nameInput, descInput, boostInput, startInput, endInput].forEach(i => { if (i) i.value = ''; });
     }
 
     publishBtn?.addEventListener('click', addEvent);
 
-    tableBody.addEventListener('click', (e) => {
+    tableBody.addEventListener('click', async (e) => {
       const btn = e.target.closest('button[data-action]');
       if (!btn) return;
-      const ev = events.find(ev => ev.name === btn.dataset.name);
+      const ev = events.find(ev => ev.id === btn.dataset.id);
       if (!ev) return;
 
-      if (btn.dataset.action === 'toggle') {
-        ev.status = ev.status === 'paused' ? 'active' : 'paused';
-      } else if (btn.dataset.action === 'delete') {
-        events = events.filter(e => e.name !== ev.name);
+      try {
+        if (btn.dataset.action === 'toggle') {
+          const nextStatus = ev.status === 'paused' ? 'active' : 'paused';
+          await api.updateEvent(ev.id, { status: nextStatus });
+        } else if (btn.dataset.action === 'delete') {
+          await api.deleteEvent(ev.id);
+        }
+        await loadEvents();
+      } catch (err) {
+        console.error(err);
+        alert('No se pudo actualizar el evento.');
       }
-      saveEvents();
-      renderEvents();
     });
 
-    renderEvents();
+    loadEvents();
   }
 })();
