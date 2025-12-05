@@ -2,6 +2,9 @@ const express = require('express');
 const path = require('path');
 const router = express.Router();
 
+// Utilidad simple para pausar ejecuciones (evita ataques de timing en producción)
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 // Import middleware relativo a gestión de usuarios (/data) y autenticación (/middleware)
 const bcrypt = require('bcryptjs');
 const { findUserByUsername, findUserByEmail, createUser } = require('../../data/usersStore/db');

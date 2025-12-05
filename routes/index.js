@@ -40,6 +40,7 @@ router.get('/game/missions', requireAuthPage, (req, res) => res.sendFile(v('game
 router.get('/game/social',   requireAuthPage, (req, res) => res.sendFile(v('game', 'social.html')));
 
 // PLANTILLAS DEL GRUPO ADMIN - REQUIEREN UN ROLE DE ADMIN
+router.get('/admin',        requireRolePage('admin'), (req, res) => res.redirect('/admin/users'));
 router.get('/admin/users',  requireRolePage('admin'), (req, res) => res.sendFile(v('admin', 'users.html')));
 router.get('/admin/events', requireRolePage('admin'), (req, res) => res.sendFile(v('admin', 'events.html')));
 

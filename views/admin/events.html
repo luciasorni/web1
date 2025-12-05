@@ -13,7 +13,7 @@
     <link rel="icon" href="/img/logoSkyPort.png" type="image/png" />
 
     <!-- JS de página (opcional, sin inline) -->
-    <script src="/js/admin-events.js" defer></script>
+    <script src="/js/admin.js" defer></script>
 </head>
 <body>
   <div class="admin-page">
@@ -21,14 +21,14 @@
     <aside class="admin-page__sidebar">
       <div class="admin-page__menu-list">
         <!-- Home -->
-        <a class="admin-page__menu-item" href="../index.html">
-          <img src="../../public/img/logoSkyPort.png" class="admin-page__logo-img" alt="SkyPort">
+        <a class="admin-page__menu-item" href="/">
+          <img src="/img/logoSkyPort.png" class="admin-page__logo-img" alt="SkyPort">
         </a>
         <!-- Admin nav -->
-        <a class="admin-page__menu-item" href="./users.html">Users</a>
-        <a class="admin-page__menu-item admin-page__menu-item--active" href="./events.html">Events</a>
+        <a class="admin-page__menu-item" href="/admin/users">Users</a>
+        <a class="admin-page__menu-item admin-page__menu-item--active" href="/admin/events">Events</a>
         <!-- Volver al juego -->
-        <a class="admin-page__menu-item admin-page__menu-item--back" href="../game/game.html">
+        <a class="admin-page__menu-item admin-page__menu-item--back" href="/game">
           <span class="admin-page__back-icon">↩</span> Game
         </a>
       </div>
