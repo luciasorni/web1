@@ -179,7 +179,7 @@
             <button class="admin-btn admin-btn--warn" data-action="toggle" data-name="${ev.name}">${ev.status === 'paused' ? 'Reanudar' : 'Pausar'}</button>
             <button class="admin-btn admin-btn--danger" data-action="delete" data-name="${ev.name}">Eliminar</button>
           </td>
-        `;
+        `; 
         tableBody.appendChild(tr);
       });
     }
