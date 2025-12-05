@@ -1,15 +1,38 @@
 const express = require('express');
-const path = require('path');
 const router = express.Router();
+const { searchUsers, findUserWithAirportByUsername } = require('../../data/usersStore/db');
+const { getFleetForUser } = require('../../data/fleetStore/db');
 
-// /admin/users
-router.get('/users', (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/admin/users.html'));
+// Búsqueda abierta (invita/o sin login)
+router.get('/search', async (req, res) => {
+    try {
+        const q = req.query.q || '';
+        const users = await searchUsers({ query: q, limit: 30 });
+        res.json({ ok: true, users });
+    } catch (err) {
+        console.error('GET /api/explore/search error', err);
+        res.status(500).json({ ok: false, error: 'internal_error' });
+    }
 });
 
-// /admin/events
-router.get('/events', (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/admin/events.html'));
+// Detalle de usuario invitado (aeropuerto + flota)
+router.get('/user/:username', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const user = await findUserWithAirportByUsername(username);
+        if (!user) return res.status(404).json({ ok: false, error: 'not_found' });
+
+        const fleet = await getFleetForUser(user.id);
+
+        res.json({
+            ok: true,
+            user,
+            fleet
+        });
+    } catch (err) {
+        console.error('GET /api/explore/user/:username error', err);
+        res.status(500).json({ ok: false, error: 'internal_error' });
+    }
 });
 
 module.exports = router;

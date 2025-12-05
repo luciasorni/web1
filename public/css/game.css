@@ -22,10 +22,22 @@ body {
     overflow: hidden;
 }
 
+.explore-mode {
+    height: auto;
+    overflow: auto;
+}
+
 .game-container {
     display: flex;
     height: 100vh;
     width: 100vw;
+}
+
+.explore-mode .game-container {
+    min-height: 100vh;
+    height: auto;
+    align-items: flex-start;
+    padding-top: 0;
 }
 
 /* ======== MENU LATERAL ======== */
@@ -73,6 +85,17 @@ body {
     background-image: url("/img/game-bg.png");
     background-size: cover;
     background-position: center bottom;
+}
+
+.explore-mode .main-content {
+    display: block;
+    justify-content: flex-start;
+    align-items: flex-start;
+    overflow: auto;
+    background-image: none;
+    min-height: 100vh;
+    padding: 0 2rem 2rem;
+    margin: 0;
 }
 
 /* ======== HUD / PANEL DE INFORMACIÓN ======== */
@@ -258,3 +281,56 @@ body {
     from { transform: translateX(0); }
     to   { transform: translateX(110vw); }
 }
+
+/* ======== Explore (modo invitado) ======== */
+.explore-content {
+    padding: 0;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+.explore-hero {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,.06);
+}
+.explore-hero .eyebrow { margin:0; text-transform: uppercase; font-size: .8rem; letter-spacing: .08rem; color:#888; }
+.explore-hero h1 { margin: .1rem 0; font-size: 1.7rem; }
+.explore-hero .sub { margin: 0; color: #555; }
+
+.explore-search { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
+.explore-search .admin-btn--primary{
+    background: #2bb4ea;
+    border-color: #2bb4ea;
+    color: #fff;
+}
+.explore-search .admin-btn--warn{
+    background: #f9871b;
+    border-color: #f9871b;
+    color: #fff;
+}
+
+.explore-results { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: .8rem; }
+.explore-card {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: 12px;
+    padding: .9rem;
+    box-shadow: 0 6px 16px rgba(0,0,0,.06);
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+}
+.explore-card h3 { margin: 0 0 .2rem; }
+.explore-card p { margin: 0; color: #444; }
+.explore-card .small { font-size: .9rem; color: #666; }
+
+.explore-profile { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+.explore-error { color: #c0392b; font-weight: 600; }

@@ -21,6 +21,16 @@ function mapRow(row) {
     };
 }
 
+function mapAirport(row) {
+    if (!row) return null;
+    return {
+        id: row.id,
+        name: row.name,
+        level: row.level,
+        xp: row.xp
+    };
+}
+
 async function findUsersByIds(ids) {
     if (!Array.isArray(ids) || ids.length === 0) return [];
 
@@ -41,6 +51,44 @@ async function findUserByEmail(email) {
     return mapRow(row);
 }
 
+async function getAirportForUser(userId) {
+    if (!userId) return null;
+    const row = await knex('user_airports').where({ user_id: userId }).first();
+    return mapAirport(row);
+}
+
+async function findUserWithAirportByUsername(username) {
+    const row = await knex('users').where({ username }).first();
+    if (!row) return null;
+    const airport = await getAirportForUser(row.id);
+    return { ...mapRow(row), airport };
+}
+
+async function searchUsers({ query = '', limit = 20 } = {}) {
+    const q = (query || '').trim();
+    const base = knex('users')
+        .select('users.*')
+        .orderBy('created_at', 'desc')
+        .limit(limit);
+
+    if (q) {
+        base.where(builder => {
+            builder.where('username', 'like', `%${q}%`)
+                   .orWhere('email', 'like', `%${q}%`);
+        });
+    }
+
+    const rows = await base;
+    const users = rows.map(mapRow);
+    const ids = users.map(u => u.id);
+
+    if (!ids.length) return [];
+
+    const airports = await knex('user_airports').whereIn('user_id', ids);
+    const airportByUser = new Map(airports.map(a => [a.user_id, mapAirport(a)]));
+
+    return users.map(u => ({ ...u, airport: airportByUser.get(u.id) || null }));
+}
 async function listUsers() {
     const rows = await knex('users')
         .select('id', 'username', 'email', 'roles', 'is_active', 'last_login_at', 'created_at', 'updated_at')
@@ -165,5 +213,8 @@ module.exports = {
     createUser,
     findUsersByIds,   // 🆕
     listUsers,
-    updateUser
+    updateUser,
+    getAirportForUser,
+    findUserWithAirportByUsername,
+    searchUsers
 };

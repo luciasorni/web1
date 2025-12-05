@@ -3,49 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skyport - Invitado · Buscar</title>
-    <link rel="icon" href="../../public/img/logoSkyPort.png" type="image/png">
-    <link rel="stylesheet" href="../../public/css/game.css">
+    <title>Skyport - Invitado · Perfil</title>
+    <link rel="icon" href="/img/logoSkyPort.png" type="image/png">
+    <link rel="stylesheet" href="/css/game.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/missions.css">
+    <script src="/js/explore.js" defer></script>
 </head>
-<body>
+<body class="explore-mode">
   <div class="game-container">
     <!-- Menú lateral -->
     <div class="sidebar">
-      <a class="menu-item" href="../index.html">
-        <img src="../../public/img/logoSkyPort.png" alt="SkyPort logo" class="logo-img" style="height:75px;">
+      <a class="menu-item" href="/">
+        <img src="/img/logoSkyPort.png" alt="SkyPort logo" class="logo-img" style="height:75px;">
       </a>
-      <a class="menu-item" href="../explore/explore.html">Buscar</a>
-      <a class="menu-item" href="../auth/register.html">Crear cuenta</a>
+      <a class="menu-item" href="/explore">Buscar</a>
+      <a class="menu-item" href="/register">Crear cuenta</a>
     </div>
 
     <!-- Zona de juego -->
-    <div class="main-content">
-      <div class="airport">
-        <div class="hangar-area">
-          <div class="hangar-block">
-            <div class="hangar"></div>
-            <div class="path"></div>
-          </div>
-          <div class="hangar-block">
-            <div class="hangar"></div>
-            <div class="path"></div>
-          </div>
-          <div class="hangar-block">
-            <div class="hangar"></div>
-            <div class="path"></div>
-          </div>
-          <div class="hangar-block">
-            <div class="hangar"></div>
-            <div class="path"></div>
-          </div>
+    <div class="main-content explore-content">
+      <header class="explore-hero">
+        <div>
+          <p class="eyebrow">Perfil invitado</p>
+          <h1 id="guestUserTitle">Cargando usuario…</h1>
+          <p class="sub" id="guestUserMeta"></p>
+        </div>
+        <a class="btn btn--primary" href="/register">Crear cuenta</a>
+      </header>
+
+      <section class="explore-profile" id="guestProfile" hidden>
+        <div class="explore-card">
+          <h3>Aeropuerto base</h3>
+          <p id="guestAirportName"></p>
+          <p id="guestAirportLevel"></p>
+          <p id="guestAirportXp"></p>
         </div>
 
-        <!-- Pista horizontal -->
-        <div class="horizontal-runway"></div>
+        <div class="explore-card">
+          <h3>Flota visible</h3>
+          <div id="guestFleet" class="missions-page__cards"></div>
+        </div>
+      </section>
 
-        <!-- Pista vertical conectada al final de la horizontal -->
-        <div class="vertical-runway"></div>
-      </div>
+      <p id="guestError" class="explore-error" hidden>Usuario no encontrado.</p>
     </div>
   </div>
 </body>

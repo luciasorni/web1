@@ -23,8 +23,8 @@ router.use('/admin', requireRole('admin'), require('./admin'));
 // Auth (incluye login, register, recover, logout, etc...
 router.use('/auth', require('./auth'));
 
-// Explore (incluye ...
-// router.use('/explore', requireAuth, require('./explore'));
+// Explore (público/invitado)
+router.use('/explore', require('./explore'));
 
 // Game (incluye chat, economy, fleet, game, market, missions, social
 router.use('/game', requireAuth, require('./game'));

@@ -16,30 +16,35 @@
     <!-- JS (sin inline, respeta CSP) -->
     <script src="/js/explore.js" defer></script>
 </head>
-<body>
+<body class="explore-mode">
   <div class="game-container">
     <!-- Menú lateral -->
     <div class="sidebar">
-      <a class="menu-item" href="../index.html">
-        <img src="../../public/img/logoSkyPort.png" alt="SkyPort logo" class="logo-img" style="height:75px;">
+      <a class="menu-item" href="/">
+        <img src="/img/logoSkyPort.png" alt="SkyPort logo" class="logo-img" style="height:75px;">
       </a>
-      <a class="menu-item" href="../explore/explore.html">Buscar</a>
-      <a class="menu-item" href="../auth/register.html">Crear cuenta</a>
+      <a class="menu-item" href="/explore">Buscar</a>
+      <a class="menu-item" href="/register">Crear cuenta</a>
     </div>
 
     <!-- Zona de juego -->
-    <div class="social-page__toolbar">
-      <div class="admin-actions" style="margin-bottom:.8rem;">
-        <input class="admin-input" type="text" placeholder="Buscar usuario..." style="max-width:320px;">
-        <button class="admin-btn admin-btn--primary">Buscar</button>
-        <button class="admin-btn admin-btn--warn">Limpiar</button>
+    <div class="main-content explore-content">
+      <header class="explore-hero">
+        <div>
+          <p class="eyebrow">Explora SkyPort</p>
+          <h1>Busca un usuario y visita su aeropuerto</h1>
+          <p class="sub">Modo invitado: consulta perfiles sin iniciar sesión.</p>
+        </div>
+        <a class="btn btn--primary" href="/register">Crear cuenta</a>
+      </header>
+
+      <div class="explore-search">
+        <input id="guestSearchInput" class="admin-input" type="text" placeholder="Buscar usuario o email..." style="max-width:360px;">
+        <button id="guestSearchBtn" class="admin-btn admin-btn--primary">Buscar</button>
+        <button id="guestClearBtn" class="admin-btn admin-btn--warn">Limpiar</button>
       </div>
 
-      <!-- Recuadro de usuario -->
-      <div class="user-card">
-        <p class="user-card__username">Usuario: Juan1234</p>
-        <a class="admin-btn admin-btn--primary user-card__button" href="./username.html">Visitar</a>
-      </div>
+      <section id="guestResults" class="explore-results"></section>
     </div>
   </div>
 </body>
