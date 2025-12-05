@@ -33,6 +33,10 @@
         /* Altura aprox. de tu navbar (logo 75px). Ajusta si cambias el alto. */
         body { padding-top: 90px; }
     </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script src="/js/ryanairChart.js" defer></script>
+
 </head>
 
 <body>
@@ -158,13 +162,19 @@
         <aside class="col-lg-3 col-md-4 right-col">
             <div class="card mb-3 news-card">
                 <div class="card-header">
-                    <h3 class="card-title">Acciones de Ryanair en directo</h3>
+                <h3 class="card-title">Acciones de Ryanair en directo</h3>
                 </div>
                 <div class="card-body">
-                    <canvas id="ryanairChart" height="200" style="cursor:pointer;"></canvas>
+                <canvas id="ryanairChart" height="200" style="cursor:pointer;"></canvas>
                 </div>
             </div>
         </aside>
+
+        <!-- Chart.js 
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+         Archivo JS separado 
+        <script src="/routes/ryanairChart.js"></script>-->
     </div>
 </main>
 
