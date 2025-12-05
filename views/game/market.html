@@ -99,6 +99,22 @@
 
   <!-- ======= MOCK y lógica sin backend ======= -->
   <script>
+    // Mapeo básico a imágenes del directorio /img/aircraft (fallback genérico)
+    const IMG_BY_NAME = {
+      'A320 Neo': '/img/aircraft/A320.jpeg',
+      'ATR 72': '/img/aircraft/ATR72F.jpeg',
+      'C-295': '/img/aircraft/C130.jpeg',
+      'H145': '/img/aircraft/A10.jpeg',
+      'F-18': '/img/aircraft/A10.jpeg',
+      'B787-8': '/img/aircraft/B773.jpeg',
+      'A319': '/img/aircraft/B738.jpeg',
+      'C-212': '/img/aircraft/C130.jpeg',
+      'H125': '/img/aircraft/A10.jpeg',
+      'EF-2000': '/img/aircraft/A10.jpeg'
+    };
+
+    const aircraftImg = (name) => IMG_BY_NAME[name] || '/img/aircraft/A320.jpeg';
+
     // Catálogo a la venta (simulado)
     const CATALOG = [
       { id:101, nombre:'A320 Neo', tipo:'Personas', km: 3_200_000, age:3,  price: 72_000_000 },
@@ -148,7 +164,9 @@
     function renderBuy(list){
       buyGrid.innerHTML = list.map(a => `
         <article class="mcard">
-          <div class="mcard__img"><small>Imagen avión</small></div>
+          <div class="mcard__img">
+            <img src="${aircraftImg(a.nombre)}" alt="${a.nombre}">
+          </div>
           <div class="mcard__body">
             <div class="mrow"><span class="mname">${a.nombre}</span> <span class="mprice">${a.price.toLocaleString('es-ES')} €</span></div>
             <div class="mrow mmeta"><span>${a.tipo}</span> <span>${(a.km/1_000_000).toFixed(1)} M km · ${a.age} años</span></div>
@@ -167,7 +185,9 @@
         const est = estimatePrice(a);
         return `
           <div class="sellcard">
-            <div class="sellcard__img"><small>Imagen avión</small></div>
+            <div class="sellcard__img">
+              <img src="${aircraftImg(a.nombre)}" alt="${a.nombre}">
+            </div>
             <div class="sellcard__info">
               <div class="sellcard__row"><b>${a.nombre}</b> · ${a.tipo}</div>
               <div class="sellcard__row"><span>${(a.km/1_000_000).toFixed(1)} M km</span> · <span>${a.age} años</span></div>

@@ -118,6 +118,9 @@
   border-bottom:1px solid rgba(0,0,0,.06);
   color:#6c757d; font-weight:600;
 }
+.mcard__img img{
+  width:100%; height:100%; object-fit:cover;
+}
 
 /* Cuerpo */
 .mcard__body{ padding:.85rem .95rem 1rem; display:flex; flex-direction:column; gap:.45rem; }
@@ -147,6 +150,9 @@
   background: repeating-linear-gradient(45deg, #f6eee2 0 12px, #fff 12px 24px);
   display:grid; place-items:center; color:#6c757d; font-weight:600;
   border:1px solid rgba(0,0,0,.06); border-radius:8px;
+}
+.sellcard__img img{
+  width:100%; height:100%; object-fit:cover; border-radius:8px;
 }
 .sellcard__info{ flex:1; }
 .sellcard__row{ display:flex; gap:1.2rem; flex-wrap:wrap; color:#444; }
