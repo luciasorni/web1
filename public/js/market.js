@@ -165,9 +165,13 @@ async function buyAircraft(typeId, btn) {
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok || !data.ok) {
-            alert(data.error === 'insufficient_credits'
-                ? 'No tienes créditos suficientes.'
-                : 'No se pudo completar la compra.');
+            if (data.error === 'insufficient_credits') {
+                alert('No tienes créditos suficientes.');
+            } else if (data.error === 'fleet_limit') {
+                alert('Límite de flota alcanzado (5 aviones). Vende uno antes de comprar.');
+            } else {
+                alert('No se pudo completar la compra.');
+            }
             return;
         }
         if (data.aircraft) {

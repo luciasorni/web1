@@ -77,26 +77,20 @@
 -------------------------------------------------------- */
 .fleet-columns {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 2.2rem;
     width: 100%;
-    align-items: stretch; /* que ambas columnas llenen el alto disponible */
+    align-items: stretch;
 }
 
 /* Responsivo */
-@media (max-width: 1100px) {
-    .fleet-columns {
-        grid-template-columns: 1fr;
-    }
-}
-
 .fleet-column {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 
     /* Scroll interno en cada columna */
-    max-height: calc(100vh - 180px); /* ajusta 220px si ves que se corta raro */
+    max-height: calc(100vh - 180px);
     overflow-y: auto;
 
     background: #fff;
@@ -117,15 +111,12 @@
 -------------------------------------------------------- */
 .fleet-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 1.1rem;
     align-content: flex-start; /* para que las tarjetas “suban” dentro de la columna con scroll */
 }
 
 /* Ajustes responsive */
-@media (max-width: 1200px) {
-    .fleet-grid { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
-}
 @media (max-width: 700px) {
     .fleet-grid { grid-template-columns: 1fr; }
 }

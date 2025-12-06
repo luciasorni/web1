@@ -277,6 +277,7 @@ async function activateMissionForUser({ userId, missionId }) {
             userId,
             missionId: mission.id,
             userMissionId,
+            aircraftId,
             movementId,
             newBalance,
             durationPlannedSeconds: baseSeconds,

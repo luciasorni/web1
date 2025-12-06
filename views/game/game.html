@@ -1,32 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- Configuración básica de la página HTML -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- Título que se verá en la pestaña del navegador -->
     <title>SkyPort - Juego</title>
 
-    <!-- Estilos específicos de la ventana de juego -->
     <link rel="stylesheet" href="/css/game.css" />
-
-    <!-- Lógica específica del juego -->
-    <script src="/js/game.js"></script>
+    <script src="/js/game.js" defer></script>
 </head>
 <body>
 <div class="game-container">
-
-    <!-- ======================
-         MENÚ LATERAL / SIDEBAR
-         ====================== -->
     <aside class="sidebar">
-        <!-- Logo de SkyPort -->
         <a class="menu-item" href="/">
             <img src="/img/logoSkyPort.png" alt="SkyPort logo" class="logo-img">
         </a>
-
-        <!-- Enlaces a las secciones del juego -->
         <a class="menu-item" href="/game/social">Social</a>
         <a class="menu-item" href="/game/fleet">Flota</a>
         <a class="menu-item" href="/game/chat">Chat</a>
@@ -35,45 +22,36 @@
         <a class="menu-item" href="/game/economy">Banco</a>
     </aside>
 
-    <!-- =======================
-         ZONA DE JUEGO / MAIN
-         ======================= -->
-    <main class="main-content">
+    <main class="main-content main-content--game">
+        <header class="game-topbar">
+            <div>
+                <p class="eyebrow">Torre de control</p>
+                <h1 class="game-title">Tu aeropuerto</h1>
+            </div>
+            <div class="game-kpis">
+                <div class="kpi-card" id="kpi-balance">
+                    <span class="kpi-label">Créditos</span>
+                    <span class="kpi-value">--</span>
+                </div>
+                <div class="kpi-card" id="kpi-active">
+                    <span class="kpi-label">Vuelos activos</span>
+                    <span class="kpi-value">--</span>
+                </div>
+                <div class="kpi-card" id="kpi-hangar">
+                    <span class="kpi-label">Aviones en hangar</span>
+                    <span class="kpi-value">--</span>
+                </div>
+            </div>
+        </header>
 
-        <!-- HUD con info de aviones y misiones -->
-        <section class="game-hud">
-            <!-- Panel de aviones libres en hangar -->
-            <article class="game-hud__panel">
-                <h2 class="game-hud__title">Aviones en hangar</h2>
-                <ul id="hud-free-aircraft" class="game-hud__list">
-                    <!-- Rellenado dinámicamente por game.js -->
-                </ul>
-            </article>
-
-            <!-- Panel de aviones en misión -->
-            <article class="game-hud__panel">
-                <h2 class="game-hud__title">Aviones en misión</h2>
-                <ul id="hud-active-missions" class="game-hud__list">
-                    <!-- Rellenado dinámicamente por game.js -->
-                </ul>
-            </article>
-        </section>
-
-        <!-- Mapa del aeropuerto -->
-        <section class="airport">
-            <!-- Zona de hangares; se rellena según los aviones del usuario -->
-            <div class="hangar-area" id="hangar-area">
-                <!-- JS inyecta aquí un .hangar-block por avión -->
+        <section class="airport-scene">
+            <div class="runway">
+                <div class="runway__centerline"></div>
+                <div class="runway__id">27</div>
             </div>
 
-            <!-- Capa de aviones animados sobre la pista -->
-            <div id="airport-planes-layer"></div>
-
-            <!-- Pista dibujada por CSS (la ocultaremos con CSS para
-                 quedarnos solo con la del dibujo de fondo) -->
-            <div class="horizontal-runway"></div>
+            <div class="hangars-row" id="hangarGrid"></div>
         </section>
-
     </main>
 </div>
 </body>

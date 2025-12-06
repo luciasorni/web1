@@ -44,14 +44,23 @@ async function getUserBalance(trx, userId) {
 }
 
 /**
- * Compra un avión de un tipo concreto para un usuario usando:
- * - aircraft_types
- * - account_movements
- * - users.current_balance
- * - user_aircraft
+ * Compra un avión para el usuario (máximo 5 en flota)
  */
 async function buyAircraftForUser({ userId, aircraftTypeId }) {
     return knex.transaction(async (trx) => {
+        // 0) Limite de flota (max 5)
+        const ownedRow = await trx('user_aircraft')
+            .where({ user_id: userId })
+            .count({ c: '*' })
+            .first();
+
+        const ownedCount = Number(ownedRow?.c ?? ownedRow?.['count(*)'] ?? 0);
+        if (ownedCount >= 5) {
+            const err = new Error('Fleet limit reached');
+            err.code = 'FLEET_LIMIT';
+            throw err;
+        }
+
         // 1) Tipo de avión
         const type = await trx('aircraft_types')
             .where({ id: aircraftTypeId })

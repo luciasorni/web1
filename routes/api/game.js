@@ -120,6 +120,9 @@ router.post('/fleet/buy', requireAuth, async (req, res) => {
         if (err.code === 'INSUFFICIENT_CREDITS') {
             return res.status(400).json({ ok: false, error: 'insufficient_credits' });
         }
+        if (err.code === 'FLEET_LIMIT') {
+            return res.status(400).json({ ok: false, error: 'fleet_limit' });
+        }
 
         return res.status(500).json({ ok: false, error: 'internal_error' });
     }
