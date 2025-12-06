@@ -6,7 +6,9 @@ const {
     createUser,
     updateUser,
     findUserByUsername,
-    findUserByEmail
+    findUserByEmail,
+    findUserById,
+    deleteUserById
 } = require('../../data/usersStore/db');
 const {
     listEvents,
@@ -42,7 +44,10 @@ router.post('/users', async (req, res) => {
         if (await findUserByUsername(username)) return res.status(409).json({ ok: false, error: 'username_taken' });
         if (await findUserByEmail(email))       return res.status(409).json({ ok: false, error: 'email_taken' });
 
-        const newUser = await createUser({ username, email, password, roles });
+        // No permitimos crear admins vía panel
+        const safeRoles = Array.isArray(roles) ? roles.filter(r => r !== 'admin') : undefined;
+
+        const newUser = await createUser({ username, email, password, roles: safeRoles });
         res.status(201).json({ ok: true, user: newUser });
     } catch (err) {
         console.error('POST /api/admin/users error', err);
@@ -56,7 +61,16 @@ router.patch('/users/:id', async (req, res) => {
         const { id } = req.params;
         const { roles, isActive } = req.body || {};
 
-        const parsedRoles = Array.isArray(roles) ? roles : undefined;
+        const target = await findUserById(id);
+        if (!target) return res.status(404).json({ ok: false, error: 'not_found' });
+
+        // Si es admin, no permitimos suspender ni cambiar roles
+        if (target.roles?.includes('admin')) {
+            return res.status(403).json({ ok: false, error: 'cannot_modify_admin' });
+        }
+
+        // Sanitiza roles para evitar elevar a admin desde panel
+        const parsedRoles = Array.isArray(roles) ? roles.filter(r => r !== 'admin') : undefined;
         const parsedActive = (typeof isActive === 'boolean') ? isActive : undefined;
 
         const updated = await updateUser({ id, roles: parsedRoles, isActive: parsedActive });
@@ -65,6 +79,23 @@ router.patch('/users/:id', async (req, res) => {
         res.json({ ok: true, user: updated });
     } catch (err) {
         console.error('PATCH /api/admin/users/:id error', err);
+        res.status(500).json({ ok: false, error: 'internal_error' });
+    }
+});
+
+// DELETE /api/admin/users/:id -> borrar usuario (no admins)
+router.delete('/users/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const target = await findUserById(id);
+        if (!target) return res.status(404).json({ ok: false, error: 'not_found' });
+        if (target.roles?.includes('admin')) return res.status(403).json({ ok: false, error: 'cannot_delete_admin' });
+
+        const ok = await deleteUserById(id);
+        if (!ok) return res.status(404).json({ ok: false, error: 'not_found' });
+        res.json({ ok: true });
+    } catch (err) {
+        console.error('DELETE /api/admin/users/:id error', err);
         res.status(500).json({ ok: false, error: 'internal_error' });
     }
 });

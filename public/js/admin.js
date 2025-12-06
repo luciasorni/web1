@@ -58,6 +58,15 @@
       if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
       return data.user;
     },
+    async deleteUser(id) {
+      const res = await fetch(`/api/admin/users/${id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
+      return true;
+    },
     async getEvents() {
       const res = await fetch('/api/admin/events', { credentials: 'include' });
       if (!res.ok) throw new Error('No se pudieron cargar eventos');
@@ -147,6 +156,7 @@
         })
         .forEach(u => {
           const status = u.isActive ? 'activo' : 'suspendido';
+          const isAdmin = (u.roles || []).includes('admin');
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td>${u.username}</td>
@@ -154,8 +164,9 @@
             <td>${status}</td>
             <td>${fmtDate(u.lastLoginAt)}</td>
             <td style="text-align:right;">
-              <button class="admin-btn admin-btn--danger" data-action="suspend" data-id="${u.id}" ${!u.isActive ? 'disabled' : ''}>Suspender</button>
-              <button class="admin-btn admin-btn--ok" data-action="restore" data-id="${u.id}" ${u.isActive ? 'disabled' : ''}>Restaurar</button>
+              <button class="admin-btn admin-btn--danger" data-action="suspend" data-id="${u.id}" ${(!u.isActive || isAdmin) ? 'disabled' : ''}>Suspender</button>
+              <button class="admin-btn admin-btn--ok" data-action="restore" data-id="${u.id}" ${(u.isActive || isAdmin) ? 'disabled' : ''}>Restaurar</button>
+              <button class="admin-btn admin-btn--danger" data-action="delete" data-id="${u.id}" ${isAdmin ? 'disabled' : ''}>Borrar</button>
             </td>
           `;
           tableBody.appendChild(tr);
@@ -231,6 +242,10 @@
           await api.updateUser(user.id, { isActive: false });
         } else if (btn.dataset.action === 'restore' && !user.isActive) {
           await api.updateUser(user.id, { isActive: true });
+        } else if (btn.dataset.action === 'delete') {
+          if (confirm(`¿Borrar al usuario ${user.username}?`)) {
+            await api.deleteUser(user.id);
+          }
         }
         await loadUsers();
       } catch (err) {

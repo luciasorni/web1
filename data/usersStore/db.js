@@ -51,6 +51,11 @@ async function findUserByEmail(email) {
     return mapRow(row);
 }
 
+async function findUserById(id) {
+    const row = await knex('users').where({ id }).first();
+    return mapRow(row);
+}
+
 async function getAirportForUser(userId) {
     if (!userId) return null;
     const row = await knex('user_airports').where({ user_id: userId }).first();
@@ -88,6 +93,12 @@ async function searchUsers({ query = '', limit = 20 } = {}) {
     const airportByUser = new Map(airports.map(a => [a.user_id, mapAirport(a)]));
 
     return users.map(u => ({ ...u, airport: airportByUser.get(u.id) || null }));
+}
+
+async function deleteUserById(id) {
+    if (!id) return false;
+    const deleted = await knex('users').where({ id }).del();
+    return deleted > 0;
 }
 async function listUsers() {
     const rows = await knex('users')
@@ -210,11 +221,13 @@ async function createUser({ username, email, password, roles: rolesArg }) {
 module.exports = {
     findUserByUsername,
     findUserByEmail,
+    findUserById,
     createUser,
     findUsersByIds,   // 🆕
     listUsers,
     updateUser,
     getAirportForUser,
     findUserWithAirportByUsername,
-    searchUsers
+    searchUsers,
+    deleteUserById
 };
