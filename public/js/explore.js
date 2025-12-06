@@ -23,7 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const res = await fetch(`/api/explore/search?q=${encodeURIComponent(q)}`);
                 const data = await res.json();
                 if (!res.ok || !data.ok) throw new Error(data.error || 'Error');
-                renderResults(data.users || []);
+                const filtered = (data.users || []).filter(u => !(u.roles || []).includes('admin'));
+                renderResults(filtered);
             } catch (err) {
                 console.error(err);
                 resultsBox.innerHTML = '<p class="explore-error">No se pudo cargar la búsqueda.</p>';
