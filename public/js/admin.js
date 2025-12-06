@@ -104,6 +104,12 @@
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
       return true;
+    },
+    async getAircraftTypes() {
+      const res = await fetch('/api/admin/aircraft-types', { credentials: 'include' });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
+      return data.types || [];
     }
   };
 
@@ -120,7 +126,7 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     const isUsersPage  = Boolean(document.querySelector('input[placeholder="Buscar usuario..."]'));
-    const isEventsPage = Boolean(document.querySelector('input[placeholder="Nombre del evento"]'));
+    const isEventsPage = window.location.pathname.includes('/admin/events');
 
     if (isUsersPage) initUsersPage();
     if (isEventsPage) initEventsPage();
@@ -263,7 +269,7 @@
   function initEventsPage() {
     const nameInput = document.querySelector('input[name="mission-name"]');
     const descInput = document.querySelector('input[name="mission-desc"]');
-    const typeInput = document.querySelector('input[name="mission-type"]');
+    const typeSelect= document.querySelector('select[name="mission-type"]');
     const costInput = document.querySelector('input[name="mission-cost"]');
     const rewardInput = document.querySelector('input[name="mission-reward"]');
     const durInput  = document.querySelector('input[name="mission-duration"]');
@@ -273,8 +279,13 @@
     const tableBody = document.querySelector('.admin-table tbody');
 
     if (!tableBody) return;
+    if (!nameInput || !typeSelect || !costInput || !rewardInput || !durInput || !levelInput) {
+      alert('Actualiza la página (Ctrl+Shift+R) para cargar el nuevo formulario de misiones.');
+      return;
+    }
 
     let events = [];
+    let aircraftTypes = [];
 
     function renderEvents() {
       tableBody.innerHTML = '';
@@ -307,10 +318,21 @@
       }
     }
 
+    async function loadAircraftTypes() {
+      try {
+        aircraftTypes = await api.getAircraftTypes();
+        typeSelect.innerHTML = '<option value="">Selecciona tipo de avión</option>' +
+          aircraftTypes.map(t => `<option value="${t.id}">${t.name} (${t.id})</option>`).join('');
+      } catch (err) {
+        console.error(err);
+        alert('No se pudieron cargar los tipos de avión.');
+      }
+    }
+
     async function addEvent() {
       const name = (nameInput?.value || '').trim();
       const description = (descInput?.value || '').trim();
-      const type = (typeInput?.value || '').trim() || 'passengers';
+      const type = (typeSelect?.value || '').trim();
       const cost = Number(costInput?.value || 0);
       const reward = Number(rewardInput?.value || 0);
       const duration = Number(durInput?.value || 0);
@@ -318,7 +340,7 @@
       const isActive = activeInput?.checked ?? true;
 
       if (!name || !type) {
-        alert('Nombre y tipo son obligatorios.');
+        alert('Nombre y tipo de avión son obligatorios.');
         return;
       }
       if (Number.isNaN(cost) || Number.isNaN(reward) || Number.isNaN(duration)) {
@@ -334,7 +356,8 @@
         } else {
           await api.createEvent(payload);
         }
-        [nameInput, descInput, typeInput, costInput, rewardInput, durInput, levelInput].forEach(i => { if (i) i.value = ''; });
+        [nameInput, descInput, costInput, rewardInput, durInput, levelInput].forEach(i => { if (i) i.value = ''; });
+        if (typeSelect) typeSelect.value = '';
         if (activeInput) activeInput.checked = true;
         await loadEvents();
       } catch (err) {
@@ -364,6 +387,6 @@
       }
     });
 
-    loadEvents();
+    loadAircraftTypes().then(loadEvents);
   }
 })();

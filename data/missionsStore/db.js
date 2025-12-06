@@ -188,7 +188,11 @@ async function activateMissionForUser({ userId, missionId }) {
             .join('aircraft_types as at', 'ua.aircraft_type_id', 'at.id')
             .where('ua.user_id', userId)
             .andWhere('ua.status', 'idle')          // avión libre
-            .andWhere('at.role', mission.type)      // rol compatible con tipo de misión
+            .andWhere(builder => {
+                // Permite misiones que referencian un tipo concreto (id) o un rol (legacy)
+                builder.where('ua.aircraft_type_id', mission.type)
+                    .orWhere('at.role', mission.type);
+            })
             .first('ua.id');
 
         if (!compatibleAircraft) {
