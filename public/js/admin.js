@@ -322,7 +322,10 @@
       try {
         aircraftTypes = await api.getAircraftTypes();
         typeSelect.innerHTML = '<option value="">Selecciona tipo de avión</option>' +
-          aircraftTypes.map(t => `<option value="${t.id}">${t.name} (${t.id})</option>`).join('');
+          aircraftTypes.map(t => {
+            const label = t.model || t.name || t.id;
+            return `<option value="${t.id}">${label} (${t.id})</option>`;
+          }).join('');
       } catch (err) {
         console.error(err);
         alert('No se pudieron cargar los tipos de avión.');
