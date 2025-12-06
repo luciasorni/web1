@@ -68,14 +68,14 @@
       return true;
     },
     async getEvents() {
-      const res = await fetch('/api/admin/events', { credentials: 'include' });
-      if (!res.ok) throw new Error('No se pudieron cargar eventos');
+      const res = await fetch('/api/admin/missions', { credentials: 'include' });
+      if (!res.ok) throw new Error('No se pudieron cargar misiones');
       const data = await res.json().catch(() => ({}));
       if (!data.ok) throw new Error(data.error || `HTTP ${res.status}`);
-      return data.events || [];
+      return data.missions || [];
     },
     async createEvent(payload) {
-      const res = await fetch('/api/admin/events', {
+      const res = await fetch('/api/admin/missions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -83,10 +83,10 @@
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
-      return data.event;
+      return data.mission;
     },
     async updateEvent(id, payload) {
-      const res = await fetch(`/api/admin/events/${id}`, {
+      const res = await fetch(`/api/admin/missions/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -94,10 +94,10 @@
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
-      return data.event;
+      return data.mission;
     },
     async deleteEvent(id) {
-      const res = await fetch(`/api/admin/events/${id}`, {
+      const res = await fetch(`/api/admin/missions/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -261,12 +261,14 @@
 
   // ---- EVENTS PAGE ----
   function initEventsPage() {
-    const nameInput = document.querySelector('input[placeholder="Nombre del evento"]');
-    const descInput = document.querySelector('input[placeholder="Descripción"]');
-    const boostInput= document.querySelector('input[placeholder="Boost % recompensa (ej. 15)"]');
-    const dateInputs= Array.from(document.querySelectorAll('input[type="datetime-local"]'));
-    const startInput= dateInputs[0];
-    const endInput  = dateInputs[1];
+    const nameInput = document.querySelector('input[name="mission-name"]');
+    const descInput = document.querySelector('input[name="mission-desc"]');
+    const typeInput = document.querySelector('input[name="mission-type"]');
+    const costInput = document.querySelector('input[name="mission-cost"]');
+    const rewardInput = document.querySelector('input[name="mission-reward"]');
+    const durInput  = document.querySelector('input[name="mission-duration"]');
+    const levelInput= document.querySelector('input[name="mission-level"]');
+    const activeInput= document.querySelector('input[name="mission-active"]');
     const publishBtn= document.querySelector('.admin-card .admin-btn--primary');
     const tableBody = document.querySelector('.admin-table tbody');
 
@@ -280,10 +282,14 @@
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${ev.name}</td>
-          <td>${fmtRange(ev.startAt, ev.endAt)}</td>
-          <td>+${ev.boostPercent}% ${ev.description || ''}</td>
+          <td>${ev.type}</td>
+          <td>${ev.cost}</td>
+          <td>${ev.reward}</td>
+          <td>${Math.round(ev.durationSeconds / 60)} min</td>
+          <td>${ev.levelRequired || 1}</td>
+          <td>${ev.isActive ? 'activo' : 'inactivo'}</td>
           <td style="text-align:right;">
-            <button class="admin-btn admin-btn--warn" data-action="toggle" data-id="${ev.id}">${ev.status === 'paused' ? 'Reanudar' : 'Pausar'}</button>
+            <button class="admin-btn admin-btn--warn" data-action="toggle" data-id="${ev.id}">${ev.isActive ? 'Pausar' : 'Activar'}</button>
             <button class="admin-btn admin-btn--danger" data-action="delete" data-id="${ev.id}">Eliminar</button>
           </td>
         `; 
@@ -297,38 +303,43 @@
         renderEvents();
       } catch (err) {
         console.error(err);
-        alert('No se pudieron cargar los eventos.');
+        alert('No se pudieron cargar las misiones.');
       }
     }
 
     async function addEvent() {
       const name = (nameInput?.value || '').trim();
       const description = (descInput?.value || '').trim();
-      const boost = Number(boostInput?.value || 0);
-      const start = startInput?.value;
-      const end   = endInput?.value;
+      const type = (typeInput?.value || '').trim() || 'passengers';
+      const cost = Number(costInput?.value || 0);
+      const reward = Number(rewardInput?.value || 0);
+      const duration = Number(durInput?.value || 0);
+      const level = Number(levelInput?.value || 1);
+      const isActive = activeInput?.checked ?? true;
 
-      if (!name || !start || !end) {
-        alert('Nombre, inicio y fin son obligatorios.');
+      if (!name || !type) {
+        alert('Nombre y tipo son obligatorios.');
         return;
       }
-      if (boostInput && boostInput.value && Number.isNaN(boost)) {
-        alert('Boost inválido.');
+      if (Number.isNaN(cost) || Number.isNaN(reward) || Number.isNaN(duration)) {
+        alert('Coste, recompensa y duración deben ser números.');
         return;
       }
 
       try {
         const existing = events.find(e => e.name.toLowerCase() === name.toLowerCase());
+        const payload = { name, description, type, cost, reward, durationSeconds: duration, levelRequired: level, isActive };
         if (existing) {
-          await api.updateEvent(existing.id, { name, description, boostPercent: boost, startAt: start, endAt: end, status: 'active' });
+          await api.updateEvent(existing.id, payload);
         } else {
-          await api.createEvent({ name, description, boostPercent: boost, startAt: start, endAt: end, status: 'active' });
+          await api.createEvent(payload);
         }
-        [nameInput, descInput, boostInput, startInput, endInput].forEach(i => { if (i) i.value = ''; });
+        [nameInput, descInput, typeInput, costInput, rewardInput, durInput, levelInput].forEach(i => { if (i) i.value = ''; });
+        if (activeInput) activeInput.checked = true;
         await loadEvents();
       } catch (err) {
         console.error(err);
-        alert('No se pudo guardar el evento.');
+        alert('No se pudo guardar la misión.');
       }
     }
 
@@ -342,15 +353,14 @@
 
       try {
         if (btn.dataset.action === 'toggle') {
-          const nextStatus = ev.status === 'paused' ? 'active' : 'paused';
-          await api.updateEvent(ev.id, { status: nextStatus });
+          await api.updateEvent(ev.id, { isActive: !ev.isActive });
         } else if (btn.dataset.action === 'delete') {
           await api.deleteEvent(ev.id);
         }
         await loadEvents();
       } catch (err) {
         console.error(err);
-        alert('No se pudo actualizar el evento.');
+        alert('No se pudo actualizar la misión.');
       }
     });
 

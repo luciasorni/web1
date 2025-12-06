@@ -2,6 +2,23 @@
 const knex = require('../../db/knex');
 const { randomUUID } = require('crypto');
 const createId = () => randomUUID();
+
+function mapMission(row) {
+    if (!row) return null;
+    return {
+        id: row.id,
+        name: row.name,
+        type: row.type,
+        cost: row.cost,
+        reward: row.reward,
+        durationSeconds: row.duration_seconds,
+        description: row.description,
+        levelRequired: row.level_required,
+        isActive: !!row.is_active,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at
+    };
+}
 /*
  * Misiones asociadas a un usuario (user_missions + missions)
  */
@@ -52,6 +69,74 @@ async function getAllMissions() {
         )
         .orderBy('level_required', 'asc')
         .orderBy('name', 'asc');
+}
+
+// Catálogo completo (incluye inactivas) para admin
+async function listAllMissionsAdmin() {
+    const rows = await knex('missions')
+        .select('*')
+        .orderBy('created_at', 'desc');
+    return rows.map(mapMission);
+}
+
+async function createMission({ name, type, cost, reward, durationSeconds, description, levelRequired = 1, isActive = true }) {
+    const id = createId();
+    const now = new Date().toISOString();
+
+    await knex('missions').insert({
+        id,
+        name,
+        type,
+        cost,
+        reward,
+        duration_seconds: durationSeconds,
+        description,
+        level_required: levelRequired,
+        is_active: isActive ? 1 : 0,
+        created_at: now,
+        updated_at: now
+    });
+
+    return mapMission({
+        id, name, type, cost, reward,
+        duration_seconds: durationSeconds,
+        description,
+        level_required: levelRequired,
+        is_active: isActive ? 1 : 0,
+        created_at: now,
+        updated_at: now
+    });
+}
+
+async function updateMission(id, payload) {
+    if (!id) return null;
+    const data = {};
+    if (payload.name !== undefined) data.name = payload.name;
+    if (payload.type !== undefined) data.type = payload.type;
+    if (payload.cost !== undefined) data.cost = payload.cost;
+    if (payload.reward !== undefined) data.reward = payload.reward;
+    if (payload.durationSeconds !== undefined) data.duration_seconds = payload.durationSeconds;
+    if (payload.description !== undefined) data.description = payload.description;
+    if (payload.levelRequired !== undefined) data.level_required = payload.levelRequired;
+    if (payload.isActive !== undefined) data.is_active = payload.isActive ? 1 : 0;
+
+    if (!Object.keys(data).length) return null;
+
+    data.updated_at = new Date().toISOString();
+
+    const updated = await knex('missions')
+        .where({ id })
+        .update(data)
+        .returning('*');
+
+    const row = Array.isArray(updated) ? updated[0] : null;
+    return mapMission(row);
+}
+
+async function deleteMission(id) {
+    if (!id) return false;
+    const deleted = await knex('missions').where({ id }).del();
+    return deleted > 0;
 }
 
 /*
@@ -327,5 +412,9 @@ module.exports = {
     getMissionsForUser,
     getAllMissions,
     activateMissionForUser,
-    resolveDueMissionsForUser
+    resolveDueMissionsForUser,
+    listAllMissionsAdmin,
+    createMission,
+    updateMission,
+    deleteMission
 };

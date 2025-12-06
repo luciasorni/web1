@@ -11,11 +11,11 @@ const {
     deleteUserById
 } = require('../../data/usersStore/db');
 const {
-    listEvents,
-    createEvent,
-    updateEvent,
-    deleteEvent
-} = require('../../data/eventsStore/db');
+    listAllMissionsAdmin,
+    createMission,
+    updateMission,
+    deleteMission
+} = require('../../data/missionsStore/db');
 
 // Aplica protección admin a todas las rutas de este subrouter
 router.use(requireRole('admin'));
@@ -100,54 +100,72 @@ router.delete('/users/:id', async (req, res) => {
     }
 });
 
-// --- EVENTS ---
-router.get('/events', async (req, res) => {
+// --- MISSIONS ADMIN (sustituye a eventos) ---
+router.get('/missions', async (req, res) => {
     try {
-        const events = await listEvents();
-        res.json({ ok: true, events });
+        const missions = await listAllMissionsAdmin();
+        res.json({ ok: true, missions });
     } catch (err) {
-        console.error('GET /api/admin/events error', err);
+        console.error('GET /api/admin/missions error', err);
         res.status(500).json({ ok: false, error: 'internal_error' });
     }
 });
 
-router.post('/events', async (req, res) => {
+router.post('/missions', async (req, res) => {
     try {
-        const { name, description, boostPercent = 0, startAt, endAt, status = 'active' } = req.body || {};
+        const { name, description, type, cost, reward, durationSeconds, levelRequired = 1, isActive = true } = req.body || {};
 
-        if (!name || !startAt || !endAt) {
+        if (!name || !type || cost === undefined || reward === undefined || durationSeconds === undefined) {
             return res.status(400).json({ ok: false, error: 'missing_fields' });
         }
 
-        const ev = await createEvent({ name, description, boostPercent: Number(boostPercent) || 0, startAt, endAt, status });
-        res.status(201).json({ ok: true, event: ev });
+        const mission = await createMission({
+            name,
+            description,
+            type,
+            cost: Number(cost),
+            reward: Number(reward),
+            durationSeconds: Number(durationSeconds),
+            levelRequired: Number(levelRequired) || 1,
+            isActive: Boolean(isActive)
+        });
+        res.status(201).json({ ok: true, mission });
     } catch (err) {
-        console.error('POST /api/admin/events error', err);
+        console.error('POST /api/admin/missions error', err);
         res.status(500).json({ ok: false, error: 'internal_error' });
     }
 });
 
-router.patch('/events/:id', async (req, res) => {
+router.patch('/missions/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, description, boostPercent, startAt, endAt, status } = req.body || {};
-        const updated = await updateEvent(id, { name, description, boostPercent: boostPercent !== undefined ? Number(boostPercent) : undefined, startAt, endAt, status });
+        const { name, description, type, cost, reward, durationSeconds, levelRequired, isActive } = req.body || {};
+        const updated = await updateMission(id, {
+            name,
+            description,
+            type,
+            cost: cost !== undefined ? Number(cost) : undefined,
+            reward: reward !== undefined ? Number(reward) : undefined,
+            durationSeconds: durationSeconds !== undefined ? Number(durationSeconds) : undefined,
+            levelRequired: levelRequired !== undefined ? Number(levelRequired) : undefined,
+            isActive: isActive !== undefined ? Boolean(isActive) : undefined
+        });
         if (!updated) return res.status(404).json({ ok: false, error: 'not_found' });
-        res.json({ ok: true, event: updated });
+        res.json({ ok: true, mission: updated });
     } catch (err) {
-        console.error('PATCH /api/admin/events/:id error', err);
+        console.error('PATCH /api/admin/missions/:id error', err);
         res.status(500).json({ ok: false, error: 'internal_error' });
     }
 });
 
-router.delete('/events/:id', async (req, res) => {
+router.delete('/missions/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const ok = await deleteEvent(id);
+        const ok = await deleteMission(id);
         if (!ok) return res.status(404).json({ ok: false, error: 'not_found' });
         res.json({ ok: true });
     } catch (err) {
-        console.error('DELETE /api/admin/events/:id error', err);
+        console.error('DELETE /api/admin/missions/:id error', err);
         res.status(500).json({ ok: false, error: 'internal_error' });
     }
 });
