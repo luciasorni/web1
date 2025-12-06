@@ -16,6 +16,7 @@ const {
     updateMission,
     deleteMission
 } = require('../../data/missionsStore/db');
+const { getAllAircraftTypes } = require('../../data/fleetStore/db');
 
 // Aplica protección admin a todas las rutas de este subrouter
 router.use(requireRole('admin'));
@@ -96,6 +97,17 @@ router.delete('/users/:id', async (req, res) => {
         res.json({ ok: true });
     } catch (err) {
         console.error('DELETE /api/admin/users/:id error', err);
+        res.status(500).json({ ok: false, error: 'internal_error' });
+    }
+});
+
+// --- AIRCRAFT TYPES (para selector en misiones)
+router.get('/aircraft-types', async (req, res) => {
+    try {
+        const types = await getAllAircraftTypes();
+        res.json({ ok: true, types });
+    } catch (err) {
+        console.error('GET /api/admin/aircraft-types error', err);
         res.status(500).json({ ok: false, error: 'internal_error' });
     }
 });
