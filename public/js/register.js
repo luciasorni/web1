@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const termCbx = document.getElementById('acepto');
     const btn     = document.getElementById('btnEntrar');
     const errBox  = document.querySelector('.form-error');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const avatarRadios  = document.querySelectorAll('input[name="avatar"]');
+    const avatarOptions = document.querySelectorAll('.avatar-option');
 
     if (!form || !btn || !userIpt || !emailIpt || !passIpt) return;
 
@@ -22,6 +25,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearError = ()    => { errBox.hidden = true;  errBox.textContent = ''; };
 
     const isValidDNI = v => !v || /^[0-9]{8}[A-Za-z]$/.test(v.trim()); // opcional
+
+    const selectedAvatar = () => {
+        const current = document.querySelector('input[name="avatar"]:checked');
+        return current ? current.value : '';
+    };
+
+    const syncAvatarPreview = (value) => {
+        if (avatarPreview && value) avatarPreview.src = value;
+        avatarOptions.forEach(opt => {
+            const input = opt.querySelector('input[name="avatar"]');
+            opt.classList.toggle('is-selected', !!input && input.value === value);
+        });
+    };
+
+    avatarRadios.forEach(r => {
+        r.addEventListener('change', () => syncAvatarPreview(r.value));
+    });
+
+    if (avatarRadios.length) syncAvatarPreview(selectedAvatar());
 
     const validate = () => {
         if (!form.checkValidity()) {
@@ -41,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         password: passIpt.value,
         autoLogin: true,                     // Le indicamos al backend que realize autologin
         // Otros campos de formulario de registro
+        avatar: selectedAvatar(),
         nombre: (nameIpt?.value || '').trim(),
         dni:    (dniIpt?.value  || '').trim()
     });

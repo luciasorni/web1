@@ -8,7 +8,8 @@ router.get('/search', async (req, res) => {
     try {
         const q = req.query.q || '';
         const users = await searchUsers({ query: q, limit: 30 });
-        res.json({ ok: true, users });
+        const filtered = users.filter(u => !(u.roles || []).includes('admin'));
+        res.json({ ok: true, users: filtered });
     } catch (err) {
         console.error('GET /api/explore/search error', err);
         res.status(500).json({ ok: false, error: 'internal_error' });

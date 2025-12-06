@@ -23,7 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const res = await fetch(`/api/explore/search?q=${encodeURIComponent(q)}`);
                 const data = await res.json();
                 if (!res.ok || !data.ok) throw new Error(data.error || 'Error');
-                renderResults(data.users || []);
+                const filtered = (data.users || []).filter(u => !(u.roles || []).includes('admin'));
+                renderResults(filtered);
             } catch (err) {
                 console.error(err);
                 resultsBox.innerHTML = '<p class="explore-error">No se pudo cargar la búsqueda.</p>';
@@ -38,8 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
             resultsBox.innerHTML = users.map(u => `
                 <article class="explore-card">
                     <h3>${u.username}</h3>
-                    <p class="small">${u.email || ''}</p>
-                    <p>Roles: ${(u.roles || []).join(', ') || 'sin roles'}</p>
                     <p>Estado: ${u.isActive ? 'activo' : 'suspendido'}</p>
                     ${u.airport ? `
                         <p>Aeropuerto: ${u.airport.name} · Nivel ${u.airport.level}</p>
@@ -93,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!user) return showError('Usuario no encontrado.');
         if (errorBox) errorBox.hidden = true;
         userTitle.textContent = `@${user.username}`;
-        userMeta.textContent = user.email || '';
+        userMeta.textContent = user.roles?.includes('admin') ? 'admin' : 'usuario';
         if (user.airport) {
             airportName.textContent = `Nombre: ${user.airport.name}`;
             airportLevel.textContent = `Nivel: ${user.airport.level}`;
