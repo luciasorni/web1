@@ -277,6 +277,11 @@ body {
     animation: plane-fly 14s linear infinite;
 }
 
+/* Oculta panel antiguo de eventos si alguna caché lo trae */
+.missions-page__events {
+    display: none !important;
+}
+
 @keyframes plane-fly {
     from { transform: translateX(0); }
     to   { transform: translateX(110vw); }

@@ -120,7 +120,7 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     const isUsersPage  = Boolean(document.querySelector('input[placeholder="Buscar usuario..."]'));
-    const isEventsPage = Boolean(document.querySelector('input[name="mission-name"]'));
+    const isEventsPage = window.location.pathname.includes('/admin/events');
 
     if (isUsersPage) initUsersPage();
     if (isEventsPage) initEventsPage();
@@ -273,6 +273,10 @@
     const tableBody = document.querySelector('.admin-table tbody');
 
     if (!tableBody) return;
+    if (!nameInput || !typeInput || !costInput || !rewardInput || !durInput || !levelInput) {
+      alert('Actualiza la página (Ctrl+Shift+R) para cargar el nuevo formulario de misiones.');
+      return;
+    }
 
     let events = [];
 
