@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             resultsBox.innerHTML = users.map(u => `
                 <article class="explore-card">
                     <h3>${u.username}</h3>
-                    <p class="small">${u.email || ''}</p>
+                    <p class="small">${u.roles?.includes('admin') ? 'admin' : 'usuario'}</p>
                     <p>Roles: ${(u.roles || []).join(', ') || 'sin roles'}</p>
                     <p>Estado: ${u.isActive ? 'activo' : 'suspendido'}</p>
                     ${u.airport ? `
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!user) return showError('Usuario no encontrado.');
         if (errorBox) errorBox.hidden = true;
         userTitle.textContent = `@${user.username}`;
-        userMeta.textContent = user.email || '';
+        userMeta.textContent = user.roles?.includes('admin') ? 'admin' : 'usuario';
         if (user.airport) {
             airportName.textContent = `Nombre: ${user.airport.name}`;
             airportLevel.textContent = `Nivel: ${user.airport.level}`;
