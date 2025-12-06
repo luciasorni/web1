@@ -170,7 +170,7 @@
             <td>${status}</td>
             <td>${fmtDate(u.lastLoginAt)}</td>
             <td style="text-align:right;">
-              <button class="admin-btn admin-btn--danger" data-action="suspend" data-id="${u.id}" ${(!u.isActive || isAdmin) ? 'disabled' : ''}>Suspender</button>
+              <button class="admin-btn admin-btn--warn" data-action="suspend" data-id="${u.id}" ${(!u.isActive || isAdmin) ? 'disabled' : ''}>Suspender</button>
               <button class="admin-btn admin-btn--ok" data-action="restore" data-id="${u.id}" ${(u.isActive || isAdmin) ? 'disabled' : ''}>Restaurar</button>
               <button class="admin-btn admin-btn--danger" data-action="delete" data-id="${u.id}" ${isAdmin ? 'disabled' : ''}>Borrar</button>
             </td>
