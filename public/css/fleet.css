@@ -32,6 +32,25 @@
     letter-spacing: .02rem;
 }
 
+.fleet-header__meta {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+}
+
+.fleet-balance {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .35rem .75rem;
+    background: rgba(43,180,234,.1);
+    color: #0f5f89;
+    border: 1px solid rgba(43,180,234,.3);
+    border-radius: 12px;
+    font-weight: 700;
+}
+
 .fleet-filters {
     display: flex;
     gap: .4rem;
@@ -211,9 +230,16 @@
     font-size: .95rem;
 }
 
-.fleet-card__mat {
+.fleet-card__model {
+    display: block;
     font-weight: 700;
-    letter-spacing: .02rem;
+    letter-spacing: .01rem;
+}
+
+.fleet-card__mat {
+    display: block;
+    color: #5d6a79;
+    font-size: .9rem;
 }
 
 /* Texto adicional */

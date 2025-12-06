@@ -3,6 +3,7 @@
 let owned = [];
 let catalog = [];
 let currentFilter = 'all';
+let credits = null;
 
 // --- Carga inicial de la página ---
 document.addEventListener('DOMContentLoaded', async () => {
@@ -11,6 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const gridOwned   = document.getElementById('fleetOwnedGrid');
     const gridCatalog = document.getElementById('fleetCatalogGrid');
     const filters     = document.getElementById('filters');
+    const balanceEl   = document.getElementById('fleetBalance');
 
     if (!gridOwned || !gridCatalog || !filters) {
         console.error('Fleet: missing DOM elements');
@@ -18,10 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-        const res = await fetch('/api/game/fleet', {
-            credentials: 'same-origin'
-        });
-
+        const res = await fetch('/api/game/fleet', { credentials: 'same-origin' });
         if (!res.ok) {
             console.error('Fleet API error:', res.status);
             return;
@@ -33,16 +32,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        // Mensaje para confirmar que la recuperación de la información ha ido bien
         console.log('Fleet data loaded:', data);
 
-        // --- Flota del usuario ---
         owned = data.fleet.map(a => ({
             id: a.id,
             typeId: a.typeId,
             role: a.role,
             status: a.status,
-            matricula: a.nickname || a.id,
+            nickname: a.nickname || '',
+            displayName: a.nickname || a.model || a.id,
             model: a.model,
             description: a.description,
             basePrice: Number(a.basePrice) || 0,
@@ -51,13 +49,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             imageUrl: `/img/aircraft/${a.typeId}.jpeg`
         }));
 
-        // --- Contador: cuántos aviones tengo de cada tipo ---
         const countByTypeId = owned.reduce((acc, a) => {
             acc[a.typeId] = (acc[a.typeId] || 0) + 1;
             return acc;
         }, {});
 
-        // --- Catálogo completo ---
         catalog = data.catalog.map(t => ({
             id: t.id,
             role: t.role,
@@ -68,10 +64,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             ownedCount: countByTypeId[t.id] || 0
         }));
 
-        // Primer pintado
         applyFilter();
+        await loadBalance(balanceEl);
 
-        // --- Filtros ---
         filters.addEventListener('click', (e) => {
             const btn = e.target.closest('[data-type]');
             if (!btn) return;
@@ -93,8 +88,8 @@ document.addEventListener('click', async (e) => {
     const btn = e.target.closest('.fleet-btn--buy');
     if (!btn) return;
 
-    const typeId = btn.dataset.typeId; // string (p.ej. "C130")
-    console.log('Click en botón comprar, typeId =', typeId);
+    const typeId = btn.dataset.typeId;
+    const balanceEl = document.getElementById('fleetBalance');
 
     const type = catalog.find(c => c.id === typeId);
     if (!type) {
@@ -138,7 +133,6 @@ document.addEventListener('click', async (e) => {
             return;
         }
 
-        // --- Compra OK ---
         const a = data.aircraft;
 
         owned.push({
@@ -146,7 +140,8 @@ document.addEventListener('click', async (e) => {
             typeId: a.typeId,
             role: a.role,
             status: a.status,
-            matricula: a.nickname || a.id,
+            nickname: a.nickname || '',
+            displayName: a.nickname || a.model || a.id,
             model: a.model,
             description: a.description,
             basePrice: Number(a.basePrice) || 0,
@@ -160,9 +155,12 @@ document.addEventListener('click', async (e) => {
             entry.ownedCount = (entry.ownedCount || 0) + 1;
         }
 
-        console.log('Créditos restantes tras compra:', data.credits);
+        if (typeof data.credits === 'number') {
+            credits = data.credits;
+            updateBalance(balanceEl);
+        }
 
-        applyFilter(); // repinta flota + catálogo
+        applyFilter();
 
     } catch (err) {
         console.error('Error realizando la compra:', err);
@@ -213,6 +211,9 @@ function card(a, isOwned) {
         ? a.purchasedPrice.toLocaleString('es-ES')
         : a.purchasedPrice;
 
+    const title = isOwned ? (a.displayName || a.model || a.id) : a.model;
+    const subtitle = isOwned && a.model && a.model !== title ? a.model : '';
+
     return `
     <article class="fleet-card">
       <div class="fleet-card__img">
@@ -227,9 +228,8 @@ function card(a, isOwned) {
         </div>
 
         <div class="fleet-card__meta">
-          <span class="fleet-card__mat">
-            ${ isOwned ? a.matricula : a.model }
-          </span>
+          <span class="fleet-card__model">${title}</span>
+          ${ subtitle ? `<span class="fleet-card__mat">${subtitle}</span>` : '' }
         </div>
 
         <div class="fleet-card__extra">
@@ -295,4 +295,27 @@ function formatDate(d) {
     if (!d) return '';
     const date = new Date(d);
     return isNaN(date.getTime()) ? '' : date.toLocaleDateString('es-ES');
+}
+
+async function loadBalance(el) {
+    if (!el) return;
+    try {
+        const res = await fetch('/api/game/economy', { credentials: 'same-origin' });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.ok && typeof data.balance === 'number') {
+            credits = data.balance;
+            updateBalance(el);
+        }
+    } catch (err) {
+        console.error('Error fetching balance:', err);
+    }
+}
+
+function updateBalance(el) {
+    if (!el) return;
+    const value = typeof credits === 'number'
+        ? credits.toLocaleString('es-ES')
+        : '--';
+    el.textContent = `Créditos: ${value}`;
 }
