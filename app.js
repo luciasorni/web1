@@ -305,3 +305,47 @@ if (MODE === 'dev') {
 // Cierre ordenado y seguro del servidor - Evita que queden puertos y procesos mal cerrados y liberados
 require('./utils/gracefulShutdown')(server, { timeoutMs: 8000 });
 
+// --------------------------------------------------------
+//  SOCKET.IO ƒ?" CHAT GLOBAL NO PERSISTENTE
+// --------------------------------------------------------
+const wrap = (middleware) => (socket, next) => middleware(socket.request, {}, next);
+
+const io = new Server(server, {
+    cors: { origin: true, credentials: true },
+});
+
+// Reutiliza la misma sesiÇün que Express para saber quiÇ¸n envÇða mensajes
+io.use(wrap(sessionMiddleware));
+
+// AutenticaciÇün bÇ­sica: requiere sesiÇün vÇ­lida
+io.use((socket, next) => {
+    const sess = socket.request.session;
+    if (!sess?.userId) return next(new Error('unauthorized'));
+    socket.user = {
+        id: sess.userId,
+        name: sess.userName || 'Jugador',
+    };
+    next();
+});
+
+io.on('connection', (socket) => {
+    // Informa al cliente de su identidad actual
+    socket.emit('chat:ready', {
+        userId: socket.user.id,
+        userName: socket.user.name,
+    });
+
+    socket.on('chat:message', (payload = {}) => {
+        const raw = typeof payload.text === 'string' ? payload.text.trim() : '';
+        if (!raw) return;
+        const text = raw.slice(0, 500);
+        const msg = {
+            text,
+            userId: socket.user.id,
+            userName: socket.user.name,
+            ts: Date.now(),
+        };
+        io.emit('chat:message', msg);  // global broadcast
+    });
+});
+

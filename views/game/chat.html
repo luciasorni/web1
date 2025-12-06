@@ -22,6 +22,7 @@
 
     <!-- Scripts (defer para respetar CSP) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="/socket.io/socket.io.js" defer></script>
 
     <!-- Lógica específica del chat -->
     <script src="/js/chat.js" defer></script>
@@ -42,7 +43,6 @@
         <a class="chat-page__menu-item" href="/game/missions">Misiones</a>
         <a class="chat-page__menu-item" href="/game/market">Mercado</a>
         <a class="chat-page__menu-item" href="/game/economy">Banco</a>
-
       </div>
     </aside>
 
@@ -53,23 +53,7 @@
       </header>
 
       <!-- Zona de mensajes -->
-      <section id="chatStream" class="chat-stream" aria-live="polite">
-        <!-- Mensajes de ejemplo iniciales -->
-        <div class="msg msg--other">
-          <div class="msg__bubble">
-            <div class="msg__author">Lucía</div>
-            <div class="msg__text">Bienvenido a Skyport 👋</div>
-            <div class="msg__time">12:00</div>
-          </div>
-        </div>
-        <div class="msg msg--me">
-          <div class="msg__bubble">
-            <div class="msg__author">Yo</div>
-            <div class="msg__text">¡Hola a todos!</div>
-            <div class="msg__time">12:01</div>
-          </div>
-        </div>
-      </section>
+      <section id="chatStream" class="chat-stream" aria-live="polite"></section>
 
       <!-- Input inferior -->
       <footer class="chat-input">
@@ -78,7 +62,7 @@
             id="chatText"
             class="chat-input__field"
             type="text"
-            placeholder="Escribe un mensaje y pulsa Enter…"
+            placeholder="Escribe un mensaje y pulsa Enter"
             required
           />
           <button class="chat-input__send" type="submit" aria-label="Enviar">Enviar</button>
@@ -86,57 +70,5 @@
       </footer>
     </main>
   </div>
-
-  <!-- JS inline para que funcione al abrir el HTML directamente -->
-  <script>
-    (function () {
-      const stream = document.getElementById('chatStream');
-      const form   = document.getElementById('chatForm');
-      const input  = document.getElementById('chatText');
-
-      function hhmm(d=new Date()){
-        return d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-      }
-
-      function addMsg(text, who='me', author= (who==='me' ? 'Yo' : 'Jugador')) {
-        const wrap = document.createElement('div');
-        wrap.className = 'msg ' + (who === 'me' ? 'msg--me' : 'msg--other');
-        wrap.innerHTML = `
-          <div class="msg__bubble">
-            <div class="msg__author">${author}</div>
-            <div class="msg__text"></div>
-            <div class="msg__time">${hhmm()}</div>
-          </div>`;
-        wrap.querySelector('.msg__text').textContent = text;
-        stream.appendChild(wrap);
-        stream.scrollTop = stream.scrollHeight;
-      }
-
-      // Enviar propio
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const text = input.value.trim();
-        if (!text) return;
-        addMsg(text, 'me');
-        input.value = '';
-      });
-
-      // Simulación: cada 10 segundos entra un mensaje “de otro”
-      const simulated = [
-        '¿Alguien vende un ATR 72 barato?',
-        'Acabo de completar misión de carga en 12 min 💪',
-        '¿Consejos para optimizar combustible?',
-        'Evento de Navidad pronto 🎄',
-        'Busco alianza para misiones conjuntas.'
-      ];
-      let i = 0;
-      setInterval(() => {
-        const txt = simulated[i % simulated.length];
-        const nick = ['Lucía','Carlos','Marta','Pablo','Ana'][i % 5];
-        addMsg(txt, 'other', nick);
-        i++;
-      }, 10000);
-    })();
-  </script>
 </body>
 </html>
