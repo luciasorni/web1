@@ -1,11 +1,6 @@
 /* Ajustes específicos de la página de registro */
 /* .hero-title ya existe en login.css; si quieres diferenciar, descomenta y ajusta */
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
 
 /* 2) Evitar que el título “empuje” hacia abajo */
 .register-main h1,
@@ -20,17 +15,20 @@ body {
 }
 /* añade separación bajo la navbar */
 .register-main {
+  flex: 1; /* muy importante para el sticky footer global */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  overflow-y: auto;
-  gap: 1.25rem;                 /* ojo, sin espacio entre número y rem */
+  gap: 1.25rem;
   width: 100%;
-  min-height: calc(100vh - var(--navbar-height));
-  padding: calc(var(--navbar-height) + 24px) 1.5rem 48px;
+  /* no min-height calc rara, el body+main ya se encargan */
+  padding: 24px 1.5rem var(--content-footer-gap);
   background: transparent;
+  /* nada de scroll interno aquí */
+  overflow: visible;
 }
+
 .register-card {
   width: min(540px, 100%);
   padding: 26px 22px;
@@ -136,9 +134,12 @@ body {
   transform: translateY(-2px);
 }
 
+/* Footer: oculto hasta que se haga scroll, luego queda fijado abajo */
+
+
 @media (max-width: 576px) {
   .register-main {
-    padding: 88px 1rem 36px;
+    padding: 88px 1rem 88px;
   }
   .register-card {
     padding: 22px 18px;
@@ -146,4 +147,14 @@ body {
   .avatar-preview {
     align-items: flex-start;
   }
+}
+/* En la página de registro, que el main no pinte fondo propio */
+/* Fondo específico SOLO para la página de registro */
+body.register-page {
+  background: var(--beige-100);   /* o el color que quieras, por ejemplo #f6eee2 */
+}
+
+/* El main de la página de registro no añade otro fondo encima */
+body.register-page main {
+  background: transparent;        /* o el mismo color que el body si prefieres */
 }

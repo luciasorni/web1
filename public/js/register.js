@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const userIpt = document.getElementById('username');
     const emailIpt= document.getElementById('email');
     const passIpt = document.getElementById('password');
+    const footer  = document.querySelector('.site-footer');
+    const mainEl  = document.querySelector('.register-main');
 
     // Opcionales (hoy backend los ignora; los dejamos para futuro)
     const nameIpt = document.getElementById('nombre');
@@ -119,4 +121,20 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleBusy(false);
         }
     });
+
+    // Mostrar el footer cuando se desliza un poco y mantenerlo visible
+    let footerShown = false;
+    const showFooter = () => {
+        if (footer && !footerShown) {
+            footer.classList.add('is-visible');
+            footerShown = true;
+        }
+    };
+    const handleScroll = () => {
+        const scrollTop = Math.max(window.scrollY, mainEl?.scrollTop || 0);
+        if (scrollTop > 40) showFooter();
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    mainEl?.addEventListener('scroll', handleScroll, { passive: true });
 });
