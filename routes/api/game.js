@@ -9,7 +9,8 @@ const { findUsersByIds } = require('../../data/usersStore/db');
 const {
     getFleetForUser,
     getAllAircraftTypes,
-    buyAircraftForUser
+    buyAircraftForUser,
+    sellAircraftForUser
 } = require('../../data/fleetStore/db');
 
 // Missions ✈️
@@ -120,6 +121,44 @@ router.post('/fleet/buy', requireAuth, async (req, res) => {
             return res.status(400).json({ ok: false, error: 'insufficient_credits' });
         }
 
+        return res.status(500).json({ ok: false, error: 'internal_error' });
+    }
+});
+
+// --- /api/game/market ---
+// Devuelve catalogo (tipos activos) y flota del usuario (para vender)
+router.get('/market', requireAuth, async (req, res) => {
+    try {
+        const userId = req.session.userId;
+        const [fleet, catalog] = await Promise.all([
+            getFleetForUser(userId),
+            getAllAircraftTypes()
+        ]);
+        res.json({ ok: true, userId, fleet, catalog });
+    } catch (err) {
+        console.error('GET /api/game/market error', err);
+        res.status(500).json({ ok: false, error: 'internal_error' });
+    }
+});
+
+// --- /api/game/market/sell ---
+// Body: { aircraftId }
+router.post('/market/sell', requireAuth, async (req, res) => {
+    const userId = req.session.userId;
+    const { aircraftId } = req.body || {};
+
+    if (!aircraftId) {
+        return res.status(400).json({ ok: false, error: 'missing_aircraft_id' });
+    }
+
+    try {
+        const result = await sellAircraftForUser({ userId, aircraftId });
+        return res.json({ ok: true, ...result });
+    } catch (err) {
+        console.error('POST /market/sell error', err);
+        if (err.code === 'AIRCRAFT_NOT_FOUND') {
+            return res.status(404).json({ ok: false, error: 'aircraft_not_found' });
+        }
         return res.status(500).json({ ok: false, error: 'internal_error' });
     }
 });

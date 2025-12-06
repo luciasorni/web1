@@ -140,8 +140,74 @@ async function buyAircraftForUser({ userId, aircraftTypeId }) {
     });
 }
 
+/**
+ * Vende un avion propiedad del usuario:
+ *  - valida propiedad
+ *  - calcula precio de reventa (70% del precio de compra o base)
+ *  - borra de user_aircraft
+ *  - ingresa créditos en account_movements + users.current_balance
+ */
+async function sellAircraftForUser({ userId, aircraftId }) {
+    return knex.transaction(async (trx) => {
+        const aircraft = await trx('user_aircraft')
+            .join('aircraft_types', 'user_aircraft.aircraft_type_id', 'aircraft_types.id')
+            .where('user_aircraft.id', aircraftId)
+            .andWhere('user_aircraft.user_id', userId)
+            .select(
+                'user_aircraft.id as id',
+                'user_aircraft.nickname as nickname',
+                'user_aircraft.status as status',
+                'user_aircraft.purchased_price as purchasedPrice',
+                'user_aircraft.purchased_at as purchasedAt',
+                'aircraft_types.id as typeId',
+                'aircraft_types.role as role',
+                'aircraft_types.name as model',
+                'aircraft_types.base_price as basePrice',
+                'aircraft_types.description as description'
+            )
+            .first();
+
+        if (!aircraft) {
+            const err = new Error('Aircraft not found');
+            err.code = 'AIRCRAFT_NOT_FOUND';
+            throw err;
+        }
+
+        const salePrice = Math.round((aircraft.purchasedPrice || aircraft.basePrice || 0) * 0.7);
+
+        // saldo actual
+        const currentCredits = await getUserBalance(trx, userId);
+        const newCredits = currentCredits + salePrice;
+
+        await trx('account_movements').insert({
+            id: `sell_${userId}_${Date.now()}_${aircraftId}`,
+            user_id: userId,
+            type: 'aircraft_sell',
+            amount: salePrice,
+            description: `Venta avión ${aircraft.model} (${aircraft.typeId})`,
+            related_aircraft_id: aircraftId,
+            related_mission_id: null
+        });
+
+        await trx('users')
+            .where({ id: userId })
+            .update({ current_balance: newCredits });
+
+        await trx('user_aircraft')
+            .where({ id: aircraftId, user_id: userId })
+            .del();
+
+        return {
+            removed: aircraft,
+            credits: newCredits,
+            salePrice
+        };
+    });
+}
+
 module.exports = {
     getFleetForUser,
     getAllAircraftTypes,
-    buyAircraftForUser
+    buyAircraftForUser,
+    sellAircraftForUser
 };

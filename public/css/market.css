@@ -26,6 +26,25 @@
   letter-spacing:.02rem;
 }
 
+.market-header__meta{
+  display:flex;
+  gap:.6rem;
+  align-items:center;
+  margin-left:auto;
+}
+
+.market-balance{
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+  padding:.35rem .7rem;
+  background:rgba(43,180,234,.12);
+  border:1px solid rgba(43,180,234,.3);
+  color:#0f5f89;
+  border-radius:12px;
+  font-weight:700;
+}
+
 /* Switch Comprar/Vender */
 .market-switch{
   display:inline-flex;
