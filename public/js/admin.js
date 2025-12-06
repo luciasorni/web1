@@ -120,7 +120,7 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     const isUsersPage  = Boolean(document.querySelector('input[placeholder="Buscar usuario..."]'));
-    const isEventsPage = Boolean(document.querySelector('input[placeholder="Nombre del evento"]'));
+    const isEventsPage = Boolean(document.querySelector('input[name="mission-name"]'));
 
     if (isUsersPage) initUsersPage();
     if (isEventsPage) initEventsPage();
