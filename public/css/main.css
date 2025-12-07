@@ -204,6 +204,96 @@ footer {
   box-shadow: 0 8px 20px rgba(8,61,119,0.15);
 }
 
+.daltonism-toggle-floating {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 3000;
+  background: #fff;
+  border: 1px solid var(--blue-600);
+  color: var(--blue-600);
+  border-radius: 10px;
+  padding: .4rem .75rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  font-weight: 600;
+  cursor: pointer;
+}
+.daltonism-toggle-floating:hover {
+  background: var(--blue-600);
+  color: #fff;
+}
+
+/* Daltonic mode (toggle) */
+body.daltonic-mode {
+  overflow-x: hidden;
+  background: #f3f3f3;
+  color: #0a0a0a;
+  /* paleta de alto contraste pensada para visibilidad en daltonismo */
+  --blue-900: #0b3b8a;   /* azul profundo */
+  --blue-600: #0a63e0;   /* azul vivo accesible */
+  --blue-650: #0a8bff;   /* azul claro accesible */
+  --red-600:  #b00020;   /* rojo fuerte */
+  --red-550:  #d0002a;   /* rojo brillante */
+  --orange-500: #b85c00; /* ámbar fuerte */
+  --orange-450: #d97706; /* ámbar brillante */
+  --beige-100: #f3f3f3;
+}
+body.daltonic-mode main {
+  background: linear-gradient(180deg, #f3f3f3 0%, #ffffff 100%);
+}
+body.daltonic-mode .site-header,
+body.daltonic-mode .navbar {
+  filter: none;
+  background: #f3f3f3;
+  border-bottom: 2px solid rgba(0,0,0,0.12);
+}
+body.daltonic-mode .game-container {
+  filter: none;
+  background: #f3f3f3;
+}
+body.daltonic-mode .card {
+  box-shadow: none;
+  border: 2px solid rgba(0,0,0,0.18);
+}
+body.daltonic-mode .news-card .card-header,
+body.daltonic-mode .empty-panel .card-header {
+  background: var(--orange-500);
+}
+body.daltonic-mode .nav-link.btn-sky,
+body.daltonic-mode .btn-sky {
+  background: #0a63e0;
+  border: 2px solid #052c6c;
+  color: #fff;
+}
+body.daltonic-mode .btn-outline-sky {
+  border-color: #0a63e0;
+  color: #0a63e0;
+}
+body.daltonic-mode .btn-outline-red {
+  border-color: #d43b2f;
+  color: #d43b2f;
+}
+body.daltonic-mode .btn-red,
+body.daltonic-mode .btn-outline-red:hover {
+  background: #b00020;
+  color: #fff;
+}
+body.daltonic-mode a,
+body.daltonic-mode .nav-link {
+  color: #0b3b8a;
+}
+body.daltonic-mode .hero-title,
+body.daltonic-mode .fleet-title,
+body.daltonic-mode .market-title,
+body.daltonic-mode .missions-page__title,
+body.daltonic-mode .game-title {
+  color: #0b3b8a;
+}
+
+body.trippy-mode {
+  overflow-x: hidden;
+}
+
 /* ===============================
    LOGIN / AUTH SCREENS
    =============================== */
