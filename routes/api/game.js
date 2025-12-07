@@ -3,7 +3,16 @@
 const express = require('express');
 const router = express.Router();
 
-const { findUsersByIds } = require('../../data/usersStore/db');
+const { searchUsers } = require('../../data/usersStore/db');
+const {
+    getSocialState,
+    sendRequest,
+    respondRequest,
+    listIncomingRequests,
+    listOutgoingRequests,
+    listFriendships
+} = require('../../data/socialStore/db');
+const realtime = require('../../utils/realtime');
 
 // Fleet
 const {
@@ -262,6 +271,129 @@ router.get('/events', requireAuth, async (req, res) => {
         res.json({ ok: true, events });
     } catch (err) {
         console.error('GET /api/game/events error', err);
+        res.status(500).json({ ok: false, error: 'internal_error' });
+    }
+});
+
+// --- /api/game/social/state ---
+// Devuelve listas de amigos + solicitudes entrantes + stats básicos
+router.get('/social/state', requireAuth, async (req, res) => {
+    try {
+        const userId = req.session.userId;
+        const userName = req.session.userName;
+        const state = await getSocialState(userId);
+        const onlineFriends = realtime.onlineCount((state.friends || []).map(f => f.id));
+
+        res.json({
+            ok: true,
+            userId,
+            userName,
+            stats: {
+                friends: state.friends.length,
+                requests: state.requests.length,
+                online: onlineFriends
+            },
+            friends: state.friends.map(f => ({
+                id: f.id,
+                username: f.username,
+                email: f.email,
+                isOnline: realtime.isUserOnline(f.id)
+            })),
+            requests: state.requests.map(r => ({
+                id: r.id,
+                fromUser: {
+                    id: r.fromUser.id,
+                    username: r.fromUser.username
+                },
+                createdAt: r.createdAt
+            }))
+        });
+    } catch (err) {
+        console.error('GET /api/game/social/state error', err);
+        res.status(500).json({ ok: false, error: 'internal_error' });
+    }
+});
+
+// --- /api/game/social/search?q= ---
+router.get('/social/search', requireAuth, async (req, res) => {
+    try {
+        const userId = req.session.userId;
+        const q = req.query.q || '';
+        const [friends, incoming, outgoing] = await Promise.all([
+            listFriendships(userId),
+            listIncomingRequests(userId),
+            listOutgoingRequests(userId)
+        ]);
+        const pendingFromIds = new Set(incoming.map(r => r.fromUser.id));
+        const pendingToIds = new Set(outgoing.map(r => r.toUserId));
+        const friendIds = new Set(friends.map(f => f.id));
+
+        const users = await searchUsers({ query: q, limit: 20 });
+        const filtered = (users || [])
+            .filter(u => u.id !== userId)
+            .filter(u => !(u.roles || []).includes('admin'));
+
+        const results = filtered.map(u => {
+            let relation = 'none';
+            if (friendIds.has(u.id)) relation = 'friend';
+            else if (pendingFromIds.has(u.id)) relation = 'incoming';
+            else if (pendingToIds.has(u.id)) relation = 'pending';
+
+            return {
+                id: u.id,
+                username: u.username,
+                airport: u.airport,
+                relation
+            };
+        });
+
+        res.json({ ok: true, results });
+    } catch (err) {
+        console.error('GET /api/game/social/search error', err);
+        res.status(500).json({ ok: false, error: 'internal_error' });
+    }
+});
+
+// --- POST /api/game/social/request ---
+router.post('/social/request', requireAuth, async (req, res) => {
+    const fromUserId = req.session.userId;
+    const { userId: toUserId } = req.body || {};
+    if (!toUserId) return res.status(400).json({ ok: false, error: 'missing_user' });
+
+    try {
+        const result = await sendRequest({ fromUserId, toUserId });
+        realtime.emitToUser(toUserId, 'social:request', { requestId: result.id });
+        res.json({ ok: true, requestId: result.id });
+    } catch (err) {
+        console.error('POST /api/game/social/request error', err);
+        if (err.code === 'TARGET_NOT_FOUND') return res.status(404).json({ ok: false, error: 'not_found' });
+        if (err.code === 'SELF_REQUEST') return res.status(400).json({ ok: false, error: 'self_request' });
+        if (err.code === 'ALREADY_FRIENDS') return res.status(409).json({ ok: false, error: 'already_friends' });
+        if (err.code === 'PENDING_EXISTS') return res.status(409).json({ ok: false, error: 'pending_exists' });
+        res.status(500).json({ ok: false, error: 'internal_error' });
+    }
+});
+
+// --- POST /api/game/social/requests/:id/respond ---
+router.post('/social/requests/:id/respond', requireAuth, async (req, res) => {
+    const userId = req.session.userId;
+    const requestId = req.params.id;
+    const { action } = req.body || {};
+    if (!['accept', 'decline'].includes(action)) {
+        return res.status(400).json({ ok: false, error: 'bad_action' });
+    }
+
+    try {
+        const result = await respondRequest({ requestId, userId, action });
+        if (action === 'accept') {
+            realtime.emitToUser(result.fromUserId, 'social:accepted', { by: userId });
+        }
+        res.json({ ok: true, status: action });
+    } catch (err) {
+        console.error('POST /api/game/social/requests/:id/respond error', err);
+        if (err.code === 'NOT_FOUND') return res.status(404).json({ ok: false, error: 'not_found' });
+        if (err.code === 'FORBIDDEN') return res.status(403).json({ ok: false, error: 'forbidden' });
+        if (err.code === 'ALREADY_RESOLVED') return res.status(409).json({ ok: false, error: 'already_resolved' });
         res.status(500).json({ ok: false, error: 'internal_error' });
     }
 });

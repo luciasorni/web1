@@ -87,6 +87,7 @@
 .chip{ border-radius:999px; padding:.25rem .55rem; font-weight:700; font-size:.9rem; }
 .chip--ok{ color:var(--soc-green); background:rgba(34,181,115,.12); border:1px solid rgba(34,181,115,.25); }
 .chip--no{ color:var(--soc-red);   background:rgba(214,69,69,.12);   border:1px solid rgba(214,69,69,.25); }
+.chip--amber{ color:var(--soc-amber); background:rgba(255,176,32,.12); border:1px solid rgba(255,176,32,.3); }
 
 /* requests */
 .social-page__requests{ display:flex; flex-direction:column; gap:.5rem; max-width:560px; }
