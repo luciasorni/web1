@@ -2,13 +2,13 @@
 
 /* ====== scope ====== */
 .social-page {
-  --soc-blue:#2bb4ea;
-  --soc-orange:#f9871b;
-  --soc-yellow:#FFE4B5;
-  --soc-bg:#f6eee2;
-  --soc-green:#22b573;
-  --soc-red:#d64545;
-  --soc-amber:#ffb020;
+  --soc-blue:#2bb4ea; /* blue 650 */
+  --soc-orange:#f9871b; /* orange 450 */
+  --soc-yellow:#FFE4B5; /* yellow 500 */
+  --soc-bg:#f6eee2; /* beige 100 */
+  --soc-green:#22b573; /* green 100 */
+  --soc-red:#d64545; /* red 600 */
+  --soc-amber:#ffb020; /* borrar */
 
   position: fixed; inset: 0; display: flex;
   background: var(--soc-bg);
@@ -37,7 +37,12 @@
 .social-page__back-icon{ font-size:1.4rem; line-height:1; }
 
 /* ====== contenido ====== */
-.social-page__content{ flex:1; display:flex; flex-direction:column; height:100%; }
+.social-page__content{ 
+  flex:1; 
+  display:flex; 
+  flex-direction:column; 
+  height:100%; 
+}
 
 /* topbar */
 .social-page__topbar{
@@ -47,7 +52,13 @@
 .social-page__title{ margin:0; font-size:2rem; letter-spacing:.05rem; }
 
 /* body */
-.social-page__body{ flex:1; padding:1.4rem 2.2rem 2.4rem; display:flex; flex-direction:column; gap:1.2rem; }
+.social-page__body{ 
+  flex:1; 
+  padding:1.4rem 2.2rem 2.4rem; 
+  display:flex; 
+  flex-direction:column; 
+  gap:1.2rem; 
+}
 
 /* stats */
 .social-page__stats{ display:flex; gap:1rem; flex-wrap:wrap; }
@@ -62,18 +73,15 @@
 .stat__value--amber{ color:var(--soc-amber); }
 
 /* toolbar */
-.social-page__toolbar{ display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; }
-.social-page__search-wrap{ display:flex; gap:.5rem; }
-.social-page__input{
-  border:2px solid rgba(0,0,0,.08); border-radius:8px; padding:.55rem .7rem; min-width:260px; outline:none;
-}
-.social-page__input:focus{ border-color:rgba(43,180,234,.6); box-shadow:0 0 0 2px rgba(43,180,234,.08); }
+.toolbar{ display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; }
+.search-wrap{ display:flex; gap:.5rem; }
+
 .btn{ border:1px solid rgba(0,0,0,.15); background:#fff; border-radius:8px; padding:.5rem .8rem; cursor:pointer; }
 .btn--primary{ background:rgba(43,180,234,.15); border-color:rgba(43,180,234,.35); color:#0b6fa3; }
 .btn--ghost{ background:#fff; }
 
 /* results */
-.social-page__results{
+.results{
   background:#fff; border:1px solid rgba(0,0,0,.05); border-radius:12px; padding:.6rem;
   box-shadow:0 8px 18px rgba(0,0,0,.05); max-width:560px;
 }

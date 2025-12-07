@@ -7,6 +7,7 @@
 
     <!-- CSS global + específico -->
     <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/game.css" />
     <link rel="stylesheet" href="/css/social.css" />
 
     <!-- Favicon -->
@@ -23,58 +24,52 @@
     <script src="/js/social.js" defer></script>
 </head>
 <body>
-  <div class="social-page">
-    <!-- LATERAL -->
-    <aside class="social-page__sidebar">
-      <div class="social-page__menu-list">
-        <a class="social-page__menu-item social-page__menu-item--logo" href="/">
-          <img src="/img/logoSkyPort.png" alt="SkyPort logo" class="social-page__logo-img" style="height: 75px;" />
+  <div class="game-container">
+    <aside class="sidebar">
+        <a class="menu-item" href="/">
+            <img src="/img/logoSkyPort.png" alt="SkyPort logo" class="logo-img">
         </a>
-
-        <!-- Volver a Game -->
-        <a class="social-page__menu-item social-page__menu-item--back" href="/game">
-          <span class="social-page__back-icon" aria-hidden="true">↩</span>
-          <span class="social-page__back-text">Juego</span>
-        </a>
-
-        <a class="social-page__menu-item" href="/game/fleet">Flota</a>
-        <a class="social-page__menu-item" href="/game/chat">Chat</a>
-        <a class="social-page__menu-item" href="/game/missions">Misiones</a>
-        <a class="social-page__menu-item" href="/game/market">Mercado</a>
-        <a class="social-page__menu-item" href="/game/economy">Banco</a>
-      </div>
+        <a class="menu-item--back" href="/game">↩ Juego</a>        
+        <a class="menu-item" href="/game/fleet">Flota</a>
+        <a class="menu-item" href="/game/chat">Chat</a>
+        <a class="menu-item" href="/game/missions">Misiones</a>
+        <a class="menu-item" href="/game/market">Mercado</a>
+        <a class="menu-item" href="/game/economy">Banco</a>
     </aside>
 
     <!-- CONTENIDO -->
-    <main class="social-page__content">
-      <header class="social-page__topbar">
-        <h1 class="social-page__title">Social</h1>
+    <main class="main-content--game">
+      <header class="game-topbar">
+        <h1 class="game-title">Social</h1>
+        <button id="daltonismToggle" class="botonDaltonismo" type="button">
+          Modo daltonismo: OFF
+        </button>
       </header>
 
-      <section class="social-page__body">
-        <div class="social-page__stats">
-          <div class="stat"><span class="stat__label">Amigos</span><span class="stat__value" id="stat-friends">0</span></div>
-          <div class="stat"><span class="stat__label">Conectados</span><span class="stat__value stat__value--green" id="stat-online">0</span></div>
-          <div class="stat"><span class="stat__label">Solicitudes</span><span class="stat__value stat__value--amber" id="stat-requests">0</span></div>
+      <section class="contenidoBlanco">
+        <div class="game-kpis">
+          <div class="kpi-card"><span class="kpi-label">Amigos</span><span class="kpi-value" id="stat-friends">0</span></div>
+          <div class="kpi-card"><span class="kpi-label">Conectados</span><span class="kpi-value kpi-value--green" id="stat-online">0</span></div>
+          <div class="kpi-card"><span class="kpi-label">Solicitudes</span><span class="kpi-value kpi-value--amber" id="stat-requests">0</span></div>
         </div>
 
         <!-- barra buscar -->
-        <div class="social-page__toolbar">
-          <div class="social-page__search-wrap">
-            <input id="search-user" type="text" class="social-page__input" placeholder="Buscar jugador…" />
+        <div class="toolbar">
+          <div class="search-wrap">
+            <input id="search-user" type="text" class="input" placeholder="Buscar jugador…" />
             <button id="btn-search" class="btn btn--primary">Buscar</button>
           </div>
         </div>
 
         <!-- RESULTADOS -->
-        <div class="social-page__results" id="search-results" hidden></div>
+        <div class="results" id="search-results" hidden></div>
 
         <!-- SOLICITUDES -->
-        <h2 class="social-page__subtitle">Solicitudes</h2>
+        <h2 class="subtitle">Solicitudes</h2>
         <div id="requests-list" class="social-page__requests empty-box">No tienes solicitudes pendientes.</div>
 
         <!-- AMIGOS -->
-        <h2 class="social-page__subtitle">Amigos</h2>
+        <h2 class="subtitle">Amigos</h2>
         <div id="friends-list" class="social-page__friends-grid"></div>
       </section>
     </main>

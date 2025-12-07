@@ -15,6 +15,7 @@
 
     <!-- Estilos globales + específicos -->
     <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/game.css" />
     <link rel="stylesheet" href="/css/chat.css" />
 
     <!-- Favicon -->
@@ -29,22 +30,18 @@
     <script src="/js/chat.js" defer></script>
 </head>
 <body>
-  <div class="chat-page">
+  <div class="game-container">
     <!-- Sidebar -->
-    <aside class="chat-page__sidebar">
-      <div class="chat-page__menu-list">
-        <a class="chat-page__menu-item" href="/">
-          <img src="/img/logoSkyPort.png" alt="SkyPort" class="chat-page__logo-img" />
+    <aside class="sidebar">
+        <a class="menu-item" href="/">
+            <img src="/img/logoSkyPort.png" alt="SkyPort logo" class="logo-img">
         </a>
-        <a class="chat-page__menu-item" href="/game/social">Social</a>
-        <a class="chat-page__menu-item" href="/game/fleet">Flota</a>
-        <a class="chat-page__menu-item chat-page__menu-item--back" href="/game">
-          <span class="chat-page__back-icon">↩</span> Juego
-        </a>
-        <a class="chat-page__menu-item" href="/game/missions">Misiones</a>
-        <a class="chat-page__menu-item" href="/game/market">Mercado</a>
-        <a class="chat-page__menu-item" href="/game/economy">Banco</a>
-      </div>
+        <a class="menu-item" href="/game/social">Social</a>
+        <a class="menu-item" href="/game/fleet">Flota</a>
+        <a class="menu-item--back" href="/game">↩ Juego</a>        
+        <a class="menu-item" href="/game/missions">Misiones</a>
+        <a class="menu-item" href="/game/market">Mercado</a>
+        <a class="menu-item" href="/game/economy">Banco</a>
     </aside>
 
     <!-- Contenido -->

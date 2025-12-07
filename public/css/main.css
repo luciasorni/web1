@@ -204,7 +204,7 @@ footer {
   box-shadow: 0 8px 20px rgba(8,61,119,0.15);
 }
 
-.daltonism-toggle-floating {
+.botonDaltonismo {
   position: fixed;
   top: 12px;
   right: 12px;
@@ -218,9 +218,18 @@ footer {
   font-weight: 600;
   cursor: pointer;
 }
-.daltonism-toggle-floating:hover {
+
+.botonDaltonismo:hover {
   background: var(--blue-600);
   color: #fff;
+}
+
+/* Dentro de .game-kpis, el botón es parte del flujo */
+.game-kpis .botonDaltonismo {
+  position: static;
+  padding: .65rem .85rem;
+  min-width: 140px;
+  white-space: nowrap;
 }
 
 /* Daltonic mode (toggle) */

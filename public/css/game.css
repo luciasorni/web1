@@ -11,6 +11,7 @@
     --beige-100: #f6eee2;
     --beige-250: #FCE9CB;
     --yellow-500: #FFE4B5;
+    --green-100: #22b573;
     --muted: #6c757d;
 }
 
@@ -66,16 +67,36 @@ body {
     text-decoration: none;
 }
 
-.menu-item--back{ gap:.5rem; background:rgba(255,204,51,.6); }
+.menu-item--back{ 
+    gap:.5rem; 
+    border-bottom: 0.2vw solid var(--orange-450);
+    background:rgba(255,204,51,.6); 
 
+    color: var(--blue-650);
+    font-size: 1.5vw;
+    font-family: 'Fredoka One', cursive;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    text-decoration: none;
+}
 
-.menu-item:hover {
-    background-color: #FFCC33;
+.menu-item--back:hover, .menu-item:hover { 
+    background:#FFCC33; 
 }
 
 .logo-img {
     height: 5vw;
 }
+
+.back-icon{ 
+    font-size:1.4rem; 
+    line-height:1; 
+}
+
 
 /* ======== ZONA DE JUEGO ======== */
 .main-content {
@@ -89,6 +110,7 @@ body {
 
 .main-content--game {
     padding: 1.2rem 1.4rem 1.4rem;
+    background: var(--beige-250);
 }
 
 .explore-mode .main-content {
@@ -112,19 +134,22 @@ body {
     z-index: 5;
 }
 
-.eyebrow {
+.subtitle {
     margin: 0;
     text-transform: uppercase;
+    font-weight: bold;
     letter-spacing: .1em;
-    font-size: .78rem;
-    color: #2f4b1a;
+    font-size: 1.25rem;
+    color: var(--orange-450);
 }
 
 .game-title {
     margin: .2rem 0 0;
     font-size: 1.9rem;
     letter-spacing: .02em;
-    color: #123b27;
+    color: var(--red-550);
+    font-family: 'fredoka one';
+    font-weight: normal;
 }
 
 .game-kpis {
@@ -145,7 +170,7 @@ body {
 .kpi-label {
     display: block;
     font-size: .82rem;
-    color: #57714d;
+    color: black;
     letter-spacing: .02em;
 }
 
@@ -164,6 +189,16 @@ body {
     overflow: hidden;
     background: #7ac04d;
     box-shadow: inset 0 8px 24px rgba(0,0,0,0.12), 0 16px 26px rgba(0,0,0,0.12);
+}
+
+.contenidoBlanco {
+    position: relative;
+    flex: 1;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
 }
 
 .runway {
@@ -306,6 +341,11 @@ body {
     justify-content: space-between;
     font-size: .92rem;
 }
+
+
+
+
+
 
 /* ======== USER CARD (otras pantallas) ======== */
 .user-card {

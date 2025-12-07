@@ -11,6 +11,7 @@
     <!-- Estilos globales + específicos -->
     <link rel="stylesheet" href="/css/main.css" />
     <link rel="stylesheet" href="/css/economy.css" />
+    <link rel="stylesheet" href="/css/game.css" />
 
     <!-- Favicon -->
     <link rel="icon" href="/img/logoSkyPort.png" type="image/png">
@@ -20,25 +21,18 @@
     <script src="/js/economy.js" defer></script>
 </head>
 <body>
-<div class="economy-page">
+<div class="game-container">
     <!-- Sidebar -->
-    <aside class="economy-page__sidebar">
-        <div class="economy-page__menu-list">
-            <a class="economy-page__menu-item economy-page__menu-item--logo" href="/">
-                <img src="/img/logoSkyPort.png" alt="SkyPort logo" class="economy-page__logo-img" />
-            </a>
-
-            <a class="economy-page__menu-item" href="/game/social">Social</a>
-            <a class="economy-page__menu-item" href="/game/fleet">Flota</a>
-            <a class="economy-page__menu-item" href="/game/chat">Chat</a>
-            <a class="economy-page__menu-item" href="/game/missions">Misiones</a>
-            <a class="economy-page__menu-item" href="/game/market">Mercado</a>
-
-            <!-- Volver a Game (amarillo) -->
-            <a class="economy-page__menu-item economy-page__menu-item--back" href="/game">
-                <span class="economy-page__back-icon">↩</span> Juego
-            </a>
-        </div>
+    <aside class="sidebar">
+        <a class="menu-item" href="/">
+            <img src="/img/logoSkyPort.png" alt="SkyPort logo" class="logo-img">
+        </a>
+        <a class="menu-item" href="/game/social">Social</a>
+        <a class="menu-item" href="/game/fleet">Flota</a>
+        <a class="menu-item" href="/game/chat">Chat</a>
+        <a class="menu-item" href="/game/missions">Misiones</a>
+        <a class="menu-item" href="/game/market">Mercado</a>
+        <a class="menu-item--back" href="/game">↩ Juego</a>        
     </aside>
 
     <!-- Contenido principal -->
@@ -66,7 +60,7 @@
 
         <section class="economy-page__panel">
             <!-- GASTOS -->
-            <div class="economy-page__column economy-page__column--expenses" aria-label="Gastos">
+            <div class="economy-page--expenses" aria-label="Gastos">
                 <h2 class="economy-page__column-title">
                     <span class="economy-page__arrow economy-page__arrow--down">↓</span>
                     <span>Gastos</span>

@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
-.economy-page {
+:root {
     --eco-blue-650:#2bb4ea;
     --eco-orange-450:#f9871b;
     --eco-yellow-500:#FFE4B5;
@@ -9,14 +9,17 @@
     --eco-green-500:#22b573;
     --eco-red-bg:rgba(246,64,64,.12);
     --eco-green-bg:rgba(34,181,115,.12);
-
-    position: fixed; inset: 0; display:flex;
-    background: var(--eco-beige-100);
-    font-family: 'Poppins', sans-serif;
-    overflow: hidden;
 }
 
-/* Sidebar */
+/* Contenido principal - usa .main-content */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Sidebar - mantiene colores originales de game.css */
 .economy-page__sidebar{ width:10vw; min-width:120px; height:100%;
     background:var(--eco-yellow-500); border-right:.2vw solid var(--eco-orange-450);
     display:flex; flex-direction:column; }
@@ -33,7 +36,7 @@
 .economy-page__menu-item--back{ gap:.5rem; background:rgba(255,204,51,.6);  }
 .economy-page__back-icon{ font-size:1.4rem; line-height:1; }
 
-/* Contenido */
+/* Contenido - usa class economy-page__content */
 .economy-page__content{ flex:1; display:flex; flex-direction:column; height:100%; }
 
 /* Topbar */
@@ -79,7 +82,7 @@
     flex-direction:column;
     min-height: 0;           /* IMPORTANTE: permite que el hijo con overflow pueda hacer scroll */
 }
-.economy-page__column--expenses{ border-top:.5vw solid var(--eco-red-600); background:var(--eco-red-bg); }
+.economy-page--expenses{ border-top:.5vw solid var(--eco-red-600); background:var(--eco-red-bg); }
 .economy-page__column--income{ border-top:.5vw solid var(--eco-green-500); background:var(--eco-green-bg); }
 
 .economy-page__column-title{

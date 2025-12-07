@@ -7,6 +7,7 @@
 
     <!-- CSS global + específico -->
     <link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="/css/game.css"/>
     <link rel="stylesheet" href="/css/missions.css"/>
 
     <!-- Favicon -->
@@ -17,26 +18,17 @@
     <script src="/js/missions.js" defer></script>
 </head>
 <body>
-<div class="missions-page">
-    <!-- Sidebar -->
-    <aside class="missions-page__sidebar">
-        <div class="missions-page__menu-list">
-            <a class="missions-page__menu-item missions-page__menu-item--logo" href="/">
-                <img src="/img/logoSkyPort.png" alt="SkyPort logo" class="missions-page__logo-img"/>
-            </a>
-
-            <a class="missions-page__menu-item" href="/game/social">Social</a>
-            <a class="missions-page__menu-item" href="/game/fleet">Flota</a>
-            <a class="missions-page__menu-item" href="/game/chat">Chat</a>
-
-            <a class="missions-page__menu-item missions-page__menu-item--back" href="/game">
-                <span class="missions-page__back-icon" aria-hidden="true">↩</span>
-                <span class="missions-page__back-text">Juego</span>
-            </a>
-
-            <a class="missions-page__menu-item" href="/game/market">Mercado</a>
-            <a class="missions-page__menu-item" href="/game/economy">Banco</a>
-        </div>
+<div class="game-container">
+    <aside class="sidebar">
+        <a class="menu-item" href="/">
+            <img src="/img/logoSkyPort.png" alt="SkyPort logo" class="logo-img">
+        </a>
+        <a class="menu-item" href="/game/social">Social</a>
+        <a class="menu-item" href="/game/fleet">Flota</a>
+        <a class="menu-item" href="/game/chat">Chat</a>
+        <a class="menu-item--back" href="/game">↩ Juego</a>        
+        <a class="menu-item" href="/game/market">Mercado</a>
+        <a class="menu-item" href="/game/economy">Banco</a>
     </aside>
 
     <!-- Contenido principal -->

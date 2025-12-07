@@ -311,7 +311,7 @@ function startRemainingTicker() {
 
 // Easter egg: 5 clics en "Torre de control" -> lluvia de aviones
 function setupEasterEgg() {
-    const trigger = document.querySelector('.eyebrow');
+    const trigger = document.querySelector('.subtitle');
     if (!trigger) return;
     let clicks = 0;
     let timer = null;
