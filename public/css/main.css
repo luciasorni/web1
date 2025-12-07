@@ -49,6 +49,15 @@ html, body {
   padding-top: var(--navbar-height);
 }
 
+/* Quitar padding-top y ajustar height en páginas con layout .game-container (sidebar, sin navbar) */
+html:has(.game-container),
+body:has(.game-container) {
+  height: auto !important;
+  padding-top: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 main {
   flex: 1; /* ocupa el espacio disponible */
   display: flex;

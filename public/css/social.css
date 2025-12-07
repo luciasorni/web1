@@ -26,7 +26,7 @@
 .social-page__menu-list{ flex:1 1 auto; display:flex; flex-direction:column; }
 .social-page__menu-item{
   flex:1 1 0; min-height:64px; border-bottom:.2vw solid var(--soc-orange);
-  color:#1690c8; font-size:1.5vw; font-family:'Fredoka One',cursive;
+  color:var(--blue-650); font-size:1.5vw; font-family:'Fredoka One',cursive;
   display:flex; align-items:center; justify-content:center; text-decoration:none;
   cursor:pointer; transition:background-color .15s ease-in; text-align:center;
 }
