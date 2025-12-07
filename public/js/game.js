@@ -14,7 +14,10 @@ let fleetCache = [];
 let runningMissionsByAircraft = {};
 let remainingTimer = null;
 
-document.addEventListener('DOMContentLoaded', initGameView);
+document.addEventListener('DOMContentLoaded', () => {
+    initGameView().catch(err => console.error(err));
+    setupEasterEgg();
+});
 
 async function initGameView() {
     const params = new URLSearchParams(window.location.search);
@@ -304,4 +307,49 @@ function startRemainingTicker() {
             if (lbl) meta.textContent = `En misión · ${lbl}`;
         });
     }, 1000);
+}
+
+// Easter egg: 5 clics en "Torre de control" -> lluvia de aviones
+function setupEasterEgg() {
+    const trigger = document.querySelector('.eyebrow');
+    if (!trigger) return;
+    let clicks = 0;
+    let timer = null;
+    trigger.addEventListener('click', () => {
+        clicks++;
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => { clicks = 0; }, 1200);
+        if (clicks >= 5) {
+            clicks = 0;
+            spawnFlock();
+        }
+    });
+}
+
+function spawnFlock() {
+    const scene = document.querySelector('.airport-scene');
+    if (!scene) return;
+    const count = 20;
+    for (let i = 0; i < count; i++) {
+        const plane = document.createElement('div');
+        plane.className = 'plane-sprite';
+        plane.style.backgroundImage = `url("${PLANE_SPRITES.default}")`;
+        plane.style.opacity = 1;
+        plane.style.width = '72px';
+        plane.style.height = '72px';
+        plane.style.left = `${-200 - Math.random() * 200}px`;
+        plane.style.top = `${Math.random() * (scene.offsetHeight * 0.6)}px`;
+        scene.appendChild(plane);
+
+        const endX = scene.offsetWidth + 400;
+        const endY = plane.offsetTop - 200 + Math.random() * 120;
+        plane.animate([
+            { transform: `translate(0,0) rotate(90deg) scale(0.9)`, opacity: 1 },
+            { transform: `translate(${endX}px, ${endY}px) rotate(110deg) scale(1.4)`, opacity: 0.3 }
+        ], {
+            duration: 5000 + Math.random() * 2000,
+            easing: 'ease-out',
+            fill: 'forwards'
+        }).onfinish = () => plane.remove();
+    }
 }
