@@ -1,5 +1,5 @@
 // /public/js/missions.js
-// Misiones: muestra disponibilidad (saldo + avión compatible) y redirige a /game para animar despegue.
+// Misiones: disponibilidad, activación, abortar y tiempos restantes.
 
 let catalogContainer;
 let activeContainer;
@@ -25,7 +25,7 @@ async function initMissionsPage() {
     if (!catalogContainer || !activeContainer) return;
 
     try { await resolveDueMissions(); } catch (e) { console.warn('resolve-due falló (continúa)', e); }
-    await loadAuxData(); // balance + flota para disponibilidad
+    await loadAuxData();
     await loadMissionsData();
     setupSearchHandlers();
     setupCatalogListeners();
@@ -91,6 +91,7 @@ async function loadMissionsData() {
                 case 'finished':
                 case 'success':  return 'Finalizada';
                 case 'failed':   return 'Fallida';
+                case 'aborted':  return 'Abortada';
                 default:         return m.status || 'Desconocido';
             }
         })();
@@ -102,7 +103,8 @@ async function loadMissionsData() {
                 case 'success': return m.rewardApplied
                     ? 'missions-page__status-card--done'
                     : 'missions-page__status-card--claim';
-                case 'failed':  return 'missions-page__status-card--failed';
+                case 'failed':
+                case 'aborted': return 'missions-page__status-card--failed';
                 default:        return 'missions-page__status-card--pending';
             }
         })();
@@ -123,7 +125,8 @@ async function loadMissionsData() {
             costApplied: m.costApplied,
             rewardApplied: m.rewardApplied,
             startedAt: m.startedAt,
-            finishedAt: m.finishedAt
+            finishedAt: m.finishedAt,
+            aircraftId: m.aircraftId
         };
     });
 
@@ -165,7 +168,9 @@ const renderActive = (list) => {
         activeContainer.innerHTML = `<p class="missions-page__empty">No tienes misiones activas todavía.</p>`;
         return;
     }
-    activeContainer.innerHTML = list.map(m => `
+    activeContainer.innerHTML = list.map(m => {
+        const remaining = m.status === 'running' && m.finishedAt ? ` · ${remainingLabel(m.finishedAt)}` : '';
+        return `
         <div class="missions-page__status-card ${m.statusClass}"
              data-id="${m.id}"
              data-status="${m.status || ''}"
@@ -173,7 +178,7 @@ const renderActive = (list) => {
             <div class="missions-page__status-main">
                 <span class="missions-page__card-title">${m.name}</span>
                 ${m.description ? `<p class="missions-page__card-desc">${m.description}</p>` : ''}
-                <p class="missions-page__card-status">Estado: ${m.statusLabel}</p>
+                <p class="missions-page__card-status">Estado: ${m.statusLabel}${remaining}</p>
                 <p class="missions-page__card-type">Tipo: ${m.type}</p>
                 ${m.durationLabel ? `<p class="missions-page__card-duration">Duración estimada: ${m.durationLabel}</p>` : ''}
                 <p class="missions-page__card-economy">
@@ -190,9 +195,11 @@ const renderActive = (list) => {
             </div>
             <div class="missions-page__card-actions">
                 <button class="btn btn--ghost" data-action="info">Info</button>
+                ${m.status === 'running' ? `<button class="btn btn--danger" data-action="abort">Abortar</button>` : ''}
             </div>
         </div>
-    `).join('');
+    `;
+    }).join('');
 };
 
 function setupSearchHandlers() {
@@ -237,14 +244,20 @@ function setupActiveListeners() {
         const btn = e.target.closest('button[data-action]');
         if (!btn) return;
         const action = btn.dataset.action;
-        if (action === 'info') {
-            const card = btn.closest('.missions-page__status-card');
-            const id = card?.dataset.id;
-            const missionInstance = missions.find(m => String(m.id) === String(id));
-            if (missionInstance) {
+        const card = btn.closest('.missions-page__status-card');
+        const id = card?.dataset.id;
+        const missionInstance = missions.find(m => String(m.id) === String(id));
+        if (!missionInstance) return;
+
+        switch (action) {
+            case 'info': {
                 const base = catalog.find(m => m.id === missionInstance.missionId) || missionInstance;
                 openMissionInfoModal(base);
+                break;
             }
+            case 'abort':
+                handleAbortMission(missionInstance.id);
+                break;
         }
     });
 }
@@ -288,6 +301,27 @@ async function handleActivateMission(mission) {
     }
 }
 
+async function handleAbortMission(userMissionId) {
+    const ok = window.confirm('¿Seguro que quieres abortar esta misión? No se recuperarán costes ni recompensas.');
+    if (!ok) return;
+    try {
+        const res = await fetch(`/api/game/missions/${userMissionId}/abort`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'same-origin'
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) {
+            alert('No se pudo abortar la misión.');
+            return;
+        }
+        await loadMissionsData();
+    } catch (err) {
+        console.error('Error abortando misión', err);
+        alert('Error de comunicación al abortar.');
+    }
+}
+
 function openMissionInfoModal(mission) {
     const modal = document.getElementById('mission-info-modal');
     if (!modal) {
@@ -297,7 +331,8 @@ function openMissionInfoModal(mission) {
             `Tipo: ${mission.type}\n` +
             `Coste: ${mission.cost} créditos\n` +
             `Recompensa: ${mission.reward} créditos\n` +
-            `Duración base: ${mission.durationLabel || 'N/D'}`
+            `Duración base: ${mission.durationLabel || 'N/D'}\n` +
+            `Disponibilidad: ${availabilityLabel(mission.availability)}`
         );
         return;
     }
@@ -399,6 +434,16 @@ function formatElapsedTime(totalSeconds) {
     const pad = (n) => String(n).padStart(2, '0');
     if (hours > 0) return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
     return `${pad(minutes)}:${pad(seconds)}`;
+}
+
+function remainingLabel(finishIso) {
+    if (!finishIso) return '';
+    const ms = Date.parse(finishIso) - Date.now();
+    if (ms <= 0) return 'llegando';
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${String(seconds).padStart(2, '0')}`;
 }
 
 function fmt(n) {

@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('chat:message', (msg) => {
         if (!msg || typeof msg.text !== 'string') return;
         addMsg(msg);
+        if (/\bavion\b/i.test(msg.text)) spawnBigPlane();
     });
 
     socket.on('connect_error', (err) => {
@@ -82,3 +83,24 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     });
 });
+
+// Easter egg: si un mensaje contiene "avion", aparece un avión grande volando
+function spawnBigPlane() {
+    const scene = document.body;
+    const plane = document.createElement('div');
+    plane.className = 'chat-easter-plane';
+    plane.textContent = '✈️';
+    plane.style.left = `${-200}px`;
+    plane.style.top = `${Math.random() * 60 + 10}%`;
+    scene.appendChild(plane);
+
+    const duration = 5000 + Math.random() * 2000;
+    plane.animate([
+        { transform: 'translate(0,0) rotate(10deg) scale(1.2)', opacity: 1 },
+        { transform: 'translate(120vw, -30vh) rotate(20deg) scale(1.6)', opacity: 0 }
+    ], {
+        duration,
+        easing: 'ease-in-out',
+        fill: 'forwards'
+    }).onfinish = () => plane.remove();
+}

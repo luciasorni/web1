@@ -48,14 +48,15 @@ async function getUserBalance(trx, userId) {
  */
 async function buyAircraftForUser({ userId, aircraftTypeId }) {
     return knex.transaction(async (trx) => {
-        // 0) Limite de flota (max 5)
+        // 0) Limite de flota (max 6) - solo cuenta aviones operativos
         const ownedRow = await trx('user_aircraft')
             .where({ user_id: userId })
+            .whereIn('status', ['idle', 'maintenance', 'running'])
             .count({ c: '*' })
             .first();
 
         const ownedCount = Number(ownedRow?.c ?? ownedRow?.['count(*)'] ?? 0);
-        if (ownedCount >= 5) {
+        if (ownedCount >= 6) {
             const err = new Error('Fleet limit reached');
             err.code = 'FLEET_LIMIT';
             throw err;
@@ -179,6 +180,12 @@ async function sellAircraftForUser({ userId, aircraftId }) {
         if (!aircraft) {
             const err = new Error('Aircraft not found');
             err.code = 'AIRCRAFT_NOT_FOUND';
+            throw err;
+        }
+
+        if (aircraft.status === 'running') {
+            const err = new Error('Aircraft busy on mission');
+            err.code = 'AIRCRAFT_BUSY';
             throw err;
         }
 

@@ -232,6 +232,26 @@ router.post('/missions/:id/activate', requireAuth, async (req, res) => {
     }
 });
 
+// --- POST /api/game/missions/:id/abort ---
+router.post('/missions/:id/abort', requireAuth, async (req, res) => {
+    const userId = req.session.userId;
+    const userMissionId = req.params.id;
+
+    try {
+        const result = await abortMissionForUser({ userId, userMissionId });
+        return res.json({ ok: true, ...result });
+    } catch (err) {
+        console.error('POST /missions/:id/abort error', err);
+        if (err.code === 'MISSION_NOT_FOUND') {
+            return res.status(404).json({ ok: false, error: 'mission_not_found' });
+        }
+        if (err.code === 'MISSION_NOT_RUNNING') {
+            return res.status(400).json({ ok: false, error: 'mission_not_running' });
+        }
+        return res.status(500).json({ ok: false, error: 'internal_error' });
+    }
+});
+
 // --- POST /api/game/missions/resolve-due ---
 // Resuelve las misiones del usuario que ya han alcanzado su hora de fin
 router.post('/missions/resolve-due', requireAuth, async (req, res) => {

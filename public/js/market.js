@@ -168,7 +168,7 @@ async function buyAircraft(typeId, btn) {
             if (data.error === 'insufficient_credits') {
                 alert('No tienes créditos suficientes.');
             } else if (data.error === 'fleet_limit') {
-                alert('Límite de flota alcanzado (5 aviones). Vende uno antes de comprar.');
+                alert('Límite de flota alcanzado (6 aviones activos). Vende uno antes de comprar.');
             } else {
                 alert('No se pudo completar la compra.');
             }
@@ -205,7 +205,11 @@ async function sellAircraft(aircraftId, btn) {
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok || !data.ok) {
-            alert('No se pudo vender este avión.');
+            if (data.error === 'aircraft_busy') {
+                alert('No puedes vender un avión que está en misión.');
+            } else {
+                alert('No se pudo vender este avión.');
+            }
             return;
         }
         owned = owned.filter(a => a.id !== aircraftId);
@@ -244,10 +248,17 @@ function formatDate(d) {
     return isNaN(date.getTime()) ? '' : date.toLocaleDateString('es-ES');
 }
 
+function updateBalance() {
+    const el = document.getElementById('marketBalance');
+    if (!el) return;
+    const value = typeof balance === 'number' ? balance.toLocaleString('es-ES') : '--';
+    el.textContent = `Créditos: ${value}`;
+}
+
 async function fetchBalance() {
     try {
         const res = await fetch('/api/game/economy', { credentials: 'same-origin' });
-        const data = await res.json().catch(() => ({}));
+        const data = await res.json();
         if (data.ok && typeof data.balance === 'number') {
             balance = data.balance;
             updateBalance();
@@ -255,11 +266,4 @@ async function fetchBalance() {
     } catch (err) {
         console.error('Error fetching balance', err);
     }
-}
-
-function updateBalance() {
-    const el = document.getElementById('marketBalance');
-    if (!el) return;
-    const value = typeof balance === 'number' ? balance.toLocaleString('es-ES') : '--';
-    el.textContent = `Créditos: ${value}`;
 }

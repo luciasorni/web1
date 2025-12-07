@@ -410,6 +410,57 @@ async function resolveDueMissionsForUser({ userId }) {
     });
 }
 
+async function abortMissionForUser({ userId, userMissionId }) {
+    if (!userId || !userMissionId) {
+        const err = new Error('Missing userId or userMissionId');
+        err.code = 'BAD_INPUT';
+        throw err;
+    }
+
+    return knex.transaction(async (trx) => {
+        const um = await trx('user_missions')
+            .where({ id: userMissionId, user_id: userId })
+            .first();
+
+        if (!um) {
+            const err = new Error('Mission not found');
+            err.code = 'MISSION_NOT_FOUND';
+            throw err;
+        }
+
+        if (um.status !== 'running') {
+            const err = new Error('Mission not running');
+            err.code = 'MISSION_NOT_RUNNING';
+            throw err;
+        }
+
+        // Marcar misión abortada
+        await trx('user_missions')
+            .where({ id: userMissionId })
+            .update({
+                status: 'aborted',
+                reward_applied: 0,
+                updated_at: new Date().toISOString()
+            });
+
+        // Liberar avión
+        if (um.aircraft_id) {
+            await trx('user_aircraft')
+                .where({ id: um.aircraft_id })
+                .update({
+                    status: 'idle',
+                    updated_at: new Date().toISOString()
+                });
+        }
+
+        return {
+            ok: true,
+            userMissionId,
+            aircraftId: um.aircraft_id
+        };
+    });
+}
+
 
 
 
@@ -418,6 +469,7 @@ module.exports = {
     getAllMissions,
     activateMissionForUser,
     resolveDueMissionsForUser,
+    abortMissionForUser,
     listAllMissionsAdmin,
     createMission,
     updateMission,
