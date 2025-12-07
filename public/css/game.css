@@ -9,6 +9,7 @@
     --orange-500: #ff8a3d;
     --orange-450: #f9871b;
     --beige-100: #f6eee2;
+    --beige-250: #FCE9CB;
     --yellow-500: #FFE4B5;
     --muted: #6c757d;
 }
@@ -80,7 +81,7 @@ body {
     flex-direction: column;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(180deg, #b6e17a 0%, #8ecf5a 60%, #7ac04d 100%);
+    background: var(--beige-250);
 }
 
 .main-content--game {
@@ -158,7 +159,7 @@ body {
     flex: 1;
     border-radius: 18px;
     overflow: hidden;
-    background: #d8e6d1;
+    background: #7ac04d;
     box-shadow: inset 0 8px 24px rgba(0,0,0,0.12), 0 16px 26px rgba(0,0,0,0.12);
 }
 
@@ -177,12 +178,12 @@ body {
 
 .runway__centerline {
     position: absolute;
-    left: 50%;
-    top: 14px;
-    bottom: 14px;
-    width: 8px;
-    background-image: repeating-linear-gradient(to bottom, #f7f7f7 0, #f7f7f7 18px, transparent 18px, transparent 36px);
-    transform: translateX(-50%);
+    left: 14px;
+    right: 14px;
+    top: 50%;
+    height: 8px;
+    background-image: repeating-linear-gradient(to right, #f7f7f7 0, #f7f7f7 18px, transparent 18px, transparent 36px);
+    transform: translateY(-50%);
     opacity: 0.9;
 }
 
