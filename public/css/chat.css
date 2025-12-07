@@ -31,7 +31,7 @@
 }
 .chat-page__menu-item:hover { background: #ffcc33; }
 .chat-page__menu-item--active { background: rgba(255,204,51,.6); }
-.chat-page__menu-item--back { gap: .4rem; }
+.chat-page__menu-item--back { gap:.5rem; background:rgba(255,204,51,.6);  }
 .chat-page__logo-img { max-height: 60%; max-width: 80%; }
 .chat-page__back-icon { font-size: 1.2rem; }
 
