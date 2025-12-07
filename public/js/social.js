@@ -47,8 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="friend-meta">${f.email || ''}</div>
                 <div class="friend-actions">
-                    <button class="small-btn" disabled>Chat pronto</button>
-                    <button class="small-btn small-btn--secondary" disabled>Invitar a misión</button>
+                    <button class="small-btn" disabled>Chat (coming soon)</button>
                 </div>
             </article>
         `).join('');
@@ -172,27 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
             console.error('Error respondiendo solicitud', err);
             alert('No se pudo actualizar la solicitud.');
-        }
-    };
-
-    const handleInviteCode = async () => {
-        const code = `SP-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
-        const text = `Únete a SkyPort con mi código: ${code}`;
-        try {
-            await navigator.clipboard.writeText(text);
-            alert(`Código copiado al portapapeles:\n${text}`);
-        } catch {
-            alert(text);
-        }
-    };
-
-    const handleCopyLink = async () => {
-        const link = `${window.location.origin}/register?ref=${encodeURIComponent(state.userName || 'skyport')}`;
-        try {
-            await navigator.clipboard.writeText(link);
-            alert('Enlace de invitación copiado.');
-        } catch {
-            alert(link);
         }
     };
 
