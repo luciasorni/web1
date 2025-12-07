@@ -16,6 +16,7 @@ const { timeouts } = require('./config/sessions');
         - Posteriormente: "new Server(server, ...)" enganchará el servidor de sockets al servidor HTTP.
  */
 const { Server } = require('socket.io');
+const realtime = require('./utils/realtime');
 
 
 // Otros middleware requeridos para funcionalidad diversas.
@@ -313,6 +314,7 @@ const wrap = (middleware) => (socket, next) => middleware(socket.request, {}, ne
 const io = new Server(server, {
     cors: { origin: true, credentials: true },
 });
+realtime.attachIo(io);
 
 // Reutiliza la misma sesiÇün que Express para saber quiÇ¸n envÇða mensajes
 io.use(wrap(sessionMiddleware));
@@ -329,6 +331,10 @@ io.use((socket, next) => {
 });
 
 io.on('connection', (socket) => {
+    // Sala privada para notificar eventos sociales
+    socket.join(realtime.userRoom(socket.user.id));
+    realtime.userConnected(socket.user.id);
+
     // Informa al cliente de su identidad actual
     socket.emit('chat:ready', {
         userId: socket.user.id,
@@ -347,5 +353,8 @@ io.on('connection', (socket) => {
         };
         io.emit('chat:message', msg);  // global broadcast
     });
-});
 
+    socket.on('disconnect', () => {
+        realtime.userDisconnected(socket.user.id);
+    });
+});
