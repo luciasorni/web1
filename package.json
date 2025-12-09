@@ -2,13 +2,13 @@
   "name": "web1",
   "version": "1.0.0",
   "description": "Juan Federico García, Inés Del Río, Jesús Joana, Lucía Sorní",
-  "main": "app.js",
+  "main": "src/app.js",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon app.js",
-    "start": "cross-env NODE_ENV=production node app.js",
+    "dev": "cross-env NODE_ENV=development nodemon src/app.js",
+    "start": "cross-env NODE_ENV=production node src/app.js",
     "db:migrate": "knex migrate:latest --env development",
     "db:rollback": "knex migrate:rollback --env development",
     "db:seed": "knex seed:run --env development"

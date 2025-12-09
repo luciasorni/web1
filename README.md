@@ -26,7 +26,7 @@ Antes de instalar y ejecutar SkyPort v2 es necesario disponer de los siguientes 
 
 - La aplicación utiliza **SQLite3** como motor de base de datos.
 - No es necesario instalar un servidor de base de datos externo (MySQL, PostgreSQL, etc.).
-- La base de datos se almacena en un **fichero local** dentro del proyecto (por ejemplo `db/skyport.sqlite3`), que se crea y/o inicializa mediante las migraciones y seeds de **Knex**:
+- La base de datos se almacena en un **fichero local** dentro del proyecto (por ejemplo `src/db/skyport.sqlite3`), que se crea y/o inicializa mediante las migraciones y seeds de **Knex**:
 
     - Migraciones: crean las tablas necesarias.
     - Seeds: insertan datos de ejemplo (usuario demo, flota de aviones, misiones…).
@@ -59,7 +59,7 @@ La aplicación está preparada para gestionar las sesiones de usuario usando **R
 
 ## 3. Contenido del proyecto
 
-(pequeño resumen de carpetas: /app.js, /db, /routes, /views, /public…)
+El código fuente se encuentra en `src/` (app.js, config, db, routes, views, public…), mientras que en la raíz quedan los archivos de configuración del proyecto (`package.json`, `knexfile.js`, `docs`, etc.).
 
 ## 4. Instalación
 

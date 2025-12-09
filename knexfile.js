@@ -21,11 +21,11 @@ module.exports = {
     development: {
         client: 'sqlite3',
         connection: {
-            filename: path.join(__dirname, 'db', 'skyport.sqlite3')
+            filename: path.join(__dirname, 'src', 'db', 'skyport.sqlite3')
         },
         useNullAsDefault: true,
-        migrations: { directory: path.join(__dirname, 'migrations') },
-        seeds: { directory: path.join(__dirname, 'seeds') }
+        migrations: { directory: path.join(__dirname, 'src', 'migrations') },
+        seeds: { directory: path.join(__dirname, 'src', 'seeds') }
     }
     // Más adelante añadiremos "production" con Postgres si así lo decidimos.
 };
