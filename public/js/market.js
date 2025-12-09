@@ -182,6 +182,9 @@ async function buyAircraft(typeId, btn) {
             updateBalance();
         }
         renderSell();
+        const bought = catalog.find(c => c.id === typeId);
+        const label = bought?.model || bought?.name || typeId;
+        alert(`¡Avión comprado! ${label} añadido a tu flota.`);
     } catch (err) {
         console.error('Buy aircraft error', err);
         alert('Error al comprar.');

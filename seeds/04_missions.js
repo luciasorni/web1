@@ -22,6 +22,7 @@ exports.seed = async function (knex) {
             type: 'commercial_passenger',
             cost: 500,
             reward: 900,
+            xp_reward: 40,
             duration_seconds: 1800, // 30 min
             description: 'Vuelo regional con alta ocupación ideal para A320 o B738.',
             level_required: 1,
@@ -35,6 +36,7 @@ exports.seed = async function (knex) {
             type: 'commercial_passenger',
             cost: 1200,
             reward: 2200,
+            xp_reward: 70,
             duration_seconds: 5400, // 90 min
             description: 'Tramo nacional en franja de máxima demanda. Buen equilibrio riesgo/beneficio.',
             level_required: 2,
@@ -48,6 +50,7 @@ exports.seed = async function (knex) {
             type: 'commercial_passenger',
             cost: 4500,
             reward: 8000,
+            xp_reward: 120,
             duration_seconds: 28800, // 8 h
             description: 'Vuelo de largo radio con alta rentabilidad para B773.',
             level_required: 3,
@@ -65,6 +68,7 @@ exports.seed = async function (knex) {
             type: 'commercial_cargo',
             cost: 400,
             reward: 750,
+            xp_reward: 35,
             duration_seconds: 2700, // 45 min
             description: 'Carga urgente entre dos hubs regionales. Ideal para ATR72F o B738F.',
             level_required: 1,
@@ -78,6 +82,7 @@ exports.seed = async function (knex) {
             type: 'commercial_cargo',
             cost: 1500,
             reward: 2800,
+            xp_reward: 80,
             duration_seconds: 21600, // 6 h
             description: 'Operación nocturna de carga con ocupación media-alta.',
             level_required: 2,
@@ -91,6 +96,7 @@ exports.seed = async function (knex) {
             type: 'commercial_cargo',
             cost: 5000,
             reward: 9500,
+            xp_reward: 140,
             duration_seconds: 32400, // 9 h
             description: 'Gran operación de mercancías a otro continente para B763F.',
             level_required: 4,
@@ -108,6 +114,7 @@ exports.seed = async function (knex) {
             type: 'military_transport',
             cost: 2000,
             reward: 3800,
+            xp_reward: 90,
             duration_seconds: 7200, // 2 h
             description: 'Traslado de tropas a una base avanzada en zona delicada.',
             level_required: 3,
@@ -121,6 +128,7 @@ exports.seed = async function (knex) {
             type: 'military_transport',
             cost: 1500,
             reward: 3200,
+            xp_reward: 75,
             duration_seconds: 10800, // 3 h
             description: 'Entrega de material humanitario tras un desastre natural.',
             level_required: 2,
@@ -138,6 +146,7 @@ exports.seed = async function (knex) {
             type: 'military_attack',
             cost: 2200,
             reward: 4500,
+            xp_reward: 110,
             duration_seconds: 3600, // 1 h
             description: 'Misión de ataque con alta precisión sobre objetivos tácticos.',
             level_required: 4,
@@ -151,6 +160,7 @@ exports.seed = async function (knex) {
             type: 'military_attack',
             cost: 1800,
             reward: 4000,
+            xp_reward: 95,
             duration_seconds: 5400, // 1.5 h
             description: 'Apoyo a unidades terrestres en combate cercano. Ideal para A-10 o F18.',
             level_required: 3,
@@ -168,6 +178,7 @@ exports.seed = async function (knex) {
             type: 'military_recon',
             cost: 800,
             reward: 1700,
+            xp_reward: 60,
             duration_seconds: 14400, // 4 h
             description: 'Patrulla y vigilancia prolongada en zona fronteriza.',
             level_required: 2,
@@ -181,6 +192,7 @@ exports.seed = async function (knex) {
             type: 'military_recon',
             cost: 2500,
             reward: 5200,
+            xp_reward: 150,
             duration_seconds: 43200, // 12 h
             description: 'Misión de reconocimiento continuo con RQ-4 o U2.',
             level_required: 5,

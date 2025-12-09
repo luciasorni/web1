@@ -272,6 +272,7 @@
     const typeSelect= document.querySelector('select[name="mission-type"]');
     const costInput = document.querySelector('input[name="mission-cost"]');
     const rewardInput = document.querySelector('input[name="mission-reward"]');
+    const xpInput   = document.querySelector('input[name="mission-xp"]');
     const durInput  = document.querySelector('input[name="mission-duration"]');
     const levelInput= document.querySelector('input[name="mission-level"]');
     const activeInput= document.querySelector('input[name="mission-active"]');
@@ -279,7 +280,7 @@
     const tableBody = document.querySelector('.admin-table tbody');
 
     if (!tableBody) return;
-    if (!nameInput || !typeSelect || !costInput || !rewardInput || !durInput || !levelInput) {
+    if (!nameInput || !typeSelect || !costInput || !rewardInput || !xpInput || !durInput || !levelInput) {
       alert('Actualiza la página (Ctrl+Shift+R) para cargar el nuevo formulario de misiones.');
       return;
     }
@@ -296,6 +297,7 @@
           <td>${ev.type}</td>
           <td>${ev.cost}</td>
           <td>${ev.reward}</td>
+          <td>${ev.xpReward || 0}</td>
           <td>${Math.round(ev.durationSeconds / 60)} min</td>
           <td>${ev.levelRequired || 1}</td>
           <td>${ev.isActive ? 'activo' : 'inactivo'}</td>
@@ -338,6 +340,7 @@
       const type = (typeSelect?.value || '').trim();
       const cost = Number(costInput?.value || 0);
       const reward = Number(rewardInput?.value || 0);
+      const xpReward = Number(xpInput?.value || 0);
       const duration = Number(durInput?.value || 0);
       const level = Number(levelInput?.value || 1);
       const isActive = activeInput?.checked ?? true;
@@ -346,20 +349,20 @@
         alert('Nombre y tipo de avión son obligatorios.');
         return;
       }
-      if (Number.isNaN(cost) || Number.isNaN(reward) || Number.isNaN(duration)) {
-        alert('Coste, recompensa y duración deben ser números.');
+      if (Number.isNaN(cost) || Number.isNaN(reward) || Number.isNaN(duration) || Number.isNaN(xpReward)) {
+        alert('Coste, recompensa, XP y duración deben ser números.');
         return;
       }
 
       try {
         const existing = events.find(e => e.name.toLowerCase() === name.toLowerCase());
-        const payload = { name, description, type, cost, reward, durationSeconds: duration, levelRequired: level, isActive };
+        const payload = { name, description, type, cost, reward, xpReward, durationSeconds: duration, levelRequired: level, isActive };
         if (existing) {
           await api.updateEvent(existing.id, payload);
         } else {
           await api.createEvent(payload);
         }
-        [nameInput, descInput, costInput, rewardInput, durInput, levelInput].forEach(i => { if (i) i.value = ''; });
+        [nameInput, descInput, costInput, rewardInput, xpInput, durInput, levelInput].forEach(i => { if (i) i.value = ''; });
         if (typeSelect) typeSelect.value = '';
         if (activeInput) activeInput.checked = true;
         await loadEvents();
