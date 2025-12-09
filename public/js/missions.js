@@ -3,6 +3,7 @@
 
 let catalogContainer;
 let activeContainer;
+let completedContainer;
 let searchInput;
 let searchBtn;
 
@@ -11,6 +12,12 @@ let missions = [];
 let fleet = [];
 let balance = null;
 let missionTimerInterval = null;
+let resolvingDueMissions = false;
+
+const isCompletedStatus = (status) => {
+    const s = (status || '').toLowerCase();
+    return ['success', 'failed', 'aborted', 'finished'].includes(s);
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     initMissionsPage().catch(err => console.error('Error inicializando misiones', err));
@@ -19,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function initMissionsPage() {
     catalogContainer = document.getElementById('missionsCatalog');
     activeContainer  = document.getElementById('missionsActive');
+    completedContainer = document.getElementById('missionsCompleted');
     searchInput      = document.getElementById('missionSearch');
     searchBtn        = document.getElementById('missionSearchBtn');
 
@@ -30,6 +38,7 @@ async function initMissionsPage() {
     setupSearchHandlers();
     setupCatalogListeners();
     setupActiveListeners();
+    setupCompletedListeners();
 }
 
 async function loadAuxData() {
@@ -130,8 +139,18 @@ async function loadMissionsData() {
         };
     });
 
+    const activeList = missions.filter(m => !isCompletedStatus(m.status));
+    const completedList = missions
+        .filter(m => isCompletedStatus(m.status))
+        .sort((a, b) => {
+            const da = Date.parse(a.finishedAt || a.updatedAt || a.startedAt || 0);
+            const db = Date.parse(b.finishedAt || b.updatedAt || b.startedAt || 0);
+            return da - db; // menos reciente → más reciente
+        });
+
     renderCatalog(catalog);
-    renderActive(missions);
+    renderActive(activeList);
+    renderCompleted(completedList);
     setupRunningTimers();
 }
 
@@ -174,7 +193,8 @@ const renderActive = (list) => {
         <div class="missions-page__status-card ${m.statusClass}"
              data-id="${m.id}"
              data-status="${m.status || ''}"
-             ${m.startedAt ? `data-started-at="${m.startedAt}"` : ''}>
+             ${m.startedAt ? `data-started-at="${m.startedAt}"` : ''}
+             ${m.finishedAt ? `data-finished-at="${m.finishedAt}"` : ''}>
             <div class="missions-page__status-main">
                 <span class="missions-page__card-title">${m.name}</span>
                 ${m.description ? `<p class="missions-page__card-desc">${m.description}</p>` : ''}
@@ -200,6 +220,35 @@ const renderActive = (list) => {
         </div>
     `;
     }).join('');
+};
+
+const renderCompleted = (list) => {
+    if (!completedContainer) return;
+    if (!list.length) {
+        completedContainer.innerHTML = `<p class="missions-page__empty">Aún no hay misiones completadas.</p>`;
+        return;
+    }
+    completedContainer.innerHTML = list.map(m => `
+        <div class="missions-page__status-card ${m.statusClass}"
+             data-id="${m.id}"
+             data-status="${m.status || ''}">
+            <div class="missions-page__status-main">
+                <span class="missions-page__card-title">${m.name}</span>
+                ${m.description ? `<p class="missions-page__card-desc">${m.description}</p>` : ''}
+                <p class="missions-page__card-status">Estado: ${m.statusLabel}</p>
+                <p class="missions-page__card-type">Tipo: ${m.type}</p>
+                ${m.durationLabel ? `<p class="missions-page__card-duration">Duración estimada: ${m.durationLabel}</p>` : ''}
+                <p class="missions-page__card-economy">
+                    Coste: ${fmt(m.cost)} créditos<br>
+                    Recompensa: ${fmt(m.reward)} créditos
+                </p>
+                ${typeof m.levelRequired === 'number' ? `<p class="missions-page__card-level">Nivel requerido: ${m.levelRequired}</p>` : ''}
+            </div>
+            <div class="missions-page__card-actions">
+                <button class="btn btn--ghost" data-action="info">Info</button>
+            </div>
+        </div>
+    `).join('');
 };
 
 function setupSearchHandlers() {
@@ -259,6 +308,19 @@ function setupActiveListeners() {
                 handleAbortMission(missionInstance.id);
                 break;
         }
+    });
+}
+
+function setupCompletedListeners() {
+    if (!completedContainer) return;
+    completedContainer.addEventListener('click', (e) => {
+        const card = e.target.closest('.missions-page__status-card');
+        if (!card) return;
+        const id = card.dataset.id;
+        const missionInstance = missions.find(m => String(m.id) === String(id));
+        if (!missionInstance) return;
+        const base = catalog.find(m => m.id === missionInstance.missionId) || missionInstance;
+        openMissionInfoModal(base);
     });
 }
 
@@ -402,12 +464,31 @@ function setupRunningTimers() {
     const items = [];
     cards.forEach(card => {
         const startStr = card.dataset.startedAt;
+        const finishStr = card.dataset.finishedAt;
         const startDate = new Date(startStr);
+        const finishDate = finishStr ? new Date(finishStr) : null;
         const label = card.querySelector('.missions-page__timer-label');
         if (isNaN(startDate.getTime()) || !label) return;
-        items.push({ label, startMs: startDate.getTime() });
+        items.push({
+            label,
+            startMs: startDate.getTime(),
+            finishMs: finishDate && !isNaN(finishDate.getTime()) ? finishDate.getTime() : null
+        });
     });
     if (!items.length) return;
+
+    const checkDueAndResolve = () => {
+        if (resolvingDueMissions) return;
+        const nowMs = Date.now();
+        const hasDue = items.some(item => item.finishMs && item.finishMs <= nowMs);
+        if (!hasDue) return;
+
+        resolvingDueMissions = true;
+        resolveDueMissions()
+            .then(() => loadMissionsData())
+            .catch(err => console.warn('No se pudo resolver misiones vencidas', err))
+            .finally(() => { resolvingDueMissions = false; });
+    };
 
     const updateAll = () => {
         const now = Date.now();
@@ -415,6 +496,7 @@ function setupRunningTimers() {
             const elapsedSec = Math.max(0, Math.floor((now - item.startMs) / 1000));
             item.label.textContent = formatElapsedTime(elapsedSec);
         });
+        checkDueAndResolve();
     };
 
     updateAll();

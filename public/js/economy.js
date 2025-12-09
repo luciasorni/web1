@@ -28,18 +28,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const formatMoney = n => nf.format(n);
 
     // Clasifica tipo real → income / expense
-    const normalizeType = (t) => {
-        if (!t) return 'expense';
+    const normalizeType = (t, amount) => {
+        const low = (t || '').toLowerCase();
+        const incomeHints = ['reward', 'credit', 'sell', 'sale', 'refund', 'income'];
+        const expenseHints = ['purchase', 'activate', 'cost', 'fee', 'fuel', 'buy', 'maintenance'];
 
-        const low = t.toLowerCase();
+        if (incomeHints.some(h => low.includes(h))) return 'income';
+        if (expenseHints.some(h => low.includes(h))) return 'expense';
 
-        if (low.includes('reward') || low.includes('credit'))
-            return 'income';
+        if (typeof amount === 'number' && !Number.isNaN(amount)) {
+            return amount > 0 ? 'income' : 'expense';
+        }
 
-        if (low.includes('purchase') || low.includes('activate'))
-            return 'expense';
-
-        return low.includes('in') ? 'income' : 'expense';
+        return 'expense';
     };
 
     function renderMovement(list, mov) {
@@ -79,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
             els.incomeList.innerHTML = '';
 
             data.movements.forEach(m => {
-                const type = normalizeType(m.type);
+                const type = normalizeType(m.type, m.amount);
                 m.type = type;
 
                 if (type === 'expense') {
