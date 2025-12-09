@@ -113,11 +113,38 @@ document.addEventListener('DOMContentLoaded', () => {
             fleetBox.innerHTML = '<p class="missions-page__empty">No se encontraron aeronaves.</p>';
             return;
         }
+        const typeLabel = (f) => {
+            const type = f.typeId || f.aircraftTypeId || f.aircraft_type_id || 'N/D';
+            return f.model ? `${f.model} (${type})` : type;
+        };
+        const statusLabel = (s) => {
+            switch ((s || '').toLowerCase()) {
+                case 'running':
+                case 'on_mission':
+                    return 'En misión';
+                case 'maintenance':
+                    return 'En mantenimiento';
+                default:
+                    return 'En aeropuerto';
+            }
+        };
+        const roleLabel = (role) => {
+            switch (role) {
+                case 'commercial_passenger': return 'Pasajeros';
+                case 'commercial_cargo':     return 'Carga';
+                case 'military_transport':   return 'Transporte militar';
+                case 'military_recon':       return 'Reconocimiento';
+                case 'military_attack':      return 'Ataque';
+                default: return role || 'Rol desconocido';
+            }
+        };
+
         fleetBox.innerHTML = fleet.map(f => `
             <div class="missions-page__card">
-                <span class="missions-page__card-title">${f.nickname || f.aircraftTypeId}</span>
-                <p class="missions-page__card-desc">Tipo: ${f.aircraftTypeId}</p>
-                <p class="missions-page__card-desc">Estado: ${f.status}</p>
+                <span class="missions-page__card-title">${f.nickname || f.model || f.typeId || 'Aeronave'}</span>
+                <p class="missions-page__card-desc">Tipo: ${typeLabel(f)}</p>
+                ${f.role ? `<p class="missions-page__card-desc">Rol: ${roleLabel(f.role)}</p>` : ''}
+                <p class="missions-page__card-desc">Estado: ${statusLabel(f.status)}</p>
             </div>
         `).join('');
     }
