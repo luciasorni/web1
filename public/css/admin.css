@@ -50,8 +50,9 @@
 /* Content */
 .admin-page__content { flex: 1; display: flex; flex-direction: column; height: 100%; }
 .admin-page__topbar {
-  height: 70px; background: #fff; border-bottom: 1px solid rgba(0,0,0,.05);
-  display: flex; align-items: center; justify-content: center;
+  min-height: 70px; background: #fff; border-bottom: 1px solid rgba(0,0,0,.05);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: 0 1.8rem; flex-wrap: wrap;
 }
 .admin-page__title { margin: 0; font-size: 2rem; letter-spacing: .06rem; }
 
@@ -73,6 +74,23 @@
 .admin-btn--danger  { background: rgba(214,69,69,.12); color: #b13030; border: 1px solid rgba(214,69,69,.25); }
 .admin-btn--warn    { background: rgba(249,135,27,.12); color: #a2580e; border: 1px solid rgba(249,135,27,.3); }
 .admin-btn--ok      { background: rgba(34,181,115,.12); color: #136c4d; border: 1px solid rgba(34,181,115,.3); }
+
+body.daltonic-mode .admin-btn--primary,
+body.daltonic-mode .admin-btn--ok {
+  background: rgba(10,99,224,.16);
+  color: #0b3b8a;
+  border: 1px solid rgba(10,99,224,.4);
+}
+body.daltonic-mode .admin-btn--danger {
+  background: rgba(176,0,32,.16);
+  color: #7a0018;
+  border: 1px solid rgba(176,0,32,.42);
+}
+body.daltonic-mode .admin-btn--warn {
+  background: rgba(184,92,0,.16);
+  color: #7a3d00;
+  border: 1px solid rgba(184,92,0,.38);
+}
 
 .admin-input {
   border: 2px solid rgba(0,0,0,.08);

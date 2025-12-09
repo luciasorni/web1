@@ -81,12 +81,15 @@
 
 /* barra superior */
 .missions-page__topbar {
-    height: 70px;
+    min-height: 70px;
     background: #fff;
     border-bottom: 1px solid rgba(0,0,0,0.05);
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 0 2.5rem;
 }
 .missions-page__title { margin: 0; font-size: 2rem; letter-spacing: 0.08rem; }
 
@@ -226,6 +229,32 @@
 .missions-page__status-card--pending {
     background: rgba(0, 0, 0, 0.03);
     border: 2px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Daltonic mode: azul para progreso/éxito y ámbar para reclamables/errores */
+body.daltonic-mode .missions-page__card {
+    background: rgba(10, 99, 224, 0.08);
+    border: 2px solid rgba(10, 99, 224, 0.35);
+}
+body.daltonic-mode .missions-page__status-card--progress,
+body.daltonic-mode .missions-page__status-card--done {
+    background: rgba(10, 99, 224, 0.12);
+    border: 2px solid rgba(10, 99, 224, 0.4);
+}
+body.daltonic-mode .missions-page__status-card--claim,
+body.daltonic-mode .missions-page__status-card--failed {
+    background: rgba(184, 92, 0, 0.14);
+    border: 2px solid rgba(184, 92, 0, 0.32);
+}
+body.daltonic-mode .btn--success {
+    background: rgba(10, 99, 224, 0.16);
+    border-color: rgba(10, 99, 224, 0.45);
+    color: #0b3b8a;
+}
+body.daltonic-mode .btn--danger {
+    background: rgba(184, 92, 0, 0.16);
+    border-color: rgba(184, 92, 0, 0.42);
+    color: #7a3d00;
 }
 
 /* acciones de tarjeta */

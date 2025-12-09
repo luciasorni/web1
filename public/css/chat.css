@@ -36,10 +36,11 @@
 .chat-page__back-icon { font-size: 1.2rem; }
 
 /* Content wrapper */
-.chat-page__content { flex: 1; display: grid; grid-template-rows: 70px 1fr 64px; height: 100%; }
+.chat-page__content { flex: 1; display: grid; grid-template-rows: minmax(70px, auto) 1fr 64px; height: 100%; }
 .chat-page__topbar {
   background: #fff; border-bottom: 1px solid rgba(0,0,0,.05);
-  display: flex; align-items: center; justify-content: center;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: 0 1.6rem; flex-wrap: wrap;
 }
 .chat-page__title { margin: 0; font-size: 1.8rem; letter-spacing: .05rem; }
 

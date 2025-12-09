@@ -204,32 +204,69 @@ footer {
   box-shadow: 0 8px 20px rgba(8,61,119,0.15);
 }
 
-.botonDaltonismo {
-  position: fixed;
-  top: 12px;
-  right: 12px;
-  z-index: 3000;
+/* Botón de modo daltonismo: inline por defecto para no tapar contenido */
+#daltonismToggle,
+.botonDaltonismo,
+.daltonism-toggle,
+.daltonism-toggle-floating {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
   background: #fff;
-  border: 1px solid var(--blue-600);
+  border: 2px solid var(--blue-600);
   color: var(--blue-600);
-  border-radius: 10px;
-  padding: .4rem .75rem;
+  border-radius: 12px;
+  padding: .55rem .9rem;
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
+  transition: background .2s ease, color .2s ease, transform .2s ease;
+  white-space: nowrap;
 }
 
-.botonDaltonismo:hover {
+#daltonismToggle:hover,
+.botonDaltonismo:hover,
+.daltonism-toggle:hover,
+.daltonism-toggle-floating:hover {
   background: var(--blue-600);
   color: #fff;
+  transform: translateY(-1px);
 }
 
-/* Dentro de .game-kpis, el botón es parte del flujo */
-.game-kpis .botonDaltonismo {
+/* Botón flotante solo para fallback automático si la vista no lo incluye */
+.daltonism-toggle-floating {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 3000;
+}
+
+/* Embebido en barras superiores: sin posición fija */
+.game-kpis .botonDaltonismo,
+.game-topbar .botonDaltonismo,
+.missions-page__topbar .botonDaltonismo,
+.fleet-header .botonDaltonismo,
+.market-header .botonDaltonismo,
+.economy-page__topbar .botonDaltonismo,
+.admin-page__topbar .botonDaltonismo,
+.chat-page__topbar .botonDaltonismo {
   position: static;
-  padding: .65rem .85rem;
-  min-width: 140px;
-  white-space: nowrap;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+body.daltonic-mode #daltonismToggle,
+body.daltonic-mode .botonDaltonismo,
+body.daltonic-mode .daltonism-toggle,
+body.daltonic-mode .daltonism-toggle-floating {
+  border-color: #0b3b8a;
+  color: #0b3b8a;
+}
+body.daltonic-mode #daltonismToggle:hover,
+body.daltonic-mode .botonDaltonismo:hover,
+body.daltonic-mode .daltonism-toggle:hover,
+body.daltonic-mode .daltonism-toggle-floating:hover {
+  background: #0b3b8a;
+  color: #fff;
 }
 
 /* Daltonic mode (toggle) */
@@ -297,6 +334,35 @@ body.daltonic-mode .market-title,
 body.daltonic-mode .missions-page__title,
 body.daltonic-mode .game-title {
   color: #0b3b8a;
+}
+
+/* Fondos simplificados (blanco) en modo daltonismo para evitar ámbar/beige */
+body.daltonic-mode .game-container {
+  background: #f7f7f7;
+}
+body.daltonic-mode .sidebar {
+  background: #ffffff;
+  border-right: 0.2vw solid rgba(11,59,138,0.18);
+}
+body.daltonic-mode .menu-item,
+body.daltonic-mode .menu-item--back {
+  color: #0b3b8a;
+  border-bottom-color: rgba(11,59,138,0.18);
+  background: #ffffff;
+}
+body.daltonic-mode .menu-item:hover,
+body.daltonic-mode .menu-item--back:hover {
+  background: rgba(11,99,224,0.12);
+}
+body.daltonic-mode .main-content,
+body.daltonic-mode .main-content--game,
+body.daltonic-mode .market-wrap,
+body.daltonic-mode .fleet-wrap,
+body.daltonic-mode .missions-page__content,
+body.daltonic-mode .missions-page__panel,
+body.daltonic-mode .economy-page__content,
+body.daltonic-mode .chat-page__content {
+  background: #ffffff;
 }
 
 body.trippy-mode {

@@ -11,6 +11,14 @@
     --eco-green-bg:rgba(34,181,115,.12);
 }
 
+/* En modo daltonismo cambiamos el par rojo/verde por azul/ámbar para diferenciación clara */
+body.daltonic-mode {
+    --eco-green-500:#0a63e0;
+    --eco-green-bg:rgba(10,99,224,.14);
+    --eco-red-600:#b85c00;
+    --eco-red-bg:rgba(184,92,0,.16);
+}
+
 /* Contenido principal - usa .main-content */
 .main-content {
     flex: 1;
@@ -41,8 +49,9 @@
 
 /* Topbar */
 .economy-page__topbar{
-    height:72px; background:#fff; border-bottom:1px solid rgba(0,0,0,.05);
+    min-height:72px; background:#fff; border-bottom:1px solid rgba(0,0,0,.05);
     display:flex; align-items:center; justify-content:space-between; padding:0 2.2rem; gap:1rem;
+    flex-wrap: wrap;
 }
 .economy-page__money{ display:flex; align-items:baseline; gap:.75rem; }
 .economy-page__money-label{ font-weight:600; color:#444; letter-spacing:.02rem; }
@@ -59,7 +68,7 @@
 .icon-btn{ border:none; background:transparent; font-size:1.2rem; cursor:pointer; }
 .spacer{ flex:1 1 auto; }
 
-.economy-page__legend{ display:flex; align-items:center; gap:.6rem; color:#444; font-size:.95rem; }
+.economy-page__legend{ display:flex; align-items:center; gap:.6rem; color:#444; font-size:.95rem; flex-wrap: wrap; }
 .legend-item{ display:inline-flex; align-items:center; gap:.35rem; }
 .legend-sep{ opacity:.35; }
 .legend-dot{ width:10px; height:10px; border-radius:999px; display:inline-block; }
@@ -109,6 +118,11 @@
     background:rgba(255,255,255,.55); border-radius:.7vw; padding:.8vw 1vw;
     font-size:1.02rem; display:flex; justify-content:space-between; align-items:center;
     transition:transform .1s ease-out; position:relative; gap:.8rem;
+}
+.daltonic-mode .economy-page__column,
+.daltonic-mode .economy-page--expenses,
+.daltonic-mode .economy-page__column--income {
+    background:#fff;
 }
 .economy-page__item:hover{ transform:translateY(-.2vw); }
 

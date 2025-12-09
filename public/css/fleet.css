@@ -37,6 +37,8 @@
     display: flex;
     align-items: center;
     gap: .6rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
 }
 
 .fleet-balance {

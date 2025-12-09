@@ -72,6 +72,26 @@
 .stat__value--green{ color:var(--soc-green); }
 .stat__value--amber{ color:var(--soc-amber); }
 
+/* Daltonic mode: usamos azul y ámbar en vez de verde/rojo */
+body.daltonic-mode .stat__value--green{ color:#0a63e0; }
+body.daltonic-mode .stat__value--amber{ color:#b85c00; }
+body.daltonic-mode .chip--ok{
+  color:#0a63e0;
+  background:rgba(10,99,224,.12);
+  border:1px solid rgba(10,99,224,.35);
+}
+body.daltonic-mode .chip--no{
+  color:#b00020;
+  background:rgba(176,0,32,.12);
+  border:1px solid rgba(176,0,32,.32);
+}
+body.daltonic-mode .chip--amber{
+  color:#b85c00;
+  background:rgba(184,92,0,.12);
+  border:1px solid rgba(184,92,0,.32);
+}
+body.daltonic-mode .dot--on{ background:#0a63e0; }
+
 /* toolbar */
 .toolbar{ display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; }
 .search-wrap{ display:flex; gap:.5rem; }

@@ -62,7 +62,7 @@ window.alert = function (msg) {
         if (!daltonismToggle) {
             daltonismToggle = document.createElement('button');
             daltonismToggle.id = 'daltonismToggle';
-            daltonismToggle.className = 'daltonism-toggle-floating';
+            daltonismToggle.className = 'botonDaltonismo daltonism-toggle-floating';
             daltonismToggle.type = 'button';
             daltonismToggle.textContent = initial ? 'Modo daltonismo: ON' : 'Modo daltonismo: OFF';
             document.body.appendChild(daltonismToggle);
