@@ -100,6 +100,104 @@
     gap:1rem;
     padding: 0.8rem 2.5rem 0 2.5rem;
 }
+
+.missions-levelup{
+    margin: 0.2rem 2.5rem 0;
+    padding: 0.85rem 1.1rem;
+    border-radius: 14px;
+    background: linear-gradient(90deg, #22b573, #2bb4ea);
+    color: #0b1f2e;
+    font-weight: 700;
+    display: none;
+    align-items: center;
+    gap: 0.8rem;
+    box-shadow: 0 0.5rem 1.4rem rgba(0,0,0,0.08);
+}
+
+.missions-levelup__badge{
+    background: #fff;
+    color: #22b573;
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+}
+
+.missions-levelup__title{
+    margin: 0;
+    font-size: 1rem;
+}
+
+.missions-levelup__subtitle{
+    margin: 0;
+    font-weight: 500;
+    opacity: 0.95;
+}
+
+.missions-levelup--show{
+    display: flex;
+    animation: popIn 220ms ease-out;
+}
+
+@keyframes popIn{
+    0% { transform: translateY(-6px); opacity: 0; }
+    100%{ transform: translateY(0); opacity: 1; }
+}
+
+.missions-kpi{
+    margin: 0.4rem 2.5rem 0;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    background: #0b1f2e;
+    color: #e9f6ff;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    box-shadow: 0 0.6rem 1.4rem rgba(0,0,0,0.08);
+}
+
+.missions-kpi__level{
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 10px;
+    background: #22b573;
+    color: #0b1f2e;
+}
+
+.missions-kpi__label{
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.missions-kpi__progress{
+    flex: 1;
+}
+
+.missions-kpi__bar{
+    width: 100%;
+    height: 10px;
+    background: #fff;
+    border-radius: 999px;
+    position: relative;
+    overflow: hidden;
+}
+
+.missions-kpi__bar-fill{
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #2bb4ea, #6fe6ff);
+    transform-origin: left center;
+}
+
+.missions-kpi__meta{
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    opacity: 0.85;
+    margin-top: 0.25rem;
+}
 .missions-page__search{
     border:2px solid rgba(0,0,0,0.08);
     border-radius:8px;
@@ -115,6 +213,14 @@
 .missions-page__search-btn {
     padding: 0.5rem 0.9rem;
     white-space: nowrap;
+    background: var(--mis-blue);
+    color: #fff;
+    border: 2px solid var(--mis-blue);
+}
+.missions-page__search-btn:hover {
+    background: var(--mis-orange);
+    border-color: var(--mis-orange);
+    color: #0b1f2e;
 }
 
 /* ====== PANEL PRINCIPAL ====== */

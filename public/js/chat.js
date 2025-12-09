@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!msg || typeof msg.text !== 'string') return;
         addMsg(msg);
         if (/\bavion\b/i.test(msg.text)) spawnBigPlane();
-        if (/epilepsia/i.test(msg.text)) triggerTrippyMode();
+        if (/arcoiris/i.test(msg.text)) triggerTrippyMode();
     });
 
     socket.on('connect_error', (err) => {
@@ -106,7 +106,7 @@ function spawnBigPlane() {
     }).onfinish = () => plane.remove();
 }
 
-// Easter egg: mensaje con "epilpsia" activa modo arcoíris
+// Easter egg: mensaje con "arcoiris" activa modo arcoíris
 let trippyTimer = null;
 function triggerTrippyMode() {
     clearTimeout(trippyTimer);

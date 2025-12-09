@@ -11,8 +11,11 @@ let catalog = [];
 let missions = [];
 let fleet = [];
 let balance = null;
+let userAirport = null;
 let missionTimerInterval = null;
 let resolvingDueMissions = false;
+const XP_PER_LEVEL = 100;
+let pendingLevelKpiUpdate = null;
 
 const isCompletedStatus = (status) => {
     const s = (status || '').toLowerCase();
@@ -69,6 +72,13 @@ async function resolveDueMissions() {
     if (!res.ok) throw new Error('resolve-due ' + res.status);
     const data = await res.json();
     if (typeof data.newBalance === 'number') updateUserBalanceInUI(data.newBalance);
+    if (data.airport) {
+        userAirport = data.airport;
+        renderLevelKpi();
+    }
+    if (Array.isArray(data.levelUps) && data.levelUps.length) {
+        data.levelUps.forEach(lv => showLevelUpBanner(lv, data.airport));
+    }
 }
 
 async function loadMissionsData() {
@@ -76,6 +86,9 @@ async function loadMissionsData() {
     if (!res.ok) return;
     const data = await res.json().catch(() => ({}));
     if (!data.ok) return;
+
+    userAirport = data.airport || userAirport;
+    renderLevelKpi();
 
     catalog = (data.catalog || []).map(m => {
         const durationLabel = formatDuration(m.durationSeconds);
@@ -87,6 +100,7 @@ async function loadMissionsData() {
             description: m.description,
             cost: m.cost,
             reward: m.reward,
+            xpReward: m.xpReward || 0,
             durationLabel,
             levelRequired: m.levelRequired,
             availability: avail
@@ -129,6 +143,7 @@ async function loadMissionsData() {
             statusClass,
             cost: m.costAtStart ?? m.cost,
             reward: m.rewardOnSuccess ?? m.reward,
+            xpReward: m.xpOnSuccess ?? m.xpReward ?? 0,
             durationLabel: formatDuration(m.durationSeconds),
             levelRequired: m.levelRequired,
             costApplied: m.costApplied,
@@ -165,7 +180,8 @@ const renderCatalog = (list) => {
             ${m.description ? `<p class="missions-page__card-desc">${m.description}</p>` : ''}
             <p class="missions-page__card-economy">
                 Coste: ${fmt(m.cost)} créditos<br>
-                Recompensa: ${fmt(m.reward)} créditos
+                Recompensa: ${fmt(m.reward)} créditos<br>
+                XP: ${fmt(m.xpReward)} pts
             </p>
             ${m.durationLabel ? `<p class="missions-page__card-duration">Duración estimada: ${m.durationLabel}</p>` : ''}
             ${typeof m.levelRequired === 'number' ? `<p class="missions-page__card-level">Nivel requerido: ${m.levelRequired}</p>` : ''}
@@ -203,7 +219,8 @@ const renderActive = (list) => {
                 ${m.durationLabel ? `<p class="missions-page__card-duration">Duración estimada: ${m.durationLabel}</p>` : ''}
                 <p class="missions-page__card-economy">
                     Coste: ${fmt(m.cost)} créditos<br>
-                    Recompensa: ${fmt(m.reward)} créditos
+                    Recompensa: ${fmt(m.reward)} créditos<br>
+                    XP: ${fmt(m.xpReward)} pts
                 </p>
                 ${typeof m.levelRequired === 'number' ? `<p class="missions-page__card-level">Nivel requerido: ${m.levelRequired}</p>` : ''}
                 ${m.status === 'running' && m.startedAt ? `
@@ -240,7 +257,8 @@ const renderCompleted = (list) => {
                 ${m.durationLabel ? `<p class="missions-page__card-duration">Duración estimada: ${m.durationLabel}</p>` : ''}
                 <p class="missions-page__card-economy">
                     Coste: ${fmt(m.cost)} créditos<br>
-                    Recompensa: ${fmt(m.reward)} créditos
+                    Recompensa: ${fmt(m.reward)} créditos<br>
+                    XP: ${fmt(m.xpReward)} pts
                 </p>
                 ${typeof m.levelRequired === 'number' ? `<p class="missions-page__card-level">Nivel requerido: ${m.levelRequired}</p>` : ''}
             </div>
@@ -339,6 +357,7 @@ async function handleActivateMission(mission) {
         if (!res.ok || !data.ok) {
             if (data.error === 'insufficient_credits') alert('No tienes créditos suficientes para esta misión.');
             else if (data.error === 'no_compatible_aircraft') alert('No tienes avión compatible libre.');
+            else if (data.error === 'level_too_low') alert('Necesitas subir de nivel para esta misión.');
             else if (data.error === 'mission_not_found') alert('La misión ya no está disponible.');
             else alert('No se pudo activar la misión.');
             return;
@@ -393,6 +412,7 @@ function openMissionInfoModal(mission) {
             `Tipo: ${mission.type}\n` +
             `Coste: ${mission.cost} créditos\n` +
             `Recompensa: ${mission.reward} créditos\n` +
+            `XP: ${mission.xpReward || 0} pts\n` +
             `Duración base: ${mission.durationLabel || 'N/D'}\n` +
             `Disponibilidad: ${availabilityLabel(mission.availability)}`
         );
@@ -409,6 +429,7 @@ function openMissionInfoModal(mission) {
         <p><strong>Tipo:</strong> ${mission.type}</p>
         <p><strong>Coste:</strong> ${mission.cost} créditos</p>
         <p><strong>Recompensa:</strong> ${mission.reward} créditos</p>
+        <p><strong>Experiencia:</strong> ${mission.xpReward || 0} XP</p>
         <p><strong>Duración base:</strong> ${mission.durationLabel || 'N/D'}</p>
         ${typeof mission.levelRequired === 'number' ? `<p><strong>Nivel requerido:</strong> ${mission.levelRequired}</p>` : ''}
         <p><strong>Disponibilidad:</strong> ${availabilityLabel(mission.availability)}</p>
@@ -434,16 +455,23 @@ function missionAvailability(mission) {
         (a.typeId === mission.type || a.role === mission.type)
     );
     const hasBalance = typeof balance === 'number' ? balance >= (mission.cost || 0) : true;
+    const levelReq = mission.levelRequired || 1;
+    const currentLevel = getUserLevel();
+    const levelOk = typeof currentLevel === 'number'
+        ? currentLevel >= levelReq
+        : true;
     return {
-        available: hasAircraft && hasBalance,
+        available: hasAircraft && hasBalance && levelOk,
         hasAircraft,
-        hasBalance
+        hasBalance,
+        hasLevel: levelOk
     };
 }
 
 function availabilityLabel(av) {
     if (!av) return 'Disponibilidad desconocida';
     if (av.available) return 'Disponible';
+    if (av.hasLevel === false) return 'Nivel insuficiente';
     if (!av.hasAircraft && !av.hasBalance) return 'Sin saldo ni avión compatible';
     if (!av.hasAircraft) return 'Sin avión compatible libre';
     return 'Sin saldo suficiente';
@@ -453,6 +481,45 @@ function updateUserBalanceInUI(newBalance) {
     const el = document.querySelector('.user-balance');
     if (!el) return;
     el.textContent = newBalance.toLocaleString('es-ES');
+}
+
+function getUserLevel() {
+    if (!userAirport) return null;
+    if (typeof userAirport.level === 'number') return userAirport.level;
+    if (typeof userAirport.xp === 'number') {
+        return Math.floor(Math.max(0, userAirport.xp) / XP_PER_LEVEL) + 1;
+    }
+    return null;
+}
+
+function renderLevelKpi() {
+    const box = document.getElementById('missionsKpi');
+    if (!box) return;
+    if (!userAirport) {
+        box.hidden = true;
+        return;
+    }
+
+    const level = getUserLevel() || 1;
+    const xp = Math.max(0, userAirport.xp || 0);
+    const xpInLevel = xp % XP_PER_LEVEL;
+    const xpNeeded = XP_PER_LEVEL - xpInLevel;
+    const percent = Math.min(100, Math.round((xpInLevel / XP_PER_LEVEL) * 100));
+
+    box.hidden = false;
+    box.innerHTML = `
+        <span class="missions-kpi__level">Nivel ${fmt(level)}</span>
+        <div class="missions-kpi__progress">
+            <div class="missions-kpi__label">Progreso al siguiente nivel</div>
+            <div class="missions-kpi__bar">
+                <div class="missions-kpi__bar-fill" style="width:${percent}%"></div>
+            </div>
+            <div class="missions-kpi__meta">
+                <span>${xpInLevel} / ${XP_PER_LEVEL} XP</span>
+                <span>Faltan ${xpNeeded} XP</span>
+            </div>
+        </div>
+    `;
 }
 
 function setupRunningTimers() {
@@ -530,4 +597,36 @@ function remainingLabel(finishIso) {
 
 function fmt(n) {
     return typeof n === 'number' ? n.toLocaleString('es-ES') : (n ?? 'N/D');
+}
+
+function showLevelUpBanner(levelChange = {}, airportState = userAirport) {
+    const banner = document.getElementById('missionsLevelUp');
+    if (!banner) return;
+
+    const to = levelChange.to ?? (airportState ? airportState.level : null) ?? getUserLevel();
+    const from = levelChange.from ?? (typeof to === 'number' ? to - 1 : null);
+    const xp = airportState?.xp ?? userAirport?.xp;
+
+    banner.innerHTML = `
+        <span class="missions-levelup__badge">Nivel ${to || '?'}</span>
+        <div>
+            <p class="missions-levelup__title">¡Felicidades! Has subido de nivel</p>
+            <p class="missions-levelup__subtitle">
+                ${from ? `De ${from} a ${to}` : `Ahora eres nivel ${to}`}
+                ${typeof xp === 'number' ? ` · XP total: ${fmt(xp)}` : ''}
+            </p>
+        </div>
+    `;
+    banner.hidden = false;
+    banner.classList.add('missions-levelup--show');
+
+    // Evitar solapar timers si llegan varias subidas
+    clearTimeout(banner._hideTimer);
+    clearTimeout(banner._removeTimer);
+
+    banner._hideTimer = setTimeout(() => banner.classList.remove('missions-levelup--show'), 4000);
+    banner._removeTimer = setTimeout(() => {
+        banner.hidden = true;
+        banner.innerHTML = '';
+    }, 4300);
 }

@@ -27,6 +27,10 @@ router.get('/recover',  (req, res) => res.sendFile(v('auth', 'recover.html')));
 // Alias por compatibilidad si tenías /guest en la navbar:
 router.get('/guest', (req, res) => res.redirect('/explore'));
 
+// ---------- PÁGINAS LEGALES ----------
+router.get('/legal/terminos',   (req, res) => res.sendFile(v('legal', 'terminos.html')));
+router.get('/legal/privacidad', (req, res) => res.sendFile(v('legal', 'privacidad.html')));
+
 // ---------- PLANTILLAS DEL GRUPO EXPLORE ----------
 router.get('/explore',            (req, res) => res.sendFile(v('explore', 'explore.html')));
 router.get('/explore/username',   (req, res) => res.sendFile(v('explore', 'username.html')));

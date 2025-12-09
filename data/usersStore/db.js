@@ -58,6 +58,17 @@ async function findUserById(id) {
     return mapRow(row);
 }
 
+// Marca la última fecha de acceso del usuario
+async function updateLastLoginAt(id, at = new Date().toISOString()) {
+    if (!id) return null;
+    const updated = await knex('users')
+        .where({ id })
+        .update({ last_login_at: at, updated_at: at })
+        .returning('*');
+    const row = Array.isArray(updated) ? updated[0] : null;
+    return mapRow(row);
+}
+
 async function getAirportForUser(userId) {
     if (!userId) return null;
     const row = await knex('user_airports').where({ user_id: userId }).first();
@@ -246,5 +257,6 @@ module.exports = {
     findUserWithAirportByUsername,
     searchUsers,
     deleteUserById,
-    updateUserPassword
+    updateUserPassword,
+    updateLastLoginAt
 };

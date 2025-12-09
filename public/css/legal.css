@@ -1,0 +1,51 @@
+/* Página legal minimalista y legible */
+body.legal-page {
+    background: #f7f7f7;
+    color: #0f1a2b;
+    font-family: 'Poppins', sans-serif;
+}
+
+.legal-main {
+    max-width: 900px;
+    margin: 100px auto 48px;
+    padding: 0 16px;
+}
+
+.legal-header {
+    margin-bottom: 24px;
+}
+
+.legal-header h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.legal-meta {
+    color: #455163;
+    font-size: 14px;
+}
+
+.legal-section {
+    margin-bottom: 18px;
+}
+
+.legal-section h2 {
+    font-size: 18px;
+    margin-bottom: 6px;
+}
+
+.legal-section p,
+.legal-section li {
+    line-height: 1.55;
+    margin-bottom: 6px;
+}
+
+.legal-section ul {
+    padding-left: 18px;
+}
+
+.legal-section code {
+    background: #eef2f6;
+    padding: 2px 4px;
+    border-radius: 4px;
+}

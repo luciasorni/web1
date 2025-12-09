@@ -13,6 +13,8 @@ const PLANE_SPRITES = {
 let fleetCache = [];
 let runningMissionsByAircraft = {};
 let remainingTimer = null;
+let airportInfo = null;
+const XP_PER_LEVEL = 100;
 
 document.addEventListener('DOMContentLoaded', () => {
     initGameView().catch(err => console.error(err));
@@ -27,8 +29,9 @@ async function initGameView() {
     const { fleet } = await loadFleet();
     await loadBalance();
     await loadRunningMissions();
-
     renderKpis(fleet);
+    updateLevelKpi();
+
     renderHangars(fleet, takeoffId);
     startRemainingTicker();
 
@@ -76,6 +79,7 @@ async function loadRunningMissions() {
             }
         });
         runningMissionsByAircraft = running;
+        airportInfo = data.airport || airportInfo;
     } catch (err) {
         console.error('Error loading missions for remaining time', err);
     }
@@ -269,6 +273,17 @@ function runPathAnimation(node, points, liftZoom, onFinish) {
 function pickPlaneSprite(a) {
     if (!a) return PLANE_SPRITES.default;
     return PLANE_SPRITES[a.role] || PLANE_SPRITES.default;
+}
+
+function levelFromXp(xp = 0) {
+    return Math.floor(Math.max(0, xp) / XP_PER_LEVEL) + 1;
+}
+
+function updateLevelKpi() {
+    const lvl = airportInfo?.level ?? (airportInfo ? levelFromXp(airportInfo.xp || 0) : null);
+    setKpi('kpi-level', lvl ? `Nivel ${lvl}` : '--');
+    const label = document.querySelector('#kpi-level .kpi-label');
+    if (label) label.textContent = 'Nivel aeropuerto';
 }
 
 function setKpi(id, value) {

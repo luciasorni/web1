@@ -2,6 +2,11 @@
 const knex = require('../../db/knex');
 const { randomUUID } = require('crypto');
 const createId = () => randomUUID();
+const XP_PER_LEVEL = 100;
+
+function levelFromXp(xp = 0) {
+    return Math.floor(Math.max(0, xp) / XP_PER_LEVEL) + 1;
+}
 
 function mapMission(row) {
     if (!row) return null;
@@ -11,6 +16,7 @@ function mapMission(row) {
         type: row.type,
         cost: row.cost,
         reward: row.reward,
+        xpReward: row.xp_reward || 0,
         durationSeconds: row.duration_seconds,
         description: row.description,
         levelRequired: row.level_required,
@@ -38,6 +44,8 @@ async function getMissionsForUser(userId) {
             'user_missions.reward_applied as rewardApplied',
             'user_missions.failure_reason as failureReason',
             'user_missions.aircraft_id as aircraftId',
+            'user_missions.xp_on_success as xpOnSuccess',
+            'user_missions.xp_applied as xpApplied',
 
             // Campos de missions
             'missions.id as missionId',
@@ -45,6 +53,7 @@ async function getMissionsForUser(userId) {
             'missions.type as type',
             'missions.cost as cost',
             'missions.reward as reward',
+            'missions.xp_reward as xpReward',
             'missions.duration_seconds as durationSeconds',
             'missions.description as description',
             'missions.level_required as levelRequired'
@@ -63,6 +72,7 @@ async function getAllMissions() {
             'type',
             'cost',
             'reward',
+            'xp_reward as xpReward',
             'duration_seconds as durationSeconds',
             'description',
             'level_required as levelRequired'
@@ -79,7 +89,7 @@ async function listAllMissionsAdmin() {
     return rows.map(mapMission);
 }
 
-async function createMission({ name, type, cost, reward, durationSeconds, description, levelRequired = 1, isActive = true }) {
+async function createMission({ name, type, cost, reward, xpReward = 0, durationSeconds, description, levelRequired = 1, isActive = true }) {
     const id = createId();
     const now = new Date().toISOString();
 
@@ -89,6 +99,7 @@ async function createMission({ name, type, cost, reward, durationSeconds, descri
         type,
         cost,
         reward,
+        xp_reward: xpReward,
         duration_seconds: durationSeconds,
         description,
         level_required: levelRequired,
@@ -99,6 +110,7 @@ async function createMission({ name, type, cost, reward, durationSeconds, descri
 
     return mapMission({
         id, name, type, cost, reward,
+        xp_reward: xpReward,
         duration_seconds: durationSeconds,
         description,
         level_required: levelRequired,
@@ -116,6 +128,7 @@ async function updateMission(id, payload) {
     if (payload.cost !== undefined) data.cost = payload.cost;
     if (payload.reward !== undefined) data.reward = payload.reward;
     if (payload.durationSeconds !== undefined) data.duration_seconds = payload.durationSeconds;
+    if (payload.xpReward !== undefined) data.xp_reward = payload.xpReward;
     if (payload.description !== undefined) data.description = payload.description;
     if (payload.levelRequired !== undefined) data.level_required = payload.levelRequired;
     if (payload.isActive !== undefined) data.is_active = payload.isActive ? 1 : 0;
@@ -170,6 +183,25 @@ async function activateMissionForUser({ userId, missionId }) {
         if (!user) {
             const err = new Error('User not found or inactive');
             err.code = 'USER_NOT_FOUND';
+            throw err;
+        }
+
+        // 2b) Aeropuerto del usuario para validar nivel
+        const airport = await trx('user_airports')
+            .where({ user_id: userId })
+            .first();
+
+        if (!airport) {
+            const err = new Error('Airport not found');
+            err.code = 'AIRPORT_NOT_FOUND';
+            throw err;
+        }
+
+        const levelRequired = mission.level_required || 1;
+        const userLevel = airport.level || levelFromXp(airport.xp || 0);
+        if (userLevel < levelRequired) {
+            const err = new Error('Level too low');
+            err.code = 'LEVEL_TOO_LOW';
             throw err;
         }
 
@@ -235,8 +267,10 @@ async function activateMissionForUser({ userId, missionId }) {
             finished_at: plannedFinishIso,  // 👈 ISO
             cost_at_start: mission.cost,
             reward_on_success: mission.reward,
+            xp_on_success: mission.xp_reward || 0,
             cost_applied: 1,                // ya cobramos el coste
             reward_applied: 0,              // la recompensa aún NO
+            xp_applied: 0,
             failure_reason: willSucceed ? null : 'planned_failure_timeout',
             created_at: nowIso,
             updated_at: nowIso
@@ -283,7 +317,8 @@ async function activateMissionForUser({ userId, missionId }) {
             durationPlannedSeconds: baseSeconds,
             durationRealSeconds: realSeconds,
             plannedFinishedAt: plannedFinishIso,
-            willSucceed
+            willSucceed,
+            xpOnSuccess: mission.xp_reward || 0
         };
     });
 }
@@ -328,7 +363,7 @@ async function resolveDueMissionsForUser({ userId }) {
             throw err;
         }
 
-        // 2) Cargar usuario
+        // 2) Cargar usuario + aeropuerto
         const user = await trx('users')
             .where({ id: userId, is_active: 1 })
             .first();
@@ -339,14 +374,30 @@ async function resolveDueMissionsForUser({ userId }) {
             throw err;
         }
 
+        const airport = await trx('user_airports')
+            .where({ user_id: userId })
+            .first();
+
+        if (!airport) {
+            const err = new Error('Airport not found');
+            err.code = 'AIRPORT_NOT_FOUND';
+            throw err;
+        }
+
         let balance = user.current_balance || 0;
+        let xp = airport.xp || 0;
+        let level = airport.level || levelFromXp(xp);
+
         const now = new Date(Date.now());
         const resolved = [];
+        let totalXpGained = 0;
+        const levelUps = [];
 
         // 3) Resolver cada misión
         for (const um of dueMissions) {
             const willSucceed = !um.failure_reason;  // null => éxito
             const reward = um.reward_on_success || 0;
+            const xpGain = willSucceed ? (um.xp_on_success || 0) : 0;
             let rewardAppliedAmount = 0;
 
             if (willSucceed && reward > 0) {
@@ -366,6 +417,17 @@ async function resolveDueMissionsForUser({ userId }) {
                 rewardAppliedAmount = reward;
             }
 
+            // XP y nivel
+            if (willSucceed && xpGain > 0 && !um.xp_applied) {
+                totalXpGained += xpGain;
+                xp += xpGain;
+                const nextLevel = levelFromXp(xp);
+                if (nextLevel > level) {
+                    levelUps.push({ from: level, to: nextLevel });
+                }
+                level = nextLevel;
+            }
+
             const newStatus = willSucceed ? 'success' : 'failed';
 
             await trx('user_missions')
@@ -373,6 +435,7 @@ async function resolveDueMissionsForUser({ userId }) {
                 .update({
                     status: newStatus,
                     reward_applied: willSucceed ? 1 : 0,
+                    xp_applied: willSucceed && xpGain > 0 ? 1 : um.xp_applied,
                     updated_at: now
                 });
 
@@ -389,7 +452,8 @@ async function resolveDueMissionsForUser({ userId }) {
                 missionId: um.mission_id,
                 aircraftId: um.aircraft_id,
                 success: willSucceed,
-                rewardApplied: rewardAppliedAmount
+                rewardApplied: rewardAppliedAmount,
+                xpGained: willSucceed ? xpGain : 0
             });
         }
 
@@ -401,11 +465,27 @@ async function resolveDueMissionsForUser({ userId }) {
                 updated_at: now
             });
 
-        // 5) Devolvemos resumen
+        // 5) Actualizar XP y nivel del aeropuerto
+        await trx('user_airports')
+            .where({ user_id: userId })
+            .update({
+                xp,
+                level,
+                updated_at: now
+            });
+
+        // 6) Devolvemos resumen
         return {
             userId,
             newBalance: balance,
-            resolved
+            resolved,
+            xpGained: totalXpGained,
+            airport: {
+                id: airport.id,
+                xp,
+                level
+            },
+            levelUps
         };
     });
 }

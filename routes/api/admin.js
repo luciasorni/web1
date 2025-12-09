@@ -125,7 +125,7 @@ router.get('/missions', async (req, res) => {
 
 router.post('/missions', async (req, res) => {
     try {
-        const { name, description, type, cost, reward, durationSeconds, levelRequired = 1, isActive = true } = req.body || {};
+        const { name, description, type, cost, reward, xpReward = 0, durationSeconds, levelRequired = 1, isActive = true } = req.body || {};
 
         if (!name || !type || cost === undefined || reward === undefined || durationSeconds === undefined) {
             return res.status(400).json({ ok: false, error: 'missing_fields' });
@@ -137,6 +137,7 @@ router.post('/missions', async (req, res) => {
             type,
             cost: Number(cost),
             reward: Number(reward),
+            xpReward: Number(xpReward) || 0,
             durationSeconds: Number(durationSeconds),
             levelRequired: Number(levelRequired) || 1,
             isActive: Boolean(isActive)
@@ -151,13 +152,14 @@ router.post('/missions', async (req, res) => {
 router.patch('/missions/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, description, type, cost, reward, durationSeconds, levelRequired, isActive } = req.body || {};
+        const { name, description, type, cost, reward, xpReward, durationSeconds, levelRequired, isActive } = req.body || {};
         const updated = await updateMission(id, {
             name,
             description,
             type,
             cost: cost !== undefined ? Number(cost) : undefined,
             reward: reward !== undefined ? Number(reward) : undefined,
+            xpReward: xpReward !== undefined ? Number(xpReward) : undefined,
             durationSeconds: durationSeconds !== undefined ? Number(durationSeconds) : undefined,
             levelRequired: levelRequired !== undefined ? Number(levelRequired) : undefined,
             isActive: isActive !== undefined ? Boolean(isActive) : undefined

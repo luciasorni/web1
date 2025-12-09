@@ -181,6 +181,21 @@ body {
     color: #0f5f89;
 }
 
+.kpi-card--level {
+    background: linear-gradient(120deg, #22b573, #2bb4ea);
+    color: #0b1f2e;
+    border: none;
+}
+
+.kpi-card--level .kpi-label {
+    color: #0b1f2e;
+    opacity: 0.9;
+}
+
+.kpi-card--level .kpi-value {
+    color: #0b1f2e;
+}
+
 /* ======== AEROPUERTO / HANGARES ======== */
 .airport-scene {
     position: relative;

@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { searchUsers } = require('../../data/usersStore/db');
+const { searchUsers, getAirportForUser } = require('../../data/usersStore/db');
 const {
     getSocialState,
     sendRequest,
@@ -27,7 +27,8 @@ const {
     getMissionsForUser,
     getAllMissions,
     activateMissionForUser,
-    resolveDueMissionsForUser
+    resolveDueMissionsForUser,
+    abortMissionForUser
 } = require('../../data/missionsStore/db')
 
 // Economy 💰
@@ -180,16 +181,18 @@ router.get('/missions', requireAuth, async (req, res) => {
     try {
         const userId = req.session.userId;
 
-        const [userMissions, catalog] = await Promise.all([
+        const [userMissions, catalog, airport] = await Promise.all([
             getMissionsForUser(userId),
-            getAllMissions()
+            getAllMissions(),
+            getAirportForUser(userId)
         ]);
 
         res.json({
             ok: true,
             userId,
             missions: userMissions,  // misiones del usuario
-            catalog                  // catálogo completo
+            catalog,                  // catálogo completo
+            airport
         });
     } catch (err) {
         console.error('GET /api/game/missions error', err);
@@ -217,6 +220,14 @@ router.post('/missions/:id/activate', requireAuth, async (req, res) => {
         // Mapeamos errores conocidos a respuestas HTTP
         if (err.code === 'MISSION_NOT_FOUND') {
             return res.status(404).json({ ok: false, error: 'mission_not_found' });
+        }
+
+        if (err.code === 'AIRPORT_NOT_FOUND') {
+            return res.status(404).json({ ok: false, error: 'airport_not_found' });
+        }
+
+        if (err.code === 'LEVEL_TOO_LOW') {
+            return res.status(400).json({ ok: false, error: 'level_too_low' });
         }
 
         if (err.code === 'NO_COMPATIBLE_AIRCRAFT') {
@@ -274,6 +285,9 @@ router.post('/missions/resolve-due', requireAuth, async (req, res) => {
                 resolved: [],
                 message: 'no_due_missions'
             });
+        }
+        if (err.code === 'AIRPORT_NOT_FOUND') {
+            return res.status(404).json({ ok: false, error: 'airport_not_found' });
         }
 
         return res.status(500).json({

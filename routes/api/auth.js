@@ -7,7 +7,7 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Import middleware relativo a gestión de usuarios (/data) y autenticación (/middleware)
 const bcrypt = require('bcryptjs');
-const { findUserByUsername, findUserByEmail, createUser, updateUserPassword } = require('../../data/usersStore/db');
+const { findUserByUsername, findUserByEmail, createUser, updateUserPassword, updateLastLoginAt } = require('../../data/usersStore/db');
 
 // Middleware simple de validación
 function isValidUsername(s){ return typeof s==='string' && /^[a-zA-Z0-9_]{3,20}$/.test(s); }
@@ -43,6 +43,8 @@ router.post('/register', async (req, res) => {
         const newUser = await createUser({ username: u, email: e, password: p });
 
         if (autoLogin !== false) {
+            // Marca el primer acceso al crear la cuenta
+            await updateLastLoginAt(newUser.id);
             await new Promise(resolve => req.session.regenerate(resolve));
             req.session.userId = newUser.id;
             req.session.userName = newUser.username;
@@ -83,6 +85,7 @@ router.post('/login', async (req, res) => {
         const ok = await bcrypt.compare(pass, candidate.passwordHash);
         if (!ok) return res.status(401).json({ error: 'credenciales' });
 
+        await updateLastLoginAt(candidate.id);
         await new Promise(resolve => req.session.regenerate(resolve));  // Genera nuevo SID (sesion vacía)
         req.session.userId = candidate.id;      // la sesión queda marcada como modificada.
         req.session.userName = candidate.username;  // la sesión queda marcada como modificada.
