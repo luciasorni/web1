@@ -34,7 +34,6 @@
         body { padding-top: 0px; }
     </style>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <script src="/js/ryanairChart.js" defer></script>
 
 </head>
@@ -160,10 +159,19 @@
         <aside class="col-lg-3 col-md-4 right-col">
             <div class="card mb-3 news-card">
                 <div class="card-header">
-                <h3 class="card-title">Acciones de Ryanair en directo</h3>
+                <h3 class="card-title">Bitcoin en directo (24/7)</h3>
                 </div>
                 <div class="card-body">
+                <div class="sponsor-pill">Patrocinado · Datos por CoinGecko</div>
                 <canvas id="ryanairChart" height="200" style="cursor:pointer;"></canvas>
+                <div class="live-ticker-meta">
+                    <div class="live-price" id="livePrice">-- € / BTC</div>
+                    <div class="live-status-row">
+                        <span class="live-badge live-badge--connecting" id="liveBadge">Conectando…</span>
+                        <small class="live-updated">Actualizado <span id="liveUpdated">--:--:--</span></small>
+                    </div>
+                    <p class="live-caption">Fuente: CoinGecko • refresco backend cada 7s</p>
+                </div>
                 </div>
             </div>
         </aside>
