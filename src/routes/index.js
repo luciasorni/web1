@@ -19,6 +19,9 @@ router.get('/', (req, res) => {
     res.sendFile(v('index.html'));
 });
 
+// ---------- Dossier del proyecto ----------
+router.get('/presentacion', (req, res) => res.sendFile(v('presentation.html')));
+
 // ---------- PLANTILLAS DEL GRUPO AUTH ----------
 router.get('/login',    (req, res) => res.sendFile(v('auth', 'login.html')));
 router.get('/register', (req, res) => res.sendFile(v('auth', 'register.html')));

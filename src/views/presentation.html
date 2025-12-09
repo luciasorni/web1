@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkyPort - Funcionalidades del proyecto</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/presentation.css">
+    <link rel="icon" href="/img/logoSkyPort.png" type="image/png">
+</head>
+<body class="pitch-page">
+<div class="pitch-shell">
+    <section class="pitch-hero">
+        <div class="pitch-eyebrow">SkyPort v2 · Funcionalidades</div>
+        <h1 class="pitch-title">Funcionalidades del proyecto</h1>
+        <p class="pitch-subtitle">Resumen claro del diseño funcional y técnico: mapa de pantallas, flujos clave, arquitectura y próximos pasos. Lenguaje directo, orientado a enseñar rápido.</p>
+        <div class="pitch-hero-actions">
+            <span class="pitch-chip">Juego gestionado · flota, misiones, economía</span>
+            <span class="pitch-chip">Express + SQLite + Socket.IO</span>
+            <span class="pitch-chip">CSP, sesiones firmadas, roles</span>
+        </div>
+    </section>
+
+    <h2 class="pitch-section-title">Pantallas principales</h2>
+    <div class="pitch-grid">
+        <div class="pitch-card">
+            <h3>Onboarding</h3>
+            <div class="pitch-list">
+                <li>Login con feedback de error.</li>
+                <li>Registro: username, email, password; alta con saldo y flota inicial.</li>
+                <li>Recuperar contraseña.</li>
+            </div>
+            <div class="pitch-tagset">
+                <span class="pitch-tag">Auth</span>
+                <span class="pitch-tag">Sesión</span>
+            </div>
+        </div>
+        <div class="pitch-card">
+            <h3>Explorar (público)</h3>
+            <div class="pitch-list">
+                <li>Buscador de usuarios (sin admins).</li>
+                <li>Ficha con aeropuerto base y flota visible.</li>
+                <li>CTA a login/registro.</li>
+            </div>
+            <div class="pitch-tagset">
+                <span class="pitch-tag">Invitado</span>
+                <span class="pitch-tag">Social</span>
+            </div>
+        </div>
+        <div class="pitch-card">
+            <h3>Game / Dashboard</h3>
+            <div class="pitch-list">
+                <li>Navbar a Flota, Misiones, Economía, Mercado, Social, Chat.</li>
+                <li>KPIs: saldo, aviones totales, en misión.</li>
+                <li>Escena aeropuerto con hangares y animaciones.</li>
+            </div>
+            <div class="pitch-tagset">
+                <span class="pitch-tag">HUD</span>
+                <span class="pitch-tag">Estado vivo</span>
+            </div>
+        </div>
+        <div class="pitch-card">
+            <h3>Flota & Mercado</h3>
+            <div class="pitch-list">
+                <li>Tarjetas de aviones: modelo, rol, estado (idle/running/maintenance).</li>
+                <li>Slots por hangar; salto a mercado para comprar/vender.</li>
+                <li>Catálogo de tipos activos con precio y límites.</li>
+            </div>
+        </div>
+        <div class="pitch-card">
+            <h3>Misiones</h3>
+            <div class="pitch-list">
+                <li>Catálogo (coste, recompensa, duración) + misiones del jugador.</li>
+                <li>Asignar avión compatible, iniciar, abortar, resolver vencidas.</li>
+                <li>Timers visibles en UI principal.</li>
+            </div>
+        </div>
+        <div class="pitch-card">
+            <h3>Economía</h3>
+            <div class="pitch-list">
+                <li>Balance actual y movimientos (ingresos/gastos).</li>
+                <li>Totales y formato moneda.</li>
+                <li>Impacto en saldo de compras, ventas y misiones.</li>
+            </div>
+        </div>
+        <div class="pitch-card">
+            <h3>Social & Chat</h3>
+            <div class="pitch-list">
+                <li>Buscar jugadores, enviar/aceptar/declinar solicitudes.</li>
+                <li>Lista de amigos con indicador online.</li>
+                <li>Chat global en tiempo real (Socket.IO).</li>
+            </div>
+        </div>
+        <div class="pitch-card">
+            <h3>Admin</h3>
+            <div class="pitch-list">
+                <li>CRUD de usuarios (sin poder dar admin), activar/desactivar.</li>
+                <li>Catálogo completo de misiones: crear, editar, borrar, activar.</li>
+                <li>Roles y protección por middleware.</li>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="pitch-section-title">Arquitectura</h2>
+    <div class="pitch-columns">
+        <div class="pitch-mini">
+            <h4>Presentación</h4>
+            <ul>
+                <li>Vistas HTML en <code>/views</code>, CSS/JS en <code>/public</code>.</li>
+                <li>Fetch a APIs REST + Socket.IO para tiempo real.</li>
+                <li>Animaciones de hangar, timers y HUD en cliente.</li>
+            </ul>
+        </div>
+        <div class="pitch-mini">
+            <h4>Lógica (Express)</h4>
+            <ul>
+                <li>Rutas HTML (<code>routes/index.js</code>) y REST (<code>/api</code>).</li>
+                <li>Middlewares de auth, roles y sesión compartida.</li>
+                <li>Helmet + CSP, compresión, parsers JSON/URL encoded.</li>
+            </ul>
+        </div>
+        <div class="pitch-mini">
+            <h4>Persistencia</h4>
+            <ul>
+                <li>SQLite con Knex (<code>/db/skyport.sqlite3</code>).</li>
+                <li>Migraciones + seeds; stores en <code>/data/*Store</code>.</li>
+                <li>Tablas: users, aircraft, missions, economy, social, events.</li>
+            </ul>
+        </div>
+        <div class="pitch-mini">
+            <h4>Tiempo real</h4>
+            <ul>
+                <li>Socket.IO enganchado a servidor HTTP/HTTPS.</li>
+                <li>Reutiliza sesión para identidad en chat y presencia.</li>
+                <li>Eventos: chat, radar usuarios, notificaciones sociales.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="pitch-section-title">Flujos esenciales</h2>
+    <div class="pitch-steps">
+        <div class="pitch-step">
+            <strong>Auth</strong>
+            POST /api/auth (login/register), rota sesión, roles en cookie firmada.
+        </div>
+        <div class="pitch-step">
+            <strong>Flota / Mercado</strong>
+            GET flota + catálogo; comprar/vender valida saldo y límite; movimientos contables.
+        </div>
+        <div class="pitch-step">
+            <strong>Misiones</strong>
+            Activar con avión compatible, descontar coste, timers; resolver vencidas y recompensas.
+        </div>
+        <div class="pitch-step">
+            <strong>Economía</strong>
+            Balance y movimientos desde account_movements; consistente con compras/misiones.
+        </div>
+        <div class="pitch-step">
+            <strong>Social</strong>
+            Búsqueda, solicitudes, amistades; presencia integrada con Socket.IO.
+        </div>
+        <div class="pitch-step">
+            <strong>Admin</strong>
+            CRUD de usuarios no-admin y catálogo de misiones; protegido con requireRole.
+        </div>
+    </div>
+
+    <h2 class="pitch-section-title">Infra local</h2>
+    <div class="pitch-grid">
+        <div class="pitch-card">
+            <h3>Arranque</h3>
+            <div class="pitch-list">
+                <li>SKYPORT_MODE=dev · HTTP local.</li>
+                <li>SKYPORT_MODE=lan-https · HTTPS con certs autofirmados en <code>/certs</code>.</li>
+                <li>Variables .env: PORT, SESSION_SECRET, expiraciones, TWELVE_KEY.</li>
+            </div>
+        </div>
+        <div class="pitch-card">
+            <h3>Seguridad</h3>
+            <div class="pitch-list">
+                <li>Cookies de sesión firmadas, httpOnly.</li>
+                <li>CSP con orígenes controlados, sin <code>object-src</code>.</li>
+                <li>Desactivado X-Powered-By; rotación y expiración de sesión (idle + absoluta).</li>
+            </div>
+        </div>
+        <div class="pitch-card">
+            <h3>Datos</h3>
+            <div class="pitch-list">
+                <li>SQLite en disco local; stores modulares por dominio.</li>
+                <li>Seeds: usuario demo, catálogo de aviones, misiones base, saldo inicial.</li>
+                <li>Opcional Redis para sesiones si se configura.</li>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="pitch-section-title">Limitaciones y siguientes</h2>
+    <div class="pitch-pill-row">
+        <span class="pitch-pill">Misiones: falta notificación push al completar</span>
+        <span class="pitch-pill">Infra aeroportuaria avanzada pendiente (pistas/hangares)</span>
+        <span class="pitch-pill">Marketplace entre jugadores no implementado</span>
+        <span class="pitch-pill">Chat global no persistente (histórico)</span>
+    </div>
+
+    <div class="pitch-footer">
+        <div class="pitch-inline">Listo para demo: recorrido claro por vistas y flujos.</div>
+        <div class="pitch-actions">
+            <a class="pitch-btn" href="/">Volver al inicio</a>
+            <a class="pitch-btn pitch-btn--ghost" href="/game">Ir al juego</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
