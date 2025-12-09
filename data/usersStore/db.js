@@ -124,6 +124,19 @@ async function updateUser({ id, roles, isActive }) {
     return mapRow(row);
 }
 
+// Actualiza la contraseña de un usuario concreto
+async function updateUserPassword({ id, password }) {
+    if (!id || typeof password !== 'string') return null;
+    const passwordHash = await bcrypt.hash(password, 10);
+    const updated_at = new Date().toISOString();
+
+    await knex('users')
+        .where({ id })
+        .update({ password_hash: passwordHash, updated_at });
+
+    return findUserById(id);
+}
+
 // Crea usuario + datos mínimos SkyPort (saldo, aeropuerto, avión, movimiento inicial)
 async function createUser({ username, email, password, roles: rolesArg }) {
     const INITIAL_BALANCE = process.env.INITIAL_BALANCE || 100000;
@@ -229,5 +242,6 @@ module.exports = {
     getAirportForUser,
     findUserWithAirportByUsername,
     searchUsers,
-    deleteUserById
+    deleteUserById,
+    updateUserPassword
 };

@@ -74,29 +74,26 @@
 <main class="d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 90px);">
     <div class="card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
         <div class="text-center mb-3">
-            <div class="profile-pic mb-3">
-                <img src="/img/fotoPerfilInicial.png" alt="Foto de perfil" class="profile-placeholder">
-            </div>
             <h2 class="hero-title mb-0">Recuperar contraseña</h2>
         </div>
 
         <form id="recoverForm" novalidate>
             <div class="mb-3">
-                <label for="dni" class="form-label">DNI</label>
-                <input type="text" id="dni" name="dni" class="form-control" placeholder="12345678Z"
-                       pattern="^[0-9]{8}[A-Za-z]$" required>
+                <label for="user" class="form-label">Usuario o email</label>
+                <input type="text" id="user" name="user" class="form-control" placeholder="demo o demo@skyport.local"
+                       autocomplete="username" required>
             </div>
 
             <div class="mb-3">
                 <label for="password" class="form-label">Contraseña nueva</label>
                 <input type="password" id="password" name="password" class="form-control"
-                       placeholder="Nueva contraseña" minlength="8" required>
+                       placeholder="Nueva contraseña" minlength="8" autocomplete="new-password" required>
             </div>
 
             <div class="mb-3">
                 <label for="confirm" class="form-label">Confirma contraseña</label>
                 <input type="password" id="confirm" name="confirm" class="form-control"
-                       placeholder="Repite la contraseña" minlength="8" required>
+                       placeholder="Repite la contraseña" minlength="8" autocomplete="new-password" required>
             </div>
 
             <p class="form-error alert alert-danger py-2 px-3" role="alert" hidden></p>

@@ -7,7 +7,7 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Import middleware relativo a gestión de usuarios (/data) y autenticación (/middleware)
 const bcrypt = require('bcryptjs');
-const { findUserByUsername, findUserByEmail, createUser } = require('../../data/usersStore/db');
+const { findUserByUsername, findUserByEmail, createUser, updateUserPassword } = require('../../data/usersStore/db');
 
 // Middleware simple de validación
 function isValidUsername(s){ return typeof s==='string' && /^[a-zA-Z0-9_]{3,20}$/.test(s); }
@@ -97,6 +97,49 @@ router.post('/login', async (req, res) => {
     } catch (e) {
         console.error('LOGIN ERROR', e);
         res.status(500).json({ error: 'login_failed' });
+    }
+});
+
+// --- /api/auth/recover ---
+router.post('/recover', async (req, res) => {
+    try {
+        const { user, password } = req.body || {};
+        const key = (user || '').trim();
+        const pass = password || '';
+
+        if (!key || !pass) {
+            return res.status(400).json({ error: 'bad_request' });
+        }
+        if (!isValidPass(pass)) return res.status(400).json({ error: 'bad_password' });
+
+        const lookupByEmail = key.includes('@');
+
+        if (lookupByEmail && !isValidEmail(key)) {
+            return res.status(400).json({ error: 'bad_email' });
+        }
+        if (!lookupByEmail && !isValidUsername(key)) {
+            return res.status(400).json({ error: 'bad_username' });
+        }
+
+        const candidate = lookupByEmail
+            ? await findUserByEmail(key.toLowerCase())
+            : await findUserByUsername(key);
+
+        if (!candidate) {
+            if (process.env.NODE_ENV === 'production') await sleep(150);
+            return res.status(404).json({ error: 'user_not_found' });
+        }
+
+        if (!candidate.isActive) {
+            return res.status(403).json({ error: 'user_suspended' });
+        }
+
+        await updateUserPassword({ id: candidate.id, password: pass });
+
+        res.json({ ok: true });
+    } catch (e) {
+        console.error('RECOVER ERROR', e);
+        res.status(500).json({ error: 'recover_failed' });
     }
 });
 
