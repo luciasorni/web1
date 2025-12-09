@@ -12,8 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Opcionales (hoy backend los ignora; los dejamos para futuro)
     const nameIpt = document.getElementById('nombre');
-    const dniIpt  = document.getElementById('dni');
-
     const termCbx = document.getElementById('acepto');
     const btn     = document.getElementById('btnEntrar');
     const errBox  = document.querySelector('.form-error');
@@ -25,8 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const showError  = (msg) => { errBox.hidden = false; errBox.textContent = msg; };
     const clearError = ()    => { errBox.hidden = true;  errBox.textContent = ''; };
-
-    const isValidDNI = v => !v || /^[0-9]{8}[A-Za-z]$/.test(v.trim()); // opcional
 
     const selectedAvatar = () => {
         const current = document.querySelector('input[name="avatar"]:checked');
@@ -54,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         }
         if (!termCbx.checked) { showError('Debes aceptar términos y privacidad.'); termCbx.focus(); return false; }
-        if (!isValidDNI(dniIpt?.value || '')) { showError('DNI inválido (ej. 12345678Z).'); dniIpt.focus(); return false; }
         clearError();
         return true;
     };
@@ -66,8 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         autoLogin: true,                     // Le indicamos al backend que realize autologin
         // Otros campos de formulario de registro
         avatar: selectedAvatar(),
-        nombre: (nameIpt?.value || '').trim(),
-        dni:    (dniIpt?.value  || '').trim()
+        nombre: (nameIpt?.value || '').trim()
     });
 
     const toggleBusy = (b) => {

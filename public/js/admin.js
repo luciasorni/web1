@@ -114,8 +114,9 @@
   };
 
   const fmtDate = (v) => {
+    if (!v) return '—';
     const d = new Date(v);
-    if (Number.isNaN(d)) return v || '';
+    if (Number.isNaN(d.getTime())) return v || '—';
     return d.toLocaleString('es-ES', {
       day: '2-digit', month: '2-digit', year: 'numeric',
       hour: '2-digit', minute: '2-digit'
