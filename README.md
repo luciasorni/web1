@@ -1,6 +1,12 @@
 # Proyecto web1
 Juan Federico García, Inés Del Río, Jesús Joana, Lucía Sorní
 
+# Información del proyecto: 
+
+SkyPort es una aplicación web de simulación y gestión aeroportuaria con un fuerte componente social y en tiempo real. Cada jugador obtiene su propio aeropuerto para desarrollarlo comprando aviones, enviándolos a misiones y participando en eventos que generan progreso e ingresos. El juego incluye interacción entre usuarios —búsqueda de amigos, visitas a aeropuertos, mercado dinámico y chat global— para fomentar la colaboración y la competencia.
+
+Además, integra noticias aeronáuticas y datos de acciones reales, conectando el juego con la aviación del mundo real. Los administradores pueden moderar y crear eventos globales. Su objetivo es ofrecer una experiencia viva, estratégica y social, accesible desde cualquier dispositivo y preparada para ampliarse con nuevas funciones en el futuro.
+
 # SkyPort v2 – Instrucciones de instalación y ejecución
 
 Proyecto desarrollado en Node.js + Express + SQLite3.
