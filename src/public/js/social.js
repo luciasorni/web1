@@ -219,8 +219,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    inviteBtn?.addEventListener('click', handleInviteCode);
-    copyLinkBtn?.addEventListener('click', handleCopyLink);
+    if (typeof handleInviteCode === 'function' && inviteBtn) {
+        inviteBtn.addEventListener('click', handleInviteCode);
+    }
+    if (typeof handleCopyLink === 'function' && copyLinkBtn) {
+        copyLinkBtn.addEventListener('click', handleCopyLink);
+    }
 
     // Inicialización
     fetchState();
