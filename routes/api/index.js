@@ -26,6 +26,9 @@ router.use('/auth', require('./auth'));
 // Explore (público/invitado)
 router.use('/explore', require('./explore'));
 
+// Datos públicos (cotizaciones, etc.)
+router.use('/stocks', require('./stocks'));
+
 // Game (incluye chat, economy, fleet, game, market, missions, social
 router.use('/game', requireAuth, require('./game'));
 
