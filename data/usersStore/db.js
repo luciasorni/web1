@@ -47,7 +47,9 @@ async function findUserByUsername(username) {
 }
 
 async function findUserByEmail(email) {
-    const row = await knex('users').where({ email }).first();
+    const normalized = (email || '').trim().toLowerCase();
+    if (!normalized) return null;
+    const row = await knex('users').where({ email: normalized }).first();
     return mapRow(row);
 }
 
@@ -144,6 +146,7 @@ async function createUser({ username, email, password, roles: rolesArg }) {
     const id = randomUUID();
     const passwordHash = await bcrypt.hash(password, 10);
     const now = new Date().toISOString();
+    const normalizedEmail = (email || '').trim().toLowerCase();
     const roles = Array.isArray(rolesArg) && rolesArg.length ? rolesArg : ['player']; // Roles por defecto
 
     /*
@@ -173,7 +176,7 @@ async function createUser({ username, email, password, roles: rolesArg }) {
         await trx('users').insert({
             id,
             username,
-            email,
+            email: normalizedEmail,
             password_hash: passwordHash,          // <- columna en la tabla
             roles: JSON.stringify(roles),        // <- se guarda como texto
             is_active: true,
@@ -222,7 +225,7 @@ async function createUser({ username, email, password, roles: rolesArg }) {
     return {
         id,
         username,
-        email,
+        email: normalizedEmail,
         passwordHash,
         roles,
         isActive: true,
